@@ -1,3 +1,487 @@
-<html>
-    
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Katalog Sistemi</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #2d5f3f;
+            --secondary-green: #4a8c5e;
+            --light-green: #6fb886;
+            --bg-green: #e8f5e9;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--bg-green) 0%, #ffffff 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            color: white !important;
+            font-size: 1.5rem;
+        }
+
+        .carousel-item {
+            height: 250px;
+            background: linear-gradient(135deg, var(--secondary-green) 0%, var(--light-green) 100%);
+        }
+
+        .carousel-item img {
+            height: 250px;
+            object-fit: cover;
+            opacity: 0.7;
+        }
+
+        .carousel-caption {
+            background: rgba(45, 95, 63, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .catalog-section {
+            padding: 60px 0;
+        }
+
+        .catalog-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 15px;
+            box-shadow: 0 8px 16px rgba(45, 95, 63, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid var(--light-green);
+        }
+
+        .catalog-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(45, 95, 63, 0.3);
+            border-color: var(--primary-green);
+        }
+
+        .catalog-card i {
+            font-size: 3rem;
+            color: var(--secondary-green);
+            margin-bottom: 20px;
+        }
+
+        .catalog-card h3 {
+            color: var(--primary-green);
+            font-weight: bold;
+        }
+
+        .modal-header {
+            background: linear-gradient(90deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+            color: white;
+        }
+
+        .modal-header .btn-close {
+            filter: brightness(0) invert(1);
+        }
+
+        .list-group-item {
+            border-left: 4px solid var(--light-green);
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .list-group-item:hover {
+            background-color: var(--bg-green);
+            border-left-color: var(--primary-green);
+            transform: translateX(5px);
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .pdf-icon {
+            color: #dc3545;
+        }
+
+        .git-icon {
+            color: #f05032;
+        }
+
+        .file-icon:hover {
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+
+        .btn-primary {
+            background: var(--secondary-green);
+            border: none;
+            padding: 10px 30px;
+            font-weight: bold;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-green);
+        }
+
+        .pdf-viewer-modal .modal-dialog {
+            max-width: 90%;
+            height: 90vh;
+        }
+
+        .pdf-viewer-modal .modal-body {
+            height: calc(90vh - 120px);
+            padding: 0;
+        }
+
+        .pdf-viewer-modal iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .pdf-error-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 40px;
+        }
+
+        .pdf-error-container i {
+            font-size: 4rem;
+            color: var(--secondary-green);
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            color: var(--primary-green);
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-align: center;
+            font-size: 2.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-leaf"></i> Çınarcık MYO Bilgisayar Teknolojileri Bölümü
+            </a>
+        </div>
+    </nav>
+
+    <!-- Carousel Slider -->
+    <div id="mainCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#mainCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <div class="d-flex align-items-center justify-content-center h-100">
+                    <div class="carousel-caption">
+                        <h1><i class="fas fa-book"></i> Hoş Geldiniz</h1>
+                        <p>Ders kataloğu sisteminde haftalık derslerin sunumlarına ve kaynak dosyalarına erişebilirsiniz</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex align-items-center justify-content-center h-100">
+                    <div class="carousel-caption">
+                        <h1><i class="fas fa-folder-open"></i> Ders Kataloğu Dosyaları</h1>
+                        <p>Ders kataloğunda hem pdf hem de git dosya yolu bulunmaktadır.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item">
+                <div class="d-flex align-items-center justify-content-center h-100">
+                    <div class="carousel-caption">
+                        <h1><i class="fas fa-file-pdf"></i> Dijital Dökümanlar</h1>
+                        <p>Faydalı kaynaklar ile ilgili dökümanlara erişebilirsiniz.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mainCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mainCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- Catalog Section -->
+    <div class="catalog-section">
+        <div class="container">
+            <h2 class="section-title">Ders Katalogları</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="catalog-card" data-bs-toggle="modal" data-bs-target="#catalog1Modal">
+                        <div class="text-center">
+                            <i class="fas fa-laptop-code"></i>
+                            <h3>Bilgi Teknolojilerine Giriş</h3>
+                            <p class="text-muted">Web ve mobil uygulama projeleri</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="catalog-card" data-bs-toggle="modal" data-bs-target="#catalog2Modal">
+                        <div class="text-center">
+                            <i class="fas fa-file-invoice"></i>
+                            <h3>Programlamanın Temelleri</h3>
+                            <p class="text-muted">Teknik belgeler ve kılavuzlar</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="catalog-card" data-bs-toggle="modal" data-bs-target="#catalog3Modal">
+                        <div class="text-center">
+                            <i class="fas fa-graduation-cap"></i>
+                            <h3>Siber Güvenlik ve Bilgi Güvenliği</h3>
+                            <p class="text-muted">Kurslar ve öğretici içerikler</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 1: Yazılım Projeleri -->
+    <div class="modal fade" id="catalog1Modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-laptop-code"></i> Yazılım Projeleri</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'E-Ticaret Projesi')"></i>
+                            <div class="flex-grow-1">
+                                <strong>E-Ticaret Projesi Dökümanı</strong>
+                                <br><small class="text-muted">Modern e-ticaret platformu tasarımı</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/ecommerce/main/README.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Mobil Uygulama')"></i>
+                            <div class="flex-grow-1">
+                                <strong>Mobil Uygulama Geliştirme</strong>
+                                <br><small class="text-muted">React Native ile iOS ve Android</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/mobile-app/main/docs/guide.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'API Entegrasyon')"></i>
+                            <div class="flex-grow-1">
+                                <strong>API Entegrasyon Projesi</strong>
+                                <br><small class="text-muted">RESTful API ve mikroservisler</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/api-integration/main/API.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Dashboard Sistemi')"></i>
+                            <div class="flex-grow-1">
+                                <strong>Dashboard Sistemi</strong>
+                                <br><small class="text-muted">Gerçek zamanlı veri görselleştirme</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/dashboard/main/FEATURES.md')"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Dökümanlar -->
+    <div class="modal fade" id="catalog2Modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-file-invoice"></i> Dökümanlar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Kurulum Kılavuzu')"></i>
+                            <div class="flex-grow-1">
+                                <strong>Kurulum Kılavuzu</strong>
+                                <br><small class="text-muted">Adım adım sistem kurulumu</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/docs/main/installation.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'API Referans')"></i>
+                            <div class="flex-grow-1">
+                                <strong>API Referans Dökümanı</strong>
+                                <br><small class="text-muted">Detaylı API endpoint açıklamaları</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/api-docs/main/reference.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Güvenlik Politikaları')"></i>
+                            <div class="flex-grow-1">
+                                <strong>Güvenlik Politikaları</strong>
+                                <br><small class="text-muted">Veri koruma ve güvenlik standartları</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/security/main/policies.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Veritabanı Şeması')"></i>
+                            <div class="flex-grow-1">
+                                <strong>Veritabanı Şeması</strong>
+                                <br><small class="text-muted">ER diyagramları ve tablo yapıları</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/database/main/schema.md')"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Eğitim Materyalleri -->
+    <div class="modal fade" id="catalog3Modal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-graduation-cap"></i> Eğitim Materyalleri</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'JavaScript İleri Seviye')"></i>
+                            <div class="flex-grow-1">
+                                <strong>JavaScript İleri Seviye</strong>
+                                <br><small class="text-muted">ES6+ özellikleri ve modern JavaScript</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/js-course/main/curriculum.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'React Başlangıç')"></i>
+                            <div class="flex-grow-1">
+                                <strong>React Başlangıç Kursu</strong>
+                                <br><small class="text-muted">Component tabanlı web geliştirme</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/react-course/main/syllabus.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Git ve GitHub')"></i>
+                            <div class="flex-grow-1">
+                                <strong>Git ve GitHub Kullanımı</strong>
+                                <br><small class="text-muted">Versiyon kontrolü ve işbirliği</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/git-tutorial/main/guide.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'UI/UX Tasarım')"></i>
+                            <div class="flex-grow-1">
+                                <strong>UI/UX Tasarım Prensipleri</strong>
+                                <br><small class="text-muted">Kullanıcı deneyimi ve arayüz tasarımı</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/ux-design/main/principles.md')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf', 'Node.js Backend')"></i>
+                            <div class="flex-grow-1">
+                                <strong>Node.js Backend Geliştirme</strong>
+                                <br><small class="text-muted">Express.js ile sunucu tarafı programlama</small>
+                            </div>
+                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://raw.githubusercontent.com/example/nodejs-course/main/lessons.md')"></i>
+                        </li>
+                    </ul>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PDF Viewer Modal -->
+    <div class="modal fade pdf-viewer-modal" id="pdfViewerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="pdfViewerTitle"><i class="fas fa-file-pdf"></i> PDF Görüntüleyici</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body" id="pdfViewerBody">
+                    <div class="pdf-error-container" id="pdfErrorContainer" style="display:none;">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <h4>PDF yüklenemedi</h4>
+                        <p class="text-muted">Tarayıcınız PDF görüntülemeyi desteklemiyor olabilir.</p>
+                        <button class="btn btn-primary" id="openInNewTabBtn">
+                            <i class="fas fa-external-link-alt"></i> Yeni Sekmede Aç
+                        </button>
+                    </div>
+                    <iframe id="pdfViewerFrame" style="display:none;"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let currentPdfUrl = '';
+        const pdfModal = new bootstrap.Modal(document.getElementById('pdfViewerModal'));
+
+        function openPDF(pdfUrl, title) {
+            currentPdfUrl = pdfUrl;
+            document.getElementById('pdfViewerTitle').innerHTML = '<i class="fas fa-file-pdf"></i> ' + title;
+            
+            const iframe = document.getElementById('pdfViewerFrame');
+            const errorContainer = document.getElementById('pdfErrorContainer');
+            
+            // PDF'i iframe'de göstermeyi dene
+            iframe.style.display = 'block';
+            errorContainer.style.display = 'none';
+            iframe.src = pdfUrl;
+            
+            // Yükleme hatası kontrolü
+            iframe.onerror = function() {
+                iframe.style.display = 'none';
+                errorContainer.style.display = 'flex';
+            };
+            
+            pdfModal.show();
+        }
+
+        function openGit(gitUrl) {
+            window.open(gitUrl, '_blank');
+        }
+
+        // Yeni sekmede aç butonu için event listener
+        document.getElementById('openInNewTabBtn').addEventListener('click', function() {
+            window.open(currentPdfUrl, '_blank');
+            pdfModal.hide();
+        });
+
+        // Modal kapandığında iframe'i temizle
+        document.getElementById('pdfViewerModal').addEventListener('hidden.bs.modal', function() {
+            document.getElementById('pdfViewerFrame').src = '';
+        });
+    </script>
+</body>
 </html>
