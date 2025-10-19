@@ -1,0 +1,4030 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Öğrenme Platformu - Kapsamlı Eğitim</title>
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.24.1/full/pyodide.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-green: #10b981;
+            --dark-green: #059669;
+            --light-green: #d1fae5;
+            --accent-green: #34d399;
+            --dark-bg: #0f172a;
+            --card-bg: #1e293b;
+            --sidebar-bg: #1a2332;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --code-bg: #0d1117;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--sidebar-bg);
+            padding: 20px;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--primary-green);
+            margin-bottom: 30px;
+            padding: 10px;
+        }
+
+        .nav-section {
+            margin-bottom: 25px;
+        }
+
+        .nav-section h3 {
+            color: var(--text-secondary);
+            font-size: 0.8em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            padding: 0 10px;
+        }
+
+        .nav-item {
+            padding: 10px 12px;
+            margin: 5px 0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-secondary);
+        }
+
+        .nav-item:hover {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-green);
+        }
+
+        .nav-item.active {
+            background: var(--primary-green);
+            color: white;
+            font-weight: 600;
+        }
+
+        .main-content {
+            padding: 40px;
+            overflow-y: auto;
+            max-width: 1400px;
+        }
+
+        .header-banner {
+            background: linear-gradient(135deg, var(--dark-green) 0%, var(--primary-green) 100%);
+            padding: 40px;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(16, 185, 129, 0.3);
+        }
+
+        .header-banner h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .lesson-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .lesson-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .lesson-number {
+            background: var(--primary-green);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+
+        .lesson-title h2 {
+            color: var(--primary-green);
+            margin-bottom: 5px;
+        }
+
+        .lesson-title .subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9em;
+        }
+
+        .content-block h3 {
+            color: var(--accent-green);
+            margin: 25px 0 15px 0;
+            font-size: 1.3em;
+        }
+
+        .content-block p {
+            color: var(--text-secondary);
+            margin-bottom: 15px;
+            line-height: 1.8;
+        }
+
+        .code-example {
+            background: var(--code-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            border: 1px solid var(--border-color);
+            overflow-x: auto;
+        }
+
+        .code-example pre {
+            color: #c9d1d9;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+        }
+
+        .interactive-editor {
+            background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+            border: 2px solid var(--primary-green);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .editor-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .editor-header h3 {
+            color: var(--primary-green);
+        }
+
+        .difficulty-badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: 600;
+        }
+
+        .difficulty-badge.easy { background: #10b981; color: white; }
+        .difficulty-badge.medium { background: #f59e0b; color: white; }
+        .difficulty-badge.hard { background: #ef4444; color: white; }
+
+        textarea.code-input {
+            width: 100%;
+            min-height: 200px;
+            background: var(--code-bg);
+            color: #c9d1d9;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+        }
+
+        textarea.code-input:focus {
+            outline: none;
+            border-color: var(--primary-green);
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        button {
+            background: var(--primary-green);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: var(--dark-green);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        button.secondary {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        button:disabled {
+            background: #475569;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .output-panel {
+            background: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 120px;
+            margin-top: 20px;
+        }
+
+        .output-panel pre {
+            color: var(--primary-green);
+            font-family: 'Consolas', 'Monaco', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .hint-box {
+            background: rgba(16, 185, 129, 0.05);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .hint-box h4 {
+            color: var(--primary-green);
+            margin-bottom: 12px;
+        }
+
+        .status-indicator {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            padding: 15px 20px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            z-index: 1000;
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ef4444;
+        }
+
+        .status-dot.ready {
+            background: var(--primary-green);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        @media (max-width: 1024px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: relative;
+                height: auto;
+                border-right: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="logo">🐍 Python Akademi</div>
+            
+            <nav>
+                <div class="nav-section">
+                    <h3>Temel Konular</h3>
+                    <div class="nav-item active" onclick="showSection('basics')">📚 Temeller</div>
+                    <div class="nav-item" onclick="showSection('data-structures')">📊 Veri Yapıları</div>
+                    <div class="nav-item" onclick="showSection('functions')">⚡ Fonksiyonlar</div>
+                    <div class="nav-item" onclick="showSection('oop')">🎯 OOP</div>
+                </div>
+                
+                <div class="nav-section">
+                    <h3>İleri Konular</h3>
+                    <div class="nav-item" onclick="showSection('file-ops')">📁 Dosya İşlemleri</div>
+                    <div class="nav-item" onclick="showSection('errors')">⚠️ Hata Yönetimi</div>
+                    <div class="nav-item" onclick="showSection('advanced')">🚀 İleri Python</div>
+                </div>
+                
+                <div class="nav-section">
+                    <h3>Uygulama</h3>
+                    <div class="nav-item" onclick="showSection('algorithms')">🧮 Algoritmalar</div>
+                    <div class="nav-item" onclick="showSection('web-dev')">🌐 Web Geliştirme</div>
+                    <div class="nav-item" onclick="showSection('gui')">🖥️ GUI (Tkinter)</div>
+                    <div class="nav-item" onclick="showSection('projects')">💼 Projeler</div>
+                </div>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="header-banner">
+                <h1>🐍 Python ile Programlamaya Hoş Geldiniz</h1>
+                <p>Temellerden ileri seviyeye kapsamlı Python eğitimi - Console, Web, GUI ve daha fazlası</p>
+                <a href="index.html">Anasayfa</a>
+            </div>
+
+            <!-- TEMEL KONULAR -->
+            <div id="basics" class="content-section active">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">1</div>
+                        <div class="lesson-title">
+                            <h2>Python'a Giriş ve Temel Sözdizimi</h2>
+                            <span class="subtitle">Print, değişkenler, veri tipleri, operatörler</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3>Değişkenler ve String İşlemleri</h3>
+                        <div class="code-example">
+<pre># Değişken tanımlama
+isim = "Ahmet"
+yas = 25
+boy = 1.75
+
+# f-string kullanımı
+print(f"Benim adım {isim}, {yas} yaşındayım ve boyum {boy}m")
+
+# String metodları
+metin = "python programlama"
+print(metin.upper())
+print(metin.title())
+print(metin.split())
+
+# Matematiksel işlemler
+a, b = 10, 3
+print(f"Toplam: {a + b}")
+print(f"Fark: {a - b}")
+print(f"Çarpım: {a * b}")
+print(f"Bölüm: {a / b}")
+print(f"Tam Bölüm: {a // b}")
+print(f"Mod: {a % b}")
+print(f"Üs: {a ** b}")</pre>
+                        </div>
+
+                        <h3>Koşullu İfadeler</h3>
+                        <div class="code-example">
+<pre># if-elif-else
+not_degeri = 85
+
+if not_degeri >= 90:
+    harf = "AA"
+elif not_degeri >= 80:
+    harf = "BA"
+elif not_degeri >= 70:
+    harf = "BB"
+elif not_degeri >= 60:
+    harf = "CB"
+else:
+    harf = "FF"
+
+print(f"Harf Notu: {harf}")
+
+# Mantıksal operatörler
+yas = 25
+gelir = 5000
+
+if yas >= 18 and gelir >= 3000:
+    print("Kredi onaylandı")
+else:
+    print("Kredi reddedildi")</pre>
+                        </div>
+
+                        <h3>Döngüler</h3>
+                        <div class="code-example">
+<pre># for döngüsü
+for i in range(1, 6):
+    print(f"Sayı: {i}")
+
+# Liste üzerinde döngü
+meyveler = ["elma", "armut", "muz", "çilek"]
+for meyve in meyveler:
+    print(f"Meyve: {meyve}")
+
+# while döngüsü
+sayac = 1
+while sayac <= 5:
+    print(f"Sayaç: {sayac}")
+    sayac += 1
+
+# List comprehension
+kareler = [x**2 for x in range(10)]
+print(f"Kareler: {kareler}")
+
+cift_sayilar = [x for x in range(20) if x % 2 == 0]
+print(f"Çift sayılar: {cift_sayilar}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Fibonacci Serisi ve Asal Sayılar</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <p>İlk 10 Fibonacci sayısını ve 1-50 arası asal sayıları yazdırın.</p>
+                        <textarea class="code-input" id="editor1"># Fibonacci serisi
+print("Fibonacci Serisi:")
+a, b = 0, 1
+for i in range(10):
+    print(a, end=" ")
+    a, b = b, a + b
+
+print("\n\nAsal Sayılar:")
+# Asal sayıları bulun
+for num in range(2, 51):
+    asal = True
+    for i in range(2, int(num**0.5) + 1):
+        if num % i == 0:
+            asal = False
+            break
+    if asal:
+        print(num, end=" ")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor1', 'output1')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor1', 'output1')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output1">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+
+                    <!-- Örnek 1 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 1: Bilgi Kartı</h3>
+                            <span class="difficulty-badge easy">Kolay</span>
+                        </div>
+                        <p class="editor-desc">Değişkenler ve string formatlama ile kişisel bilgi kartı.</p>
+                        <textarea class="code-input" id="e1">ad, soyad, yas, sehir = "Ahmet", "Yılmaz", 25, "İstanbul"
+
+print("="*40)
+print("KİŞİSEL BİLGİ KARTI")
+print("="*40)
+print(f"Ad Soyad: {ad} {soyad}")
+print(f"Yaş: {yas}")
+print(f"Şehir: {sehir}")
+print("="*40)
+if yas >= 18:
+    print("Durum: Yetişkin ✓")
+else:
+    print("Durum: Reşit değil")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e1','o1')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e1','o1')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o1"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- Örnek 2 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 2: Çarpım Tablosu</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <p class="editor-desc">Döngülerle çarpım tablosu oluşturma.</p>
+                        <textarea class="code-input" id="e2">sayi = 7
+
+print(f"{sayi} ÇARPIM TABLOSU")
+print("="*30)
+
+for i in range(1, 11):
+    sonuc = sayi * i
+    print(f"{sayi} × {i:2d} = {sonuc:3d}")
+
+print("="*30)
+print(f"Toplam: {sum(sayi * i for i in range(1, 11))}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e2','o2')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e2','o2')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o2"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- Örnek 3 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 3: Asal Sayı Bulucu</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <p class="editor-desc">İç içe döngüler ve algoritma mantığı.</p>
+                        <textarea class="code-input" id="e3">def asal_mi(n):
+    if n < 2:
+        return False
+    for i in range(2, int(n**0.5) + 1):
+        if n % i == 0:
+            return False
+    return True
+
+print("1-100 ARASI ASAL SAYILAR")
+print("="*50)
+
+asallar = [x for x in range(2, 101) if asal_mi(x)]
+print(asallar)
+
+print(f"\nToplam: {len(asallar)} asal sayı")
+print(f"İlk 5: {asallar[:5]}")
+print(f"Son 5: {asallar[-5:]}")
+print(f"Toplamları: {sum(asallar)}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e3','o3')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e3','o3')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o3"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- Örnek 4 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 4: İstatistik Analizi</h3>
+                            <span class="difficulty-badge expert">Uzman</span>
+                        </div>
+                        <p class="editor-desc">Ortalama, medyan, mod, standart sapma hesaplama.</p>
+                        <textarea class="code-input" id="e4">notlar = [85, 92, 78, 90, 85, 88, 75, 95, 82, 85, 90, 88]
+
+# İstatistikler
+ortalama = sum(notlar) / len(notlar)
+sirali = sorted(notlar)
+n = len(sirali)
+medyan = sirali[n//2] if n % 2 else (sirali[n//2-1] + sirali[n//2]) / 2
+
+# Mod
+frekans = {}
+for not_degeri in notlar:
+    frekans[not_degeri] = frekans.get(not_degeri, 0) + 1
+mod = max(frekans, key=frekans.get)
+
+# Standart sapma
+varyans = sum((x - ortalama)**2 for x in notlar) / len(notlar)
+std_sapma = varyans ** 0.5
+
+print("İSTATİSTİK ANALİZİ")
+print("="*45)
+print(f"Veri: {notlar}")
+print(f"\nOrtalama: {ortalama:.2f}")
+print(f"Medyan: {medyan:.2f}")
+print(f"Mod: {mod}")
+print(f"Min: {min(notlar)} | Max: {max(notlar)}")
+print(f"Standart Sapma: {std_sapma:.2f}")
+print(f"Varyans: {varyans:.2f}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e4','o4')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e4','o4')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o4"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- Kullanıcı Girişli Örnek 1 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 İnteraktif 1: Not Hesaplayıcı</h3>
+                            <span class="difficulty-badge interactive">Etkileşimli</span>
+                        </div>
+                        <p class="editor-desc">Kullanıcıdan notlar alıp ortalama hesaplama (simülasyon).</p>
+                        <textarea class="code-input" id="e5"># Kullanıcı girişi simülasyonu
+notlar_str = "85 92 78 90 88"  # Normalde: input("Notları girin: ")
+
+notlar = [int(x) for x in notlar_str.split()]
+
+print("GİRİLEN NOTLAR:")
+for i, not_degeri in enumerate(notlar, 1):
+    print(f"  {i}. Not: {not_degeri}")
+
+ortalama = sum(notlar) / len(notlar)
+print(f"\nOrtalama: {ortalama:.2f}")
+
+if ortalama >= 85:
+    harf = "AA"
+elif ortalama >= 70:
+    harf = "BB"
+elif ortalama >= 60:
+    harf = "CC"
+else:
+    harf = "FF"
+
+print(f"Harf Notu: {harf}")
+print(f"Durum: {'Geçti ✓' if ortalama >= 60 else 'Kaldı ✗'}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e5','o5')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e5','o5')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o5"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- Kullanıcı Girişli Örnek 2 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 İnteraktif 2: Sayı Tahmin Oyunu</h3>
+                            <span class="difficulty-badge interactive">Etkileşimli</span>
+                        </div>
+                        <p class="editor-desc">Kullanıcı tahminleri ile oyun simülasyonu.</p>
+                        <textarea class="code-input" id="e6">import random
+
+hedef = random.randint(1, 100)
+tahminler = [45, 67, 82, 75]  # Simüle edilmiş tahminler
+
+print("SAYI TAHMİN OYUNU")
+print("1-100 arası bir sayı tuttum!")
+print(f"Tahmin hakkı: {len(tahminler)}\n")
+
+for deneme, tahmin in enumerate(tahminler, 1):
+    print(f"Tahmin {deneme}: {tahmin}")
+    
+    if tahmin == hedef:
+        print(f"🎉 Tebrikler! {deneme}. denemede bildiniz!")
+        break
+    elif tahmin < hedef:
+        print("📈 Daha büyük bir sayı deneyin")
+    else:
+        print("📉 Daha küçük bir sayı deneyin")
+    
+    if deneme == len(tahminler):
+        print(f"\n❌ Tahmin hakkınız bitti!")
+        print(f"Doğru cevap: {hedef}")
+    print()</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e6','o6')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e6','o6')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o6"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VERİ YAPILARI -->
+            <div id="data-structures" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">2</div>
+                        <div class="lesson-title">
+                            <h2>Veri Yapıları - List, Tuple, Set, Dictionary</h2>
+                            <span class="subtitle">Python'da temel veri yapıları</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3>Listeler (Lists)</h3>
+                        <div class="code-example">
+<pre># Liste işlemleri
+sayilar = [1, 2, 3, 4, 5]
+sayilar.append(6)
+sayilar.insert(0, 0)
+sayilar.remove(3)
+print(f"Liste: {sayilar}")
+
+# Slicing
+print(f"İlk 3: {sayilar[:3]}")
+print(f"Son 3: {sayilar[-3:]}")
+
+# Liste metodları
+kopya = sayilar.copy()
+kopya.sort(reverse=True)
+print(f"Sıralı: {kopya}")</pre>
+                        </div>
+
+                        <h3>Sözlükler (Dictionaries)</h3>
+                        <div class="code-example">
+<pre># Dictionary işlemleri
+ogrenci = {
+    "ad": "Ahmet",
+    "yas": 20,
+    "bolum": "Bilgisayar Müh.",
+    "notlar": [85, 90, 78]
+}
+
+# Değerlere erişim
+print(f"Ad: {ogrenci['ad']}")
+print(f"Ortalama: {sum(ogrenci['notlar']) / len(ogrenci['notlar'])}")
+
+# Yeni ekleme
+ogrenci["email"] = "ahmet@mail.com"
+
+# Döngü ile gezinme
+for anahtar, deger in ogrenci.items():
+    print(f"{anahtar}: {deger}")</pre>
+                        </div>
+
+                        <h3>Set ve Tuple</h3>
+                        <div class="code-example">
+<pre># Set (benzersiz elemanlar)
+sayilar = {1, 2, 3, 3, 4, 5, 5}
+print(f"Set: {sayilar}")  # {1, 2, 3, 4, 5}
+
+set1 = {1, 2, 3, 4}
+set2 = {3, 4, 5, 6}
+print(f"Birleşim: {set1 | set2}")
+print(f"Kesişim: {set1 & set2}")
+print(f"Fark: {set1 - set2}")
+
+# Tuple (değiştirilemez)
+koordinat = (10, 20)
+renkler = ("kırmızı", "yeşil", "mavi")
+print(f"Koordinat: {koordinat}")
+print(f"İlk renk: {renkler[0]}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Öğrenci Not Sistemi</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor2"># Öğrenci not sistemi
+ogrenciler = {
+    "Ahmet": [85, 92, 78, 90],
+    "Ayşe": [95, 88, 91, 87],
+    "Mehmet": [75, 80, 70, 85],
+    "Zeynep": [90, 95, 92, 88]
+}
+
+# Her öğrencinin ortalamasını hesapla
+print("Öğrenci Ortalamaları:")
+print("-" * 40)
+
+for isim, notlar in ogrenciler.items():
+    ortalama = sum(notlar) / len(notlar)
+    durum = "Geçti" if ortalama >= 70 else "Kaldı"
+    print(f"{isim}: {ortalama:.2f} - {durum}")
+
+# Sınıf ortalaması
+tum_notlar = []
+for notlar in ogrenciler.values():
+    tum_notlar.extend(notlar)
+
+sinif_ort = sum(tum_notlar) / len(tum_notlar)
+print(f"\nSınıf Ortalaması: {sinif_ort:.2f}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor2', 'output2')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor2', 'output2')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output2">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 1: Alışveriş Listesi</h3>
+                            <span class="difficulty-badge easy">Kolay</span>
+                        </div>
+                        <textarea class="code-input" id="editor3">alisveris = ["Helva", "Ekmek", "Süt", "Yumurta", "Peynir"]
+
+print("ALIŞVERİŞ LİSTESİ")
+print("="*35)
+for i, urun in enumerate(alisveris, 1):
+    print(f"{i}. {urun}")
+
+alisveris.append("Domates")
+alisveris.append("Biber")
+print(f"\n✓ Yeni ürünler eklendi")
+print(f"Toplam: {len(alisveris)} ürün")
+
+alisveris.remove("Süt")
+print(f"✓ Süt çıkarıldı")
+print(f"\nGüncel liste: {alisveris}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor3','output3')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor3','output3')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output3"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 2: Öğrenci Sözlüğü</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="e8">ogrenciler = {
+    "Ahmet": {"notlar": [85, 90, 78], "devamsizlik": 2},
+    "Ayşe": {"notlar": [92, 88, 95], "devamsizlik": 0},
+    "Mehmet": {"notlar": [75, 80, 70], "devamsizlik": 5}
+}
+
+print("ÖĞRENCİ RAPORU")
+print("="*55)
+
+for isim, bilgi in ogrenciler.items():
+    ort = sum(bilgi["notlar"]) / len(bilgi["notlar"])
+    durum = "Geçti ✓" if ort >= 70 and bilgi["devamsizlik"] < 4 else "Kaldı ✗"
+    
+    print(f"\n{isim}:")
+    print(f"  Notlar: {bilgi['notlar']}")
+    print(f"  Ortalama: {ort:.1f}")
+    print(f"  Devamsızlık: {bilgi['devamsizlik']} gün")
+    print(f"  Durum: {durum}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e8','o8')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e8','o8')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o8"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 3: Kelime Frekansı</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="e9">metin = """Python programlama dili çok güçlü bir dildir 
+Python ile web uygulamaları yapay zeka ve veri analizi 
+yapabilirsiniz Python öğrenmek kolaydır"""
+
+metin = metin.lower()
+for k in '.,!?;:\n':
+    metin = metin.replace(k, ' ')
+
+kelimeler = metin.split()
+frekans = {}
+
+for kelime in kelimeler:
+    if kelime:
+        frekans[kelime] = frekans.get(kelime, 0) + 1
+
+sirali = sorted(frekans.items(), key=lambda x: x[1], reverse=True)
+
+print("KELİME FREKANS ANALİZİ")
+print("="*45)
+print(f"Toplam kelime: {len(kelimeler)}")
+print(f"Benzersiz: {len(frekans)}\n")
+
+for kelime, sayi in sirali[:10]:
+    bar = "█" * sayi
+    print(f"{kelime:15} {bar} {sayi}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e9','o9')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e9','o9')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o9"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 4: Şirket Analiz Sistemi</h3>
+                            <span class="difficulty-badge expert">Uzman</span>
+                        </div>
+                        <textarea class="code-input" id="e10">calisanlar = {
+    "C001": {"ad": "Ahmet", "dep": "Yazılım", "maas": 15000, "proje": ["Web", "Mobile"]},
+    "C002": {"ad": "Ayşe", "dep": "Yazılım", "maas": 18000, "proje": ["Web"]},
+    "C003": {"ad": "Mehmet", "dep": "Pazarlama", "maas": 12000, "proje": ["Dijital"]},
+    "C004": {"ad": "Zeynep", "dep": "Yazılım", "maas": 20000, "proje": ["Mobile", "AI"]}
+}
+
+# Departman analizi
+dep_analiz = {}
+for c in calisanlar.values():
+    dep = c['dep']
+    if dep not in dep_analiz:
+        dep_analiz[dep] = {'adet': 0, 'toplam_maas': 0, 'projeler': set()}
+    dep_analiz[dep]['adet'] += 1
+    dep_analiz[dep]['toplam_maas'] += c['maas']
+    dep_analiz[dep]['projeler'].update(c['proje'])
+
+print("ŞİRKET ANALİZİ")
+print("="*55)
+for dep, bilgi in dep_analiz.items():
+    ort = bilgi['toplam_maas'] / bilgi['adet']
+    print(f"\n{dep}:")
+    print(f"  Çalışan: {bilgi['adet']}")
+    print(f"  Ort. Maaş: {ort:,.0f} TL")
+    print(f"  Projeler: {', '.join(bilgi['projeler'])}")
+
+print(f"\nToplam Maliyet: {sum(c['maas'] for c in calisanlar.values()):,} TL")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e10','o10')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e10','o10')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o10"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 İnteraktif 1: Envanter Yönetimi</h3>
+                            <span class="difficulty-badge interactive">Etkileşimli</span>
+                        </div>
+                        <textarea class="code-input" id="e11"># Envanter simülasyonu
+urun_kodu = "P001"  # input("Ürün kodu: ")
+miktar = 10  # int(input("Miktar: "))
+
+envanter = {
+    "P001": {"ad": "Laptop", "stok": 25, "fiyat": 15000},
+    "P002": {"ad": "Mouse", "stok": 50, "fiyat": 250},
+    "P003": {"ad": "Klavye", "stok": 30, "fiyat": 500}
+}
+
+print("ENVANTER YÖNETİMİ")
+print("="*45)
+
+if urun_kodu in envanter:
+    urun = envanter[urun_kodu]
+    
+    if miktar <= urun["stok"]:
+        urun["stok"] -= miktar
+        tutar = miktar * urun["fiyat"]
+        print(f"✓ Satış Başarılı!")
+        print(f"  Ürün: {urun['ad']}")
+        print(f"  Miktar: {miktar}")
+        print(f"  Tutar: {tutar:,} TL")
+        print(f"  Kalan Stok: {urun['stok']}")
+    else:
+        print(f"✗ Yetersiz stok! Mevcut: {urun['stok']}")
+else:
+    print("✗ Ürün bulunamadı!")
+
+print("\nGüncel Envanter:")
+for kod, u in envanter.items():
+    print(f"  {kod}: {u['ad']} - Stok: {u['stok']}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e11','o11')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e11','o11')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o11"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 İnteraktif 2: Telefon Rehberi</h3>
+                            <span class="difficulty-badge interactive">Etkileşimli</span>
+                        </div>
+                        <textarea class="code-input" id="e12">rehber = {
+    "Ahmet": "0532-111-2233",
+    "Ayşe": "0533-444-5566",
+    "Mehmet": "0534-777-8899"
+}
+
+islem = "ara"  # input("İşlem (ekle/ara/sil): ")
+isim = "Ayşe"  # input("İsim: ")
+
+print("TELEFON REHBERİ")
+print("="*40)
+
+if islem == "ara":
+    if isim in rehber:
+        print(f"✓ {isim}: {rehber[isim]}")
+    else:
+        print(f"✗ {isim} bulunamadı")
+
+elif islem == "ekle":
+    telefon = "0535-999-0000"  # input("Telefon: ")
+    rehber[isim] = telefon
+    print(f"✓ {isim} eklendi")
+
+elif islem == "sil":
+    if isim in rehber:
+        del rehber[isim]
+        print(f"✓ {isim} silindi")
+    else:
+        print(f"✗ {isim} bulunamadı")
+
+print(f"\nRehberde {len(rehber)} kişi var")
+print("\nTüm Kişiler:")
+for ad, tel in rehber.items():
+    print(f"  {ad}: {tel}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('e12','o12')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('e12','o12')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="o12"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FONKSİYONLAR -->
+            <div id="functions" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">3</div>
+                        <div class="lesson-title">
+                            <h2>Fonksiyonlar ve Lambda</h2>
+                            <span class="subtitle">Tekrar kullanılabilir kod blokları</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block"> <div class="code-example"> <pre> # Temel fonksiyon def selamla(isim): return f"Merhaba {isim}!"
+Çoklu parametre ve varsayılan değerler
+
+def hesapla(a, b, islem="+"):
+if islem == "+":
+return a + b
+elif islem == "-":
+return a - b
+elif islem == "*":
+return a * b
+elif islem == "/":
+return a / b if b != 0 else "Hata: Sıfıra bölme"
+*args ve **kwargs kullanımı
+
+def topla_hepsi(*sayilar):
+"""
+*args olarak da bilinen *sayilar, fonksiyona
+değişken sayıda pozisyonel (sıralı) argüman gönderilmesine olanak sağlar.
+Fonksiyon içerisine gelen tüm bu argümanlar bir tuple (demet) içinde toplanır.
+Örneğin, fonksiyon topla_hepsi(1, 2, 3) olarak çağrıldığında,
+sayilar = (1, 2, 3) şeklinde olur.
+Bu sayede fonksiyon kaç argüman gelirse hepsini esnek bir şekilde işleyebilir.
+"""
+return sum(sayilar)
+
+def bilgi_goster(**kwargs):
+"""
+**kwargs olarak da bilinen **kwargs, fonksiyona
+değişken sayıda anahtar-değer çiftinden oluşan argümanlar gönderilmesine imkan tanır.
+Fonksiyon içi bu argümanlar bir dictionary (sözlük) içinde tutulur.
+Örneğin, bilgi_goster(ad="Ali", yas=30) olarak çağrıldığında,
+kwargs = {"ad": "Ali", "yas": 30} olur.
+Böylece fonksiyon, isimlendirilmiş parametrelerin sayısı ve isimleri önceden bilinmeden kullanılabilir.
+"""
+for k, v in kwargs.items():
+print(f"{k}: {v}")
+Lambda fonksiyonları (anonim fonksiyonlar)
+
+kare = lambda x: x ** 2 # Verilen sayının karesini döndürür
+ciftmi = lambda x: x % 2 == 0 # Sayının çift olup olmadığını kontrol eder
+
+sayilar =
+
+​
+kareler = list(map(lambda x: x**2, sayilar)) # Sayıların karelerini hesaplar
+ciftler = list(filter(lambda x: x%2==0, sayilar)) # Çift sayıları seçer
+
+print(f"Kareler: {kareler}")
+print(f"Çift sayılar: {ciftler}")
+</pre>
+</div>
+</div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Matematiksel Fonksiyonlar</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor8"># Matematiksel fonksiyonlar kütüphanesi
+
+def faktoriyel(n):
+    """n! hesapla"""
+    if n <= 1:
+        return 1
+    return n * faktoriyel(n - 1)
+
+def fibonacci(n):
+    """n. Fibonacci sayısını döndür"""
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+def asal_mi(sayi):
+    """Sayının asal olup olmadığını kontrol et"""
+    if sayi < 2:
+        return False
+    for i in range(2, int(sayi**0.5) + 1):
+        if sayi % i == 0:
+            return False
+    return True
+
+def ebob(a, b):
+    """İki sayının EBOB'unu bul"""
+    while b:
+        a, b = b, a % b
+    return a
+
+# Test
+print(f"5! = {faktoriyel(5)}")
+print(f"10. Fibonacci: {fibonacci(10)}")
+print(f"17 asal mı? {asal_mi(17)}")
+print(f"EBOB(48, 18) = {ebob(48, 18)}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor8', 'output8')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor8', 'output8')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output8">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+                    
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 1: Matematik Fonksiyonları "Faktoriyel"</h3>
+                            <span class="difficulty-badge easy">Kolay</span>
+                        </div>
+                        <textarea class="code-input" id="editor9">def topla(a, b):
+    return a + b
+
+def carp(a, b):
+    return a * b
+
+def faktoriyel(n):
+    if n <= 1:
+        return 1
+    return n * faktoriyel(n - 1)
+
+print("MATEMATİK FONKSİYONLARI")
+print("=" * 40)
+print(f"10 + 5 = {topla(10, 5)}")
+print(f"10 × 5 = {carp(10, 5)}")
+print(f"5! = {faktoriyel(5)}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor9', 'output9')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor9', 'output9')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output9"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 2: *args ve **kwargs "Profil Bilgileri"</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor10">def istatistik(*sayilar):
+    if not sayilar:
+        return "Veri yok"
+    return {
+        'toplam': sum(sayilar),
+        'ortalama': sum(sayilar) / len(sayilar),
+        'min': min(sayilar),
+        'max': max(sayilar)
+    }
+
+def profil(**bilgiler):
+    print("\nPROFİL BİLGİLERİ:")
+    for anahtar, deger in bilgiler.items():
+        print(f"  {anahtar.title()}: {deger}")
+
+# Test
+sonuc = istatistik(85, 92, 78, 90, 88)
+for k, v in sonuc.items():
+    print(f"{k}: {v}")
+
+profil(ad="Ahmet", yas=25, sehir="İstanbul", meslek="Yazılımcı")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor10', 'output10')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor10', 'output10')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output10"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 3: Higher Order Functions</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor11">def uygula(fonk, liste):
+    return [fonk(x) for x in liste]
+
+def filtrele(kosul, liste):
+    return [x for x in liste if kosul(x)]
+
+# Fonksiyon fabrikası
+def carpan_olustur(n):
+    def carp(x):
+        return x * n
+    return carp
+
+sayilar = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+kareler = uygula(lambda x: x**2, sayilar)
+ciftler = filtrele(lambda x: x % 2 == 0, sayilar)
+
+print(f"Kareler: {kareler}")
+print(f"Çiftler: {ciftler}")
+
+uc_kati = carpan_olustur(3)
+print(f"5'in 3 katı: {uc_kati(5)}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor11', 'output11')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor11', 'output11')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output11"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 4: Decorator Sistemi</h3>
+                            <span class="difficulty-badge expert">Uzman</span>
+                        </div>
+                        <textarea class="code-input" id="editor12">import time
+
+def zamanlayici(func):
+    def wrapper(*args, **kwargs):
+        baslangic = time.time()
+        sonuc = func(*args, **kwargs)
+        bitis = time.time()
+        print(f"⏱ {func.__name__}: {bitis-baslangic:.4f}s")
+        return sonuc
+    return wrapper
+
+def onbellek(func):
+    cache = {}
+    def wrapper(*args):
+        if args in cache:
+            print(f"💾 Önbellekten: {args}")
+            return cache[args]
+        sonuc = func(*args)
+        cache[args] = sonuc
+        return sonuc
+    return wrapper
+
+@zamanlayici
+def yavas_toplama(n):
+    return sum(range(n))
+
+@onbellek
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+print(yavas_toplama(100000))
+print(f"\nFib(10): {fibonacci(10)}")
+print(f"Fib(10): {fibonacci(10)}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor12', 'output12')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor12', 'output12')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output12"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- OOP -->
+            <div id="oop" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">4</div>
+                        <div class="lesson-title">
+                            <h2>Nesne Yönelimli Programlama (OOP)</h2>
+                            <span class="subtitle">Sınıflar, kalıtım, encapsulation, polymorphism</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="code-example">
+<pre># Temel sınıf tanımlama
+class Araba:
+    def __init__(self, marka, model, yil):
+        self.marka = marka
+        self.model = model
+        self.yil = yil
+        self.km = 0
+    
+    def bilgi(self):
+        return f"{self.yil} {self.marka} {self.model}"
+    
+    def km_ekle(self, mesafe):
+        self.km += mesafe
+
+# Kalıtım (Inheritance)
+class ElektrikliAraba(Araba):
+    def __init__(self, marka, model, yil, batarya_kapasitesi):
+        super().__init__(marka, model, yil)
+        self.batarya = batarya_kapasitesi
+        self.sarj_seviyesi = 100
+    
+    def sarj_et(self, miktar):
+        self.sarj_seviyesi = min(100, self.sarj_seviyesi + miktar)
+        return f"Şarj seviyesi: %{self.sarj_seviyesi}"
+    
+    def bilgi(self):  # Method overriding
+        return f"{super().bilgi()} (Elektrikli - {self.batarya}kWh)"
+
+# Kullanım
+tesla = ElektrikliAraba("Tesla", "Model 3", 2023, 75)
+print(tesla.bilgi())
+print(tesla.sarj_et(20))</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Kütüphane Sistemi</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor4">class Kutuphane:
+    def __init__(self, isim):
+        self.isim = isim
+        self.kitaplar = {}  # Kitap adı: adet
+        self.odunc_listesi = []
+
+    def kitap_ekle(self, kitap_adi, adet=1):
+        if adet > 0:
+            self.kitaplar[kitap_adi] = self.kitaplar.get(kitap_adi, 0) + adet
+            return f"✓ {kitap_adi} kitabından {adet} adet eklendi."
+        return "✗ Geçersiz adet"
+
+    def kitap_odunc_ver(self, kitap_adi, kisi):
+        if self.kitaplar.get(kitap_adi, 0) > 0:
+            self.kitaplar[kitap_adi] -= 1
+            self.odunc_listesi.append((kitap_adi, kisi))
+            return f"✓ {kitap_adi} kitabı {kisi} adlı kişiye ödünç verildi."
+        return "✗ Kitap stokta yok"
+
+    def stok_goster(self):
+        return f"Mevcut stok: {self.kitaplar}"
+
+    def odunc_ozet(self):
+        print(f"\n{'='*40}")
+        print(f"{self.isim} Kütüphanesi Ödünç Kitaplar")
+        for kitap, kisi in self.odunc_listesi[-5:]:
+            print(f"  - {kitap} (Ödünç alan: {kisi})")
+        print('='*40)
+
+
+# Test
+kutuphane = Kutuphane("Merkez")
+print(kutuphane.kitap_ekle("Suç ve Ceza", 3))
+print(kutuphane.kitap_ekle("Sefiller", 2))
+print(kutuphane.kitap_odunc_ver("Suç ve Ceza", "Ahmet"))
+print(kutuphane.kitap_odunc_ver("Sefiller", "Mehmet"))
+print(kutuphane.stok_goster())
+kutuphane.odunc_ozet()
+
+</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor4', 'output4')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor4', 'output4')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output4">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- OOP ÖRNEK 1 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 1: Temel - Araç Sınıfı</h3>
+                            <span class="difficulty-badge easy">Kolay</span>
+                        </div>
+                        <textarea class="code-input" id="editor-o1">class Araba:
+    def __init__(self, marka, model, yil):
+        self.marka = marka
+        self.model = model
+        self.yil = yil
+        self.km = 0
+    
+    def bilgi_goster(self):
+        return f"{self.yil} {self.marka} {self.model} - {self.km} km"
+    
+    def surum_yap(self, mesafe):
+        self.km += mesafe
+        print(f"{mesafe} km yol yapıldı. Toplam: {self.km} km")
+
+# Araç oluştur
+araba1 = Araba("Toyota", "Corolla", 2020)
+araba2 = Araba("BMW", "320i", 2022)
+
+print(araba1.bilgi_goster())
+araba1.surum_yap(100)
+araba1.surum_yap(50)
+
+print("\n" + araba2.bilgi_goster())
+araba2.surum_yap(200)</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-o1', 'output-o1')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-o1', 'output-o1')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-o1"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- OOP ÖRNEK 2 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 2: Orta - Banka Hesabı (Encapsulation)</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor-o2">class BankaHesabi:
+    def __init__(self, sahip, bakiye=0):
+        self.sahip = sahip
+        self.__bakiye = bakiye  # Private
+        self.islem_gecmisi = []
+    
+    def para_yatir(self, miktar):
+        if miktar > 0:
+            self.__bakiye += miktar
+            self.islem_gecmisi.append(f"+{miktar} TL")
+            return f"✓ {miktar} TL yatırıldı"
+        return "✗ Geçersiz miktar"
+    
+    def para_cek(self, miktar):
+        if 0 < miktar <= self.__bakiye:
+            self.__bakiye -= miktar
+            self.islem_gecmisi.append(f"-{miktar} TL")
+            return f"✓ {miktar} TL çekildi"
+        return "✗ Yetersiz bakiye"
+    
+    def bakiye_goster(self):
+        return f"Bakiye: {self.__bakiye} TL"
+    
+    def ozet(self):
+        print(f"\n{'='*40}")
+        print(f"Hesap Sahibi: {self.sahip}")
+        print(f"Güncel Bakiye: {self.__bakiye} TL")
+        print(f"\nSon 5 İşlem:")
+        for islem in self.islem_gecmisi[-5:]:
+            print(f"  {islem}")
+        print('='*40)
+
+# Test
+hesap = BankaHesapi("Ahmet Yılmaz", 1000)
+print(hesap.para_yatir(500))
+print(hesap.para_cek(200))
+print(hesap.para_yatir(1000))
+print(hesap.para_cek(300))
+print(hesap.bakiye_goster())
+hesap.ozet()</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-o2', 'output-o2')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-o2', 'output-o2')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-o2"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- OOP ÖRNEK 3 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 3: İleri - Kalıtım ve Polymorphism</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor-o3">class Calisan:
+    def __init__(self, ad, maas):
+        self.ad = ad
+        self.maas = maas
+    
+    def bilgi(self):
+        return f"{self.ad} - {self.maas} TL"
+    
+    def yillik_maas(self):
+        return self.maas * 12
+
+class Yazilimci(Calisan):
+    def __init__(self, ad, maas, diller):
+        super().__init__(ad, maas)
+        self.diller = diller
+    
+    def bilgi(self):  # Method overriding
+        return f"{super().bilgi()} - Diller: {', '.join(self.diller)}"
+    
+    def yillik_maas(self):  # Bonus ile
+        return super().yillik_maas() + 10000  # 10k bonus
+
+class Mudur(Calisan):
+    def __init__(self, ad, maas, departman):
+        super().__init__(ad, maas)
+        self.departman = departman
+        self.ekip = []
+    
+    def ekip_ekle(self, calisan):
+        self.ekip.append(calisan)
+    
+    def bilgi(self):
+        return f"{super().bilgi()} - Departman: {self.departman}"
+    
+    def yillik_maas(self):  # Yönetim primi
+        return super().yillik_maas() * 1.2
+
+# Test - Polymorphism
+calisanlar = [
+    Yazilimci("Ahmet", 15000, ["Python", "JavaScript"]),
+    Yazilimci("Ayşe", 18000, ["Java", "C++"]),
+    Mudur("Mehmet", 25000, "Yazılım"),
+    Calisan("Zeynep", 10000)
+]
+
+print("ÇALIŞAN LİSTESİ")
+print("="*60)
+for calisan in calisanlar:
+    print(f"\n{calisan.bilgi()}")
+    print(f"Yıllık: {calisan.yillik_maas():,} TL")
+    print(f"Tip: {type(calisan).__name__}")
+
+# Toplam maliyet
+toplam = sum(c.yillik_maas() for c in calisanlar)
+print(f"\n{'='*60}")
+print(f"Toplam Yıllık Maliyet: {toplam:,} TL")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-o3', 'output-o3')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-o3', 'output-o3')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-o3"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- OOP ÖRNEK 4 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 4: Uzman - Tam OOP Sistemi</h3>
+                            <span class="difficulty-badge expert">Uzman</span>
+                        </div>
+                        <textarea class="code-input" id="editor-o4">class Urun:
+    urun_sayisi = 0
+    
+    def __init__(self, ad, fiyat, stok):
+        self.ad = ad
+        self._fiyat = fiyat
+        self._stok = stok
+        Urun.urun_sayisi += 1
+    
+    @property
+    def fiyat(self):
+        return self._fiyat
+    
+    @fiyat.setter
+    def fiyat(self, yeni_fiyat):
+        if yeni_fiyat > 0:
+            self._fiyat = yeni_fiyat
+    
+    def stok_azalt(self, miktar):
+        if miktar <= self._stok:
+            self._stok -= miktar
+            return True
+        return False
+    
+    def __str__(self):
+        return f"{self.ad} - {self._fiyat} TL (Stok: {self._stok})"
+
+class Sepet:
+    def __init__(self):
+        self.urunler = {}
+    
+    def urun_ekle(self, urun, adet=1):
+        if urun.stok_azalt(adet):
+            if urun.ad in self.urunler:
+                self.urunler[urun.ad]['adet'] += adet
+            else:
+                self.urunler[urun.ad] = {
+                    'urun': urun,
+                    'adet': adet
+                }
+            return f"✓ {adet}x {urun.ad} sepete eklendi"
+        return f"✗ Yetersiz stok"
+    
+    def toplam_tutar(self):
+        return sum(item['urun'].fiyat * item['adet'] 
+                  for item in self.urunler.values())
+    
+    def goster(self):
+        print("\n📦 SEPET İÇERİĞİ")
+        print("="*50)
+        if not self.urunler:
+            print("Sepet boş")
+        else:
+            for ad, item in self.urunler.items():
+                urun = item['urun']
+                adet = item['adet']
+                tutar = urun.fiyat * adet
+                print(f"{adet}x {ad} - {urun.fiyat} TL = {tutar} TL")
+            print("="*50)
+            print(f"TOPLAM: {self.toplam_tutar()} TL")
+
+# E-Ticaret Simülasyonu
+print("E-TİCARET SİSTEMİ\n")
+
+# Ürünler oluştur
+laptop = Urun("Laptop", 15000, 5)
+mouse = Urun("Mouse", 250, 20)
+klavye = Urun("Klavye", 500, 15)
+
+print("MEVCUT ÜRÜNLER:")
+print(laptop)
+print(mouse)
+print(klavye)
+
+# Alışveriş yap
+sepet = Sepet()
+print(f"\n{sepet.urun_ekle(laptop, 1)}")
+print(sepet.urun_ekle(mouse, 2))
+print(sepet.urun_ekle(klavye, 1))
+
+# Sepeti göster
+sepet.goster()
+
+# Fiyat güncelle ve tekrar göster
+laptop.fiyat = 14000
+print("\n💰 Laptop fiyatı güncellendi!")
+sepet.goster()
+
+print(f"\n📊 Toplam Ürün Çeşidi: {Urun.urun_sayisi}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-o4', 'output-o4')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-o4', 'output-o4')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-o4"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+            </div>
+
+            <!-- DOSYA İŞLEMLERİ -->
+            <div id="file-ops" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">5</div>
+                        <div class="lesson-title">
+                            <h2>Dosya İşlemleri ve Veri Kalıcılığı</h2>
+                            <span class="subtitle">Dosya okuma/yazma, JSON, CSV işlemleri</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3>Dosya İşlemleri Simülasyonu</h3>
+                        <div class="code-example">
+<pre># Dosya işlemleri simülasyonu (bellekte)
+class DosyaSistemi:
+    def __init__(self):
+        self.dosyalar = {}
+    
+    def yaz(self, dosya_adi, icerik):
+        self.dosyalar[dosya_adi] = icerik
+        return f"{dosya_adi} yazıldı"
+    
+    def oku(self, dosya_adi):
+        return self.dosyalar.get(dosya_adi, "Dosya bulunamadı")
+    
+    def listele(self):
+        return list(self.dosyalar.keys())
+
+# JSON işlemleri
+import json
+
+veri = {
+    "isim": "Ahmet",
+    "yas": 25,
+    "sehir": "İstanbul",
+    "hobiler": ["kitap", "müzik", "spor"]
+}
+
+# JSON'a çevir
+json_str = json.dumps(veri, indent=2, ensure_ascii=False)
+print("JSON formatı:")
+print(json_str)
+
+# JSON'dan oku
+geri_veri = json.loads(json_str)
+print(f"\nİsim: {geri_veri['isim']}")</pre>
+                        </div>
+
+                        <h3>CSV İşlemleri</h3>
+                        <div class="code-example">
+<pre># CSV benzeri veri işleme
+class CSVIsleyici:
+    def __init__(self):
+        self.veriler = []
+        self.basliklar = []
+    
+    def veri_ekle(self, basliklar, satirlar):
+        self.basliklar = basliklar
+        self.veriler = satirlar
+    
+    def goster(self):
+        # Başlıkları yazdır
+        print(" | ".join(self.basliklar))
+        print("-" * 50)
+        # Verileri yazdır
+        for satir in self.veriler:
+            print(" | ".join(str(v) for v in satir))
+    
+    def filtrele(self, kolon_index, deger):
+        return [s for s in self.veriler if s[kolon_index] == deger]
+
+# Kullanım
+csv = CSVIsleyici()
+csv.veri_ekle(
+    ["İsim", "Yaş", "Şehir"],
+    [
+        ["Ahmet", 25, "İstanbul"],
+        ["Ayşe", 30, "Ankara"],
+        ["Mehmet", 25, "İzmir"]
+    ]
+)
+csv.goster()</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Telefon Rehberi</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor5">import json
+
+class TelefonRehberi:
+    def __init__(self):
+        self.rehber = {}
+    
+    def kisi_ekle(self, isim, telefon, email=""):
+        self.rehber[isim] = {
+            "telefon": telefon,
+            "email": email
+        }
+        return f"{isim} eklendi"
+    
+    def kisi_bul(self, isim):
+        if isim in self.rehber:
+            return self.rehber[isim]
+        return "Kişi bulunamadı"
+    
+    def kisi_sil(self, isim):
+        if isim in self.rehber:
+            del self.rehber[isim]
+            return f"{isim} silindi"
+        return "Kişi bulunamadı"
+    
+    def tum_kisiler(self):
+        print("\nREHBER:")
+        print("=" * 50)
+        for isim, bilgi in self.rehber.items():
+            print(f"{isim}:")
+            print(f"  Tel: {bilgi['telefon']}")
+            if bilgi['email']:
+                print(f"  Email: {bilgi['email']}")
+    
+    def json_kaydet(self):
+        return json.dumps(self.rehber, indent=2, ensure_ascii=False)
+    
+    def json_yukle(self, json_str):
+        self.rehber = json.loads(json_str)
+
+# Test
+rehber = TelefonRehberi()
+rehber.kisi_ekle("Ahmet Yılmaz", "0532-111-2233", "ahmet@mail.com")
+rehber.kisi_ekle("Ayşe Demir", "0533-444-5566")
+rehber.kisi_ekle("Mehmet Kaya", "0534-777-8899", "mehmet@mail.com")
+
+rehber.tum_kisiler()
+
+# JSON kaydet
+json_veri = rehber.json_kaydet()
+print("\n\nJSON Format:")
+print(json_veri)</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor5', 'output5')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor5', 'output5')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output5">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+
+
+                    <!-- DOSYA ÖRNEK 1 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 1: Temel - JSON Veri Yönetimi</h3>
+                            <span class="difficulty-badge easy">Kolay</span>
+                        </div>
+                        <textarea class="code-input" id="editor-f1">import json
+
+# Veri oluştur
+kisi = {
+    "ad": "Ahmet",
+    "soyad": "Yılmaz",
+    "yas": 25,
+    "sehir": "İstanbul",
+    "hobiler": ["kitap okuma", "yüzme", "kod yazma"]
+}
+
+# JSON'a çevir
+json_str = json.dumps(kisi, indent=2, ensure_ascii=False)
+
+print("JSON FORMATINDA VERİ:")
+print("="*40)
+print(json_str)
+
+# JSON'dan geri oku
+veri = json.loads(json_str)
+
+print("\n\nVERİ ERİŞİMİ:")
+print("="*40)
+print(f"Ad Soyad: {veri['ad']} {veri['soyad']}")
+print(f"Yaş: {veri['yas']}")
+print(f"Şehir: {veri['sehir']}")
+print(f"\nHobiler:")
+for hobi in veri['hobiler']:
+    print(f"  • {hobi}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-f1', 'output-f1')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-f1', 'output-f1')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-f1"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- DOSYA ÖRNEK 2 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 2: Orta - CSV İşleme</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor-f2"># CSV benzeri veri işleme
+class CSVYoneticisi:
+    def __init__(self):
+        self.veri = []
+        self.basliklar = []
+    
+    def veri_yukle(self, basliklar, satirlar):
+        self.basliklar = basliklar
+        self.veri = satirlar
+    
+    def goster(self):
+        # Başlıkları yazdır
+        sutun_genislikleri = [max(len(str(b)), 10) for b in self.basliklar]
+        
+        print("\n" + "="*60)
+        for i, baslik in enumerate(self.basliklar):
+            print(f"{baslik:<{sutun_genislikleri[i]}}", end=" | ")
+        print()
+        print("-"*60)
+        
+        # Verileri yazdır
+        for satir in self.veri:
+            for i, deger in enumerate(satir):
+                print(f"{str(deger):<{sutun_genislikleri[i]}}", end=" | ")
+            print()
+        print("="*60)
+    
+    def filtrele(self, sutun, kosul):
+        sutun_idx = self.basliklar.index(sutun)
+        return [s for s in self.veri if kosul(s[sutun_idx])]
+    
+    def ortalama(self, sutun):
+        sutun_idx = self.basliklar.index(sutun)
+        degerler = [s[sutun_idx] for s in self.veri]
+        return sum(degerler) / len(degerler)
+
+# Öğrenci verileri
+csv = CSVYoneticisi()
+csv.veri_yukle(
+    ["Ad", "Soyad", "Yaş", "Not", "Şehir"],
+    [
+        ["Ahmet", "Yılmaz", 20, 85, "İstanbul"],
+        ["Ayşe", "Demir", 21, 92, "Ankara"],
+        ["Mehmet", "Kaya", 22, 78, "İzmir"],
+        ["Zeynep", "Şahin", 20, 88, "İstanbul"],
+        ["Can", "Öztürk", 21, 95, "Ankara"]
+    ]
+)
+
+csv.goster()
+
+# Filtreleme
+print("\n80+ ALANLAR:")
+yuksek_notlar = csv.filtrele("Not", lambda x: x >= 80)
+for ogrenci in yuksek_notlar:
+    print(f"  {ogrenci[0]} {ogrenci[1]}: {ogrenci[3]}")
+
+# İstatistik
+ort = csv.ortalama("Not")
+print(f"\nOrtalama Not: {ort:.2f}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-f2', 'output-f2')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-f2', 'output-f2')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-f2"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- DOSYA ÖRNEK 3 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 3: İleri - Veri Tabanı Simülasyonu</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor-f3">import json
+
+class VeriTabani:
+    def __init__(self):
+        self.tablolar = {}
+    
+    def tablo_olustur(self, tablo_adi, sutunlar):
+        self.tablolar[tablo_adi] = {
+            'sutunlar': sutunlar,
+            'veriler': []
+        }
+        return f"✓ '{tablo_adi}' tablosu oluşturuldu"
+    
+    def ekle(self, tablo_adi, veri):
+        if tablo_adi in self.tablolar:
+            self.tablolar[tablo_adi]['veriler'].append(veri)
+            return f"✓ Veri eklendi"
+        return f"✗ Tablo bulunamadı"
+    
+    def sorgula(self, tablo_adi, kosul=None):
+        if tablo_adi not in self.tablolar:
+            return []
+        
+        veriler = self.tablolar[tablo_adi]['veriler']
+        
+        if kosul is None:
+            return veriler
+        
+        return [v for v in veriler if kosul(v)]
+    
+    def guncelle(self, tablo_adi, kosul, yeni_degerler):
+        if tablo_adi not in self.tablolar:
+            return 0
+        
+        sayac = 0
+        for veri in self.tablolar[tablo_adi]['veriler']:
+            if kosul(veri):
+                veri.update(yeni_degerler)
+                sayac += 1
+        
+        return sayac
+    
+    def sil(self, tablo_adi, kosul):
+        if tablo_adi not in self.tablolar:
+            return 0
+        
+        onceki = len(self.tablolar[tablo_adi]['veriler'])
+        self.tablolar[tablo_adi]['veriler'] = [
+            v for v in self.tablolar[tablo_adi]['veriler'] 
+            if not kosul(v)
+        ]
+        return onceki - len(self.tablolar[tablo_adi]['veriler'])
+    
+    def json_export(self):
+        return json.dumps(self.tablolar, indent=2, ensure_ascii=False)
+
+# Veritabanı oluştur
+db = VeriTabani()
+
+# Tablo oluştur
+print(db.tablo_olustur('kullanicilar', ['id', 'ad', 'email', 'yas']))
+
+# Veri ekle
+db.ekle('kullanicilar', {'id': 1, 'ad': 'Ahmet', 'email': 'ahmet@mail.com', 'yas': 25})
+db.ekle('kullanicilar', {'id': 2, 'ad': 'Ayşe', 'email': 'ayse@mail.com', 'yas': 30})
+db.ekle('kullanicilar', {'id': 3, 'ad': 'Mehmet', 'email': 'mehmet@mail.com', 'yas': 28})
+
+# Sorgula
+print("\nTÜM KULLANICILAR:")
+for kullanici in db.sorgula('kullanicilar'):
+    print(f"  {kullanici['id']}. {kullanici['ad']} ({kullanici['yas']}) - {kullanici['email']}")
+
+# Filtreleme
+print("\n25+ YAŞ:")
+buyukler = db.sorgula('kullanicilar', lambda k: k['yas'] >= 25)
+for k in buyukler:
+    print(f"  {k['ad']}: {k['yas']} yaş")
+
+# Güncelleme
+guncellenen = db.guncelle('kullanicilar', 
+                          lambda k: k['id'] == 2, 
+                          {'yas': 31})
+print(f"\n✓ {guncellenen} kayıt güncellendi")
+
+# JSON export
+print("\nJSON EXPORT:")
+print(db.json_export())</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-f3', 'output-f3')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-f3', 'output-f3')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-f3"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- DOSYA ÖRNEK 4 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 4: Uzman - Log Sistemi</h3>
+                            <span class="difficulty-badge expert">Uzman</span>
+                        </div>
+                        <textarea class="code-input" id="editor-f4">from datetime import datetime
+import json
+
+class LogYoneticisi:
+    SEVIYELER = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
+    
+    def __init__(self, uygulama_adi):
+        self.uygulama_adi = uygulama_adi
+        self.loglar = []
+        self.istatistikler = {seviye: 0 for seviye in self.SEVIYELER}
+    
+    def log(self, seviye, mesaj, ekstra=None):
+        if seviye not in self.SEVIYELER:
+            seviye = 'INFO'
+        
+        log_entry = {
+            'zaman': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'seviye': seviye,
+            'uygulama': self.uygulama_adi,
+            'mesaj': mesaj
+        }
+        
+        if ekstra:
+            log_entry['ekstra'] = ekstra
+        
+        self.loglar.append(log_entry)
+        self.istatistikler[seviye] += 1
+        
+        return self._format_log(log_entry)
+    
+    def _format_log(self, entry):
+        emoji = {
+            'DEBUG': '🔍',
+            'INFO': 'ℹ️',
+            'WARNING': '⚠️',
+            'ERROR': '❌',
+            'CRITICAL': '🔥'
+        }
+        
+        return f"{emoji[entry['seviye']]} [{entry['zaman']}] {entry['seviye']}: {entry['mesaj']}"
+    
+    def filtrele(self, seviye=None, baslangic=None, bitis=None):
+        sonuc = self.loglar
+        
+        if seviye:
+            sonuc = [l for l in sonuc if l['seviye'] == seviye]
+        
+        return sonuc
+    
+    def rapor(self):
+        print("\n" + "="*60)
+        print(f"LOG RAPORU - {self.uygulama_adi}")
+        print("="*60)
+        print(f"Toplam Log: {len(self.loglar)}")
+        print("\nSeviye Dağılımı:")
+        for seviye, adet in self.istatistikler.items():
+            if adet > 0:
+                bar = "█" * adet
+                print(f"  {seviye:10} {bar} {adet}")
+        
+        print("\nSon 5 Log:")
+        for log in self.loglar[-5:]:
+            print(f"  {self._format_log(log)}")
+        print("="*60)
+    
+    def export_json(self):
+        return json.dumps({
+            'uygulama': self.uygulama_adi,
+            'toplam_log': len(self.loglar),
+            'istatistikler': self.istatistikler,
+            'loglar': self.loglar
+        }, indent=2, ensure_ascii=False)
+
+# Sistem simülasyonu
+logger = LogYoneticisi("E-Ticaret Sistemi")
+
+# Farklı seviyede loglar
+print(logger.log('INFO', 'Sistem başlatıldı'))
+print(logger.log('DEBUG', 'Veritabanı bağlantısı kontrol ediliyor'))
+print(logger.log('INFO', 'Veritabanına bağlanıldı'))
+print(logger.log('INFO', 'Kullanıcı girişi yapıldı', {'user_id': 1234}))
+print(logger.log('WARNING', 'Düşük stok uyarısı', {'urun': 'Laptop', 'stok': 2}))
+print(logger.log('ERROR', 'Ödeme işlemi başarısız', {'hata_kodu': 'CC_001'}))
+print(logger.log('INFO', 'Sipariş oluşturuldu', {'siparis_no': 'ORD-123'}))
+print(logger.log('CRITICAL', 'Kritik hata: Sunucu yanıt vermiyor'))
+print(logger.log('INFO', 'Sistem kapatılıyor'))
+
+# Rapor
+logger.rapor()
+
+# Sadece hatalar
+print("\n\n❌ SADECE HATALAR:")
+hatalar = logger.filtrele(seviye='ERROR')
+for hata in hatalar:
+    print(f"  {logger._format_log(hata)}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-f4', 'output-f4')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-f4', 'output-f4')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-f4"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- HATA YÖNETİMİ -->
+            <div id="errors" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">6</div>
+                        <div class="lesson-title">
+                            <h2>Hata Yönetimi (Exception Handling)</h2>
+                            <span class="subtitle">try-except-finally, özel hatalar</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="code-example">
+<pre># Temel try-except
+try:
+    sayi = int(input("Bir sayı girin: "))
+    sonuc = 100 / sayi
+    print(f"Sonuç: {sonuc}")
+except ValueError:
+    print("Hata: Geçerli bir sayı girin")
+except ZeroDivisionError:
+    print("Hata: Sıfıra bölme yapılamaz")
+except Exception as e:
+    print(f"Beklenmeyen hata: {e}")
+finally:
+    print("İşlem tamamlandı")
+
+# Özel hata sınıfı
+class YetersizBakiyeHatasi(Exception):
+    def __init__(self, bakiye, miktar):
+        self.bakiye = bakiye
+        self.miktar = miktar
+        super().__init__(f"Yetersiz bakiye: {bakiye} TL (İhtiyaç: {miktar} TL)")
+
+class Hesap:
+    def __init__(self, bakiye):
+        self.bakiye = bakiye
+    
+    def para_cek(self, miktar):
+        if miktar > self.bakiye:
+            raise YetersizBakiyeHatasi(self.bakiye, miktar)
+        self.bakiye -= miktar
+        return f"Çekilen: {miktar} TL"
+
+# Kullanım
+hesap = Hesap(1000)
+try:
+    print(hesap.para_cek(500))
+    print(hesap.para_cek(600))  # Hata fırlatır
+except YetersizBakiyeHatasi as e:
+    print(f"HATA: {e}")</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Güvenli Hesap Makinesi</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor6">class HesapMakinesi:
+    def islem_yap(self, sayi1, sayi2, operator):
+        try:
+            if operator == "+":
+                return sayi1 + sayi2
+            elif operator == "-":
+                return sayi1 - sayi2
+            elif operator == "*":
+                return sayi1 * sayi2
+            elif operator == "/":
+                if sayi2 == 0:
+                    raise ZeroDivisionError("Sıfıra bölme hatası!")
+                return sayi1 / sayi2
+            elif operator == "**":
+                return sayi1 ** sayi2
+            elif operator == "%":
+                return sayi1 % sayi2
+            else:
+                raise ValueError(f"Geçersiz operatör: {operator}")
+        except ZeroDivisionError as e:
+            return f"HATA: {e}"
+        except ValueError as e:
+            return f"HATA: {e}"
+        except Exception as e:
+            return f"Beklenmeyen hata: {e}"
+
+# Test
+calc = HesapMakinesi()
+
+testler = [
+    (10, 5, "+"),
+    (10, 5, "-"),
+    (10, 5, "*"),
+    (10, 0, "/"),  # Hata verecek
+    (2, 8, "**"),
+    (10, 3, "%"),
+    (10, 5, "^"),  # Geçersiz operatör
+]
+
+print("HESAP MAKİNESİ TEST SONUÇLARI:")
+print("=" * 40)
+for s1, s2, op in testler:
+    sonuc = calc.islem_yap(s1, s2, op)
+    print(f"{s1} {op} {s2} = {sonuc}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor6', 'output6')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor6', 'output6')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output6">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+
+                    <!-- HATA ÖRNEK 1 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 1: Temel - Hata Yakalama</h3>
+                            <span class="difficulty-badge easy">Kolay</span>
+                        </div>
+                        <textarea class="code-input" id="editor-e1"># Temel hata yakalama
+
+def guvenli_bolme(a, b):
+    try:
+        sonuc = a / b
+        return f"Sonuç: {sonuc}"
+    except ZeroDivisionError:
+        return "HATA: Sıfıra bölme yapılamaz!"
+    except TypeError:
+        return "HATA: Geçersiz veri tipi!"
+
+def sayi_donustur(metin):
+    try:
+        sayi = int(metin)
+        return sayi
+    except ValueError:
+        return f"HATA: '{metin}' sayıya dönüştürülemedi"
+
+# Test
+print("BÖLME İŞLEMLERİ:")
+print(guvenli_bolme(10, 2))
+print(guvenli_bolme(10, 0))
+print(guvenli_bolme(10, "abc"))
+
+print("\n\nSAYI DÖNÜŞTÜRME:")
+print(sayi_donustur("42"))
+print(sayi_donustur("abc"))
+print(sayi_donustur("3.14"))
+
+# Liste erişimi
+def liste_eleman(liste, index):
+    try:
+        return liste[index]
+    except IndexError:
+        return f"HATA: Index {index} bulunamadı"
+    except TypeError:
+        return "HATA: Geçersiz index tipi"
+
+sayilar = [10, 20, 30, 40, 50]
+print("\n\nLİSTE ERİŞİMİ:")
+print(f"Index 2: {liste_eleman(sayilar, 2)}")
+print(f"Index 10: {liste_eleman(sayilar, 10)}")
+print(f"Index 'abc': {liste_eleman(sayilar, 'abc')}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-e1', 'output-e1')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-e1', 'output-e1')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-e1"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- HATA ÖRNEK 2 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 2: Orta - Özel Hata Sınıfları</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor-e2"># Özel hata sınıfları
+
+class YetersizBakiyeHatasi(Exception):
+    def __init__(self, bakiye, istenen):
+        self.bakiye = bakiye
+        self.istenen = istenen
+        super().__init__(
+            f"Yetersiz bakiye! Mevcut: {bakiye} TL, İstenen: {istenen} TL"
+        )
+
+class GecersizMiktarHatasi(Exception):
+    pass
+
+class Hesap:
+    def __init__(self, sahip, bakiye=0):
+        self.sahip = sahip
+        self.bakiye = bakiye
+    
+    def para_cek(self, miktar):
+        if miktar <= 0:
+            raise GecersizMiktarHatasi("Miktar pozitif olmalıdır!")
+        
+        if miktar > self.bakiye:
+            raise YetersizBakiyeHatasi(self.bakiye, miktar)
+        
+        self.bakiye -= miktar
+        return f"✓ {miktar} TL çekildi. Kalan: {self.bakiye} TL"
+    
+    def para_yatir(self, miktar):
+        if miktar <= 0:
+            raise GecersizMiktarHatasi("Miktar pozitif olmalıdır!")
+        
+        self.bakiye += miktar
+        return f"✓ {miktar} TL yatırıldı. Yeni bakiye: {self.bakiye} TL"
+
+# Test
+hesap = Hesap("Ahmet Yılmaz", 1000)
+
+islemler = [
+    ('cek', 500),
+    ('yatir', 300),
+    ('cek', 1000),  # Hata verecek
+    ('cek', -100),  # Hata verecek
+]
+
+print(f"Başlangıç Bakiyesi: {hesap.bakiye} TL\n")
+
+for islem, miktar in islemler:
+    try:
+        if islem == 'cek':
+            sonuc = hesap.para_cek(miktar)
+        else:
+            sonuc = hesap.para_yatir(miktar)
+        print(sonuc)
+    
+    except YetersizBakiyeHatasi as e:
+        print(f"❌ {e}")
+    except GecersizMiktarHatasi as e:
+        print(f"❌ {e}")
+    except Exception as e:
+        print(f"❌ Beklenmeyen hata: {e}")
+    
+    print(f"   Güncel bakiye: {hesap.bakiye} TL\n")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-e2', 'output-e2')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-e2', 'output-e2')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-e2"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- HATA ÖRNEK 3 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 3: İleri - Hata Loglama Sistemi</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor-e3">import traceback
+from datetime import datetime
+
+class HataLogger:
+    def __init__(self):
+        self.hata_log = []
+    
+    def hata_kaydet(self, hata, fonksiyon_adi, ekstra_bilgi=None):
+        kayit = {
+            'zaman': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'hata_tipi': type(hata).__name__,
+            'mesaj': str(hata),
+            'fonksiyon': fonksiyon_adi
+        }
+        
+        if ekstra_bilgi:
+            kayit['ekstra'] = ekstra_bilgi
+        
+        self.hata_log.append(kayit)
+        return kayit
+    
+    def rapor(self):
+        print("\n" + "="*60)
+        print("HATA RAPORU")
+        print("="*60)
+        print(f"Toplam Hata: {len(self.hata_log)}\n")
+        
+        for i, hata in enumerate(self.hata_log, 1):
+            print(f"{i}. [{hata['zaman']}] {hata['hata_tipi']}")
+            print(f"   Fonksiyon: {hata['fonksiyon']}")
+            print(f"   Mesaj: {hata['mesaj']}")
+            if 'ekstra' in hata:
+                print(f"   Ekstra: {hata['ekstra']}")
+            print()
+
+# Hata yakalama decorator'u
+logger = HataLogger()
+
+def hata_yakala(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            logger.hata_kaydet(
+                e, 
+                func.__name__,
+                {'args': args, 'kwargs': kwargs}
+            )
+            return f"❌ HATA: {e}"
+    return wrapper
+
+# Test fonksiyonları
+@hata_yakala
+def bolme(a, b):
+    return a / b
+
+@hata_yakala
+def liste_erisim(liste, index):
+    return liste[index]
+
+@hata_yakala
+def sozluk_erisim(sozluk, anahtar):
+    return sozluk[anahtar]
+
+# Test
+print("İŞLEM SONUÇLARI:\n")
+print(f"10 / 2 = {bolme(10, 2)}")
+print(f"10 / 0 = {bolme(10, 0)}")
+
+liste = [1, 2, 3]
+print(f"\nListe[1] = {liste_erisim(liste, 1)}")
+print(f"Liste[10] = {liste_erisim(liste, 10)}")
+
+sozluk = {'ad': 'Ahmet', 'yas': 25}
+print(f"\nSözlük['ad'] = {sozluk_erisim(sozluk, 'ad')}")
+print(f"Sözlük['email'] = {sozluk_erisim(sozluk, 'email')}")
+
+# Rapor
+logger.rapor()</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-e3', 'output-e3')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-e3', 'output-e3')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-e3"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- HATA ÖRNEK 4 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 4: Uzman - Kapsamlı Hata Yönetim Sistemi</h3>
+                            <span class="difficulty-badge expert">Uzman</span>
+                        </div>
+                        <textarea class="code-input" id="editor-e4"># Gelişmiş hata yönetim sistemi
+
+class HataKategorisi:
+    KRITIK = 'CRITICAL'
+    YUKSEK = 'HIGH'
+    ORTA = 'MEDIUM'
+    DUSUK = 'LOW'
+
+class UygulamaHatasi(Exception):
+    def __init__(self, mesaj, kategori=HataKategorisi.ORTA, kod=None):
+        self.mesaj = mesaj
+        self.kategori = kategori
+        self.kod = kod
+        super().__init__(self.mesaj)
+
+class HataYoneticisi:
+    def __init__(self):
+        self.hatalar = []
+        self.yeniden_deneme_sayisi = {}
+    
+    def hata_isle(self, fonksiyon, *args, **kwargs):
+        max_deneme = kwargs.pop('max_deneme', 3)
+        func_key = fonksiyon.__name__
+        
+        for deneme in range(max_deneme):
+            try:
+                sonuc = fonksiyon(*args, **kwargs)
+                # Başarılı
+                if func_key in self.yeniden_deneme_sayisi:
+                    del self.yeniden_deneme_sayisi[func_key]
+                return {
+                    'basarili': True,
+                    'sonuc': sonuc,
+                    'deneme': deneme + 1
+                }
+            
+            except UygulamaHatasi as e:
+                self.hatalar.append({
+                    'fonksiyon': func_key,
+                    'hata': e.mesaj,
+                    'kategori': e.kategori,
+                    'kod': e.kod,
+                    'deneme': deneme + 1
+                })
+                
+                if e.kategori == HataKategorisi.KRITIK:
+                    return {
+                        'basarili': False,
+                        'hata': e.mesaj,
+                        'kritik': True
+                    }
+                
+                if deneme < max_deneme - 1:
+                    self.yeniden_deneme_sayisi[func_key] = \
+                        self.yeniden_deneme_sayisi.get(func_key, 0) + 1
+                    continue
+            
+            except Exception as e:
+                return {
+                    'basarili': False,
+                    'hata': str(e),
+                    'beklenmeyen': True
+                }
+        
+        return {
+            'basarili': False,
+            'hata': 'Maksimum deneme sayısına ulaşıldı',
+            'deneme_sayisi': max_deneme
+        }
+    
+    def istatistikler(self):
+        print("\n" + "="*60)
+        print("HATA YÖNETİM İSTATİSTİKLERİ")
+        print("="*60)
+        print(f"Toplam Hata: {len(self.hatalar)}")
+        
+        # Kategoriye göre
+        kategoriler = {}
+        for hata in self.hatalar:
+            kat = hata['kategori']
+            kategoriler[kat] = kategoriler.get(kat, 0) + 1
+        
+        print("\nKategoriye Göre:")
+        for kat, sayi in kategoriler.items():
+            print(f"  {kat}: {sayi}")
+        
+        print(f"\nYeniden Deneme Yapılan Fonksiyonlar:")
+        for func, sayi in self.yeniden_deneme_sayisi.items():
+            print(f"  {func}: {sayi} kez")
+
+# Test fonksiyonları
+def veri_isle(deger):
+    if deger < 0:
+        raise UygulamaHatasi(
+            "Negatif değer kabul edilmez",
+            HataKategorisi.YUKSEK,
+            "ERR_001"
+        )
+    if deger > 100:
+        raise UygulamaHatasi(
+            "Değer çok büyük",
+            HataKategorisi.ORTA,
+            "ERR_002"
+        )
+    return deger * 2
+
+def kritik_islem(basarili):
+    if not basarili:
+        raise UygulamaHatasi(
+            "Kritik işlem başarısız",
+            HataKategorisi.KRITIK,
+            "ERR_CRIT"
+        )
+    return "Başarılı"
+
+# Test
+yonetici = HataYoneticisi()
+
+test_verileri = [50, -10, 150, 75, 200]
+
+print("VERİ İŞLEME SONUÇLARI:\n")
+for veri in test_verileri:
+    sonuc = yonetici.hata_isle(veri_isle, veri, max_deneme=2)
+    
+    if sonuc['basarili']:
+        print(f"✓ {veri} -> {sonuc['sonuc']} (Deneme: {sonuc['deneme']})")
+    else:
+        print(f"✗ {veri} -> {sonuc.get('hata', 'Bilinmeyen hata')}")
+
+# Kritik işlem
+print("\n\nKRİTİK İŞLEM:")
+sonuc = yonetici.hata_isle(kritik_islem, False)
+print(f"Sonuç: {sonuc}")
+
+# İstatistikler
+yonetici.istatistikler()</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-e4', 'output-e4')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-e4', 'output-e4')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-e4"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- İLERİ PYTHON -->
+            <div id="advanced" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">7</div>
+                        <div class="lesson-title">
+                            <h2>İleri Python Konuları</h2>
+                            <span class="subtitle">Decorators, Generators, Context Managers</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3>Decorators (Süsleyiciler)</h3>
+                        <div class="code-example">
+<pre># Basit decorator
+def zamanlayici(func):
+    import time
+    def wrapper(*args, **kwargs):
+        baslangic = time.time()
+        sonuc = func(*args, **kwargs)
+        bitis = time.time()
+        print(f"{func.__name__} çalışma süresi: {bitis-baslangic:.4f} saniye")
+        return sonuc
+    return wrapper
+
+@zamanlayici
+def yavas_fonksiyon():
+    toplam = 0
+    for i in range(1000000):
+        toplam += i
+    return toplam
+
+# Parametreli decorator
+def tekrar(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            for _ in range(n):
+                func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+@tekrar(3)
+def selamla(isim):
+    print(f"Merhaba {isim}!")</pre>
+                        </div>
+
+                        <h3>Generators (Üreteçler)</h3>
+                        <div class="code-example">
+<pre># Generator fonksiyon
+def fibonacci_generator(n):
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+# Kullanım
+for sayi in fibonacci_generator(10):
+    print(sayi, end=" ")
+
+# Generator expression
+kareler = (x**2 for x in range(10))
+print(list(kareler))
+
+# Sonsuz generator
+def sonsuz_sayilar():
+    sayi = 0
+    while True:
+        yield sayi
+        sayi += 1</pre>
+                        </div>
+
+                        <h3>List Comprehensions ve Daha Fazlası</h3>
+                        <div class="code-example">
+<pre># List comprehension
+kareler = [x**2 for x in range(10)]
+ciftler = [x for x in range(20) if x % 2 == 0]
+matris = [[i*j for j in range(5)] for i in range(5)]
+
+# Dictionary comprehension
+kare_dict = {x: x**2 for x in range(6)}
+print(kare_dict)
+
+# Set comprehension
+tekil_uzunluklar = {len(kelime) for kelime in ["elma", "armut", "muz", "kivi"]}
+print(tekil_uzunluklar)</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: İleri Seviye Veri İşleme</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor7"># Decorator örneği
+def onbellek(func):
+    cache = {}
+    def wrapper(*args):
+        if args in cache:
+            print(f"Önbellekten alındı: {args}")
+            return cache[args]
+        sonuc = func(*args)
+        cache[args] = sonuc
+        return sonuc
+    return wrapper
+
+@onbellek
+def fibonacci(n):
+    if n <= 1:
+        return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+# Generator ile asal sayı üretici
+def asal_uretici(limit):
+    for sayi in range(2, limit):
+        asal = True
+        for i in range(2, int(sayi**0.5) + 1):
+            if sayi % i == 0:
+                asal = False
+                break
+        if asal:
+            yield sayi
+
+# Test
+print("Fibonacci (10):", fibonacci(10))
+print("Fibonacci (15):", fibonacci(15))  # Önbellekten
+
+print("\nİlk 20 asal sayı:")
+asallar = list(asal_uretici(100))[:20]
+print(asallar)
+
+# Comprehension örneği
+pitagor_ucgenleri = [
+    (a, b, c) 
+    for a in range(1, 20) 
+    for b in range(a, 20) 
+    for c in range(b, 20) 
+    if a**2 + b**2 == c**2
+]
+print(f"\nPitagor üçgenleri: {pitagor_ucgenleri}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor7', 'output7')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor7', 'output7')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output7">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+
+                    <!-- İLERİ ÖRNEK 1 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 1: Temel - Generator Fonksiyonları</h3>
+                            <span class="difficulty-badge easy">Kolay</span>
+                        </div>
+                        <textarea class="code-input" id="editor-a1"># Generator fonksiyonları
+
+def sayici(n):
+    """n'e kadar sayıları üret"""
+    i = 0
+    while i < n:
+        yield i
+        i += 1
+
+def fibonacci_gen(n):
+    """İlk n Fibonacci sayısını üret"""
+    a, b = 0, 1
+    for _ in range(n):
+        yield a
+        a, b = b, a + b
+
+def cift_sayilar(liste):
+    """Listedeki çift sayıları üret"""
+    for sayi in liste:
+        if sayi % 2 == 0:
+            yield sayi
+
+# Test
+print("SAYICI (0-9):")
+for i in sayici(10):
+    print(i, end=" ")
+
+print("\n\nFIBONACCI (İlk 10):")
+for fib in fibonacci_gen(10):
+    print(fib, end=" ")
+
+print("\n\nÇİFT SAYILAR:")
+sayilar = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+for cift in cift_sayilar(sayilar):
+    print(cift, end=" ")
+
+# Generator expression
+print("\n\nKARELER (Generator Expression):")
+kareler = (x**2 for x in range(10))
+print(list(kareler))
+
+# Sonsuz generator
+def sonsuz_sayilar():
+    n = 0
+    while True:
+        yield n
+        n += 1
+
+print("\nSONSUZ GENERATOR (İlk 5):")
+gen = sonsuz_sayilar()
+for _ in range(5):
+    print(next(gen), end=" ")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-a1', 'output-a1')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-a1', 'output-a1')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-a1"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- İLERİ ÖRNEK 2 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 2: Orta - Decorator Zincirleme</h3>
+                            <span class="difficulty-badge medium">Orta</span>
+                        </div>
+                        <textarea class="code-input" id="editor-a2">import time
+
+# Farklı decorator'lar
+def zamanlayici(func):
+    def wrapper(*args, **kwargs):
+        baslangic = time.time()
+        sonuc = func(*args, **kwargs)
+        bitis = time.time()
+        print(f"⏱ {func.__name__}: {bitis-baslangic:.4f}s")
+        return sonuc
+    return wrapper
+
+def sonuc_logla(func):
+    def wrapper(*args, **kwargs):
+        sonuc = func(*args, **kwargs)
+        print(f"📝 {func.__name__} sonucu: {sonuc}")
+        return sonuc
+    return wrapper
+
+def hata_yakala(func):
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            print(f"❌ {func.__name__} hatası: {e}")
+            return None
+    return wrapper
+
+# Parametreli decorator
+def tekrar(n):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            sonuclar = []
+            for i in range(n):
+                print(f"[Deneme {i+1}]", end=" ")
+                sonuc = func(*args, **kwargs)
+                sonuclar.append(sonuc)
+            return sonuclar
+        return wrapper
+    return decorator
+
+# Çoklu decorator kullanımı
+@zamanlayici
+@sonuc_logla
+def toplama(a, b):
+    return a + b
+
+@hata_yakala
+@zamanlayici
+def riskli_bolme(a, b):
+    return a / b
+
+@tekrar(3)
+def rastgele_sayi():
+    import random
+    return random.randint(1, 10)
+
+# Test
+print("TEK DECORATOR:")
+toplama(10, 5)
+
+print("\n\nÇOKLU DECORATOR:")
+riskli_bolme(10, 2)
+riskli_bolme(10, 0)
+
+print("\n\nPARAMETRELİ DECORATOR:")
+sonuclar = rastgele_sayi()
+print(f"\nTüm sonuçlar: {sonuclar}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-a2', 'output-a2')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-a2', 'output-a2')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-a2"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- İLERİ ÖRNEK 3 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 3: İleri - Context Managers</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor-a3"># Context Manager örnekleri
+
+class Zamanlayici:
+    """Kod bloğunun çalışma süresini ölç"""
+    def __init__(self, isim):
+        self.isim = isim
+    
+    def __enter__(self):
+        import time
+        self.baslangic = time.time()
+        print(f"⏱ {self.isim} başladı...")
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        import time
+        bitis = time.time()
+        print(f"⏱ {self.isim} bitti: {bitis - self.baslangic:.4f}s")
+        return False
+
+class VeriTabaniBaglanti:
+    """Veritabanı bağlantı simülasyonu"""
+    def __init__(self, db_adi):
+        self.db_adi = db_adi
+        self.baglanti = None
+    
+    def __enter__(self):
+        print(f"🔌 {self.db_adi}'na bağlanılıyor...")
+        self.baglanti = f"Connection-{self.db_adi}"
+        print(f"✓ Bağlantı kuruldu")
+        return self
+    
+    def sorgu_calistir(self, sorgu):
+        if self.baglanti:
+            return f"Sorgu sonucu: {sorgu}"
+        return "Bağlantı yok"
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f"🔌 {self.db_adi} bağlantısı kapatılıyor...")
+        self.baglanti = None
+        print(f"✓ Bağlantı kapatıldı")
+        return False
+
+class KaynakYoneticisi:
+    """Kaynak yönetimi"""
+    def __init__(self, kaynak_adi):
+        self.kaynak_adi = kaynak_adi
+        self.kaynak = None
+    
+    def __enter__(self):
+        print(f"📦 {self.kaynak_adi} açılıyor...")
+        self.kaynak = {"durum": "aktif", "veri": []}
+        return self.kaynak
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f"📦 {self.kaynak_adi} temizleniyor...")
+        if self.kaynak:
+            print(f"   Veri sayısı: {len(self.kaynak['veri'])}")
+            self.kaynak = None
+        print(f"✓ Kaynak serbest bırakıldı")
+
+# Test
+print("ZAMANLAYICI:")
+with Zamanlayici("Hesaplama"):
+    # Yavaş işlem simülasyonu
+    toplam = 0
+    for i in range(100000):
+        toplam += i
+    print(f"  Toplam: {toplam}")
+
+print("\n\nVERİTABANI:")
+with VeriTabaniBaglanti("MusteriDB") as db:
+    print(f"  {db.sorgu_calistir('SELECT * FROM users')}")
+    print(f"  {db.sorgu_calistir('UPDATE users SET active=1')}")
+
+print("\n\nKAYNAK YÖNETİMİ:")
+with KaynakYoneticisi("TempFile") as kaynak:
+    kaynak['veri'].append("veri1")
+    kaynak['veri'].append("veri2")
+    kaynak['veri'].append("veri3")
+    print(f"  Kaynak durumu: {kaynak['durum']}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-a3', 'output-a3')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-a3', 'output-a3')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-a3"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+
+                    <!-- İLERİ ÖRNEK 4 -->
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Örnek 4: Uzman - Metaprogramming</h3>
+                            <span class="difficulty-badge expert">Uzman</span>
+                        </div>
+                        <textarea class="code-input" id="editor-a4"># Metaprogramming - Sınıf oluşturma ve modifikasyon
+
+class SinifFabrikasi:
+    """Dinamik sınıf oluşturucu"""
+    @staticmethod
+    def sinif_olustur(sinif_adi, alanlar, metodlar=None):
+        def __init__(self, **kwargs):
+            for alan in alanlar:
+                setattr(self, alan, kwargs.get(alan))
+        
+        def __str__(self):
+            bilgiler = ", ".join(f"{alan}={getattr(self, alan)}" 
+                                for alan in alanlar)
+            return f"{sinif_adi}({bilgiler})"
+        
+        # Sınıf özellikleri
+        sinif_ozellikleri = {
+            '__init__': __init__,
+            '__str__': __str__,
+        }
+        
+        # Ek metodlar ekle
+        if metodlar:
+            sinif_ozellikleri.update(metodlar)
+        
+        # Dinamik sınıf oluştur
+        return type(sinif_adi, (), sinif_ozellikleri)
+
+# Property decorator ile getter/setter
+class Urun:
+    def __init__(self, ad, fiyat):
+        self._ad = ad
+        self._fiyat = fiyat
+    
+    @property
+    def fiyat(self):
+        """Fiyat getter"""
+        return self._fiyat
+    
+    @fiyat.setter
+    def fiyat(self, yeni_fiyat):
+        """Fiyat setter"""
+        if yeni_fiyat > 0:
+            print(f"💰 Fiyat güncellendi: {self._fiyat} -> {yeni_fiyat}")
+            self._fiyat = yeni_fiyat
+        else:
+            print("❌ Fiyat pozitif olmalı")
+    
+    @property
+    def ad(self):
+        return self._ad
+
+# Singleton pattern decorator
+def singleton(cls):
+    instances = {}
+    def get_instance(*args, **kwargs):
+        if cls not in instances:
+            instances[cls] = cls(*args, **kwargs)
+        return instances[cls]
+    return get_instance
+
+@singleton
+class Ayarlar:
+    def __init__(self):
+        self.tema = "koyu"
+        self.dil = "tr"
+    
+    def __str__(self):
+        return f"Ayarlar(tema={self.tema}, dil={self.dil})"
+
+# Test
+print("DİNAMİK SINIF OLUŞTURMA:")
+print("="*50)
+
+# Kişi sınıfı oluştur
+Kisi = SinifFabrikasi.sinif_olustur(
+    'Kisi',
+    ['ad', 'yas', 'sehir']
+)
+
+kisi1 = Kisi(ad="Ahmet", yas=25, sehir="İstanbul")
+kisi2 = Kisi(ad="Ayşe", yas=30, sehir="Ankara")
+
+print(kisi1)
+print(kisi2)
+
+# Property örneği
+print("\n\nPROPERTY ÖRNEĞİ:")
+print("="*50)
+urun = Urun("Laptop", 15000)
+print(f"Ürün: {urun.ad}, Fiyat: {urun.fiyat} TL")
+urun.fiyat = 14000
+urun.fiyat = -100  # Hata verecek
+
+# Singleton
+print("\n\nSINGLETON PATTERN:")
+print("="*50)
+ayar1 = Ayarlar()
+ayar2 = Ayarlar()
+
+print(f"ayar1: {ayar1}")
+print(f"ayar2: {ayar2}")
+print(f"Aynı nesne mi? {ayar1 is ayar2}")
+
+ayar1.tema = "açık"
+print(f"\nayar1.tema değiştirildi")
+print(f"ayar1: {ayar1}")
+print(f"ayar2: {ayar2}")  # ayar2 de değişti</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-a4', 'output-a4')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-a4', 'output-a4')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-a4"><pre>Çıktı burada görünecek...</pre></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ALGORİTMALAR -->
+            <div id="algorithms" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">8</div>
+                        <div class="lesson-title">
+                            <h2>Algoritmalar ve Veri Yapıları</h2>
+                            <span class="subtitle">Sıralama, arama, yığıt, kuyruk</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3>Sıralama Algoritmaları</h3>
+                        <div class="code-example">
+<pre># Bubble Sort
+def bubble_sort(arr):
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+# Selection Sort
+def selection_sort(arr):
+    for i in range(len(arr)):
+        min_idx = i
+        for j in range(i+1, len(arr)):
+            if arr[j] < arr[min_idx]:
+                min_idx = j
+        arr[i], arr[min_idx] = arr[min_idx], arr[i]
+    return arr
+
+# Quick Sort
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)</pre>
+                        </div>
+
+                        <h3>Arama Algoritmaları</h3>
+                        <div class="code-example">
+<pre># Binary Search
+def binary_search(arr, hedef):
+    sol, sag = 0, len(arr) - 1
+    while sol <= sag:
+        orta = (sol + sag) // 2
+        if arr[orta] == hedef:
+            return orta
+        elif arr[orta] < hedef:
+            sol = orta + 1
+        else:
+            sag = orta - 1
+    return -1
+
+# Linear Search
+def linear_search(arr, hedef):
+    for i, eleman in enumerate(arr):
+        if eleman == hedef:
+            return i
+    return -1</pre>
+                        </div>
+
+                        <h3>Veri Yapıları</h3>
+                        <div class="code-example">
+<pre># Stack (Yığıt)
+class Stack:
+    def __init__(self):
+        self.items = []
+    
+    def push(self, item):
+        self.items.append(item)
+    
+    def pop(self):
+        if not self.is_empty():
+            return self.items.pop()
+    
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+    
+    def is_empty(self):
+        return len(self.items) == 0
+
+# Queue (Kuyruk)
+class Queue:
+    def __init__(self):
+        self.items = []
+    
+    def enqueue(self, item):
+        self.items.insert(0, item)
+    
+    def dequeue(self):
+        if not self.is_empty():
+            return self.items.pop()
+    
+    def is_empty(self):
+        return len(self.items) == 0</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Algoritma Karşılaştırması</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor8">import time
+import random
+
+def bubble_sort(arr):
+    arr = arr.copy()
+    n = len(arr)
+    for i in range(n):
+        for j in range(0, n-i-1):
+            if arr[j] > arr[j+1]:
+                arr[j], arr[j+1] = arr[j+1], arr[j]
+    return arr
+
+def quick_sort(arr):
+    if len(arr) <= 1:
+        return arr
+    pivot = arr[len(arr) // 2]
+    left = [x for x in arr if x < pivot]
+    middle = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+    return quick_sort(left) + middle + quick_sort(right)
+
+# Test verisi oluştur
+test_data = random.sample(range(1000), 100)
+
+print("Orijinal (ilk 10):", test_data[:10])
+print("\n" + "="*50)
+
+# Bubble Sort testi
+start = time.time()
+bubble_sonuc = bubble_sort(test_data)
+bubble_sure = time.time() - start
+print(f"Bubble Sort: {bubble_sure:.6f} saniye")
+print("Sonuç (ilk 10):", bubble_sonuc[:10])
+
+# Quick Sort testi
+start = time.time()
+quick_sonuc = quick_sort(test_data)
+quick_sure = time.time() - start
+print(f"\nQuick Sort: {quick_sure:.6f} saniye")
+print("Sonuç (ilk 10):", quick_sonuc[:10])
+
+# Python built-in sorted
+start = time.time()
+python_sonuc = sorted(test_data)
+python_sure = time.time() - start
+print(f"\nPython sorted(): {python_sure:.6f} saniye")
+
+print("\n" + "="*50)
+print(f"Quick Sort, Bubble Sort'tan {bubble_sure/quick_sure:.1f}x daha hızlı!")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor8', 'output8')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor8', 'output8')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output8">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- WEB GELİŞTİRME -->
+            <div id="web-dev" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">9</div>
+                        <div class="lesson-title">
+                            <h2>Web Geliştirme Temelleri</h2>
+                            <span class="subtitle">HTTP, Flask benzeri framework, API</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="code-example">
+<pre># Mini Web Framework
+class MiniFlask:
+    def __init__(self):
+        self.routes = {}
+    
+    def route(self, path):
+        def decorator(func):
+            self.routes[path] = func
+            return func
+        return decorator
+    
+    def run(self, path):
+        if path in self.routes:
+            return self.routes[path]()
+        return "404 - Sayfa Bulunamadı"
+
+# Uygulama oluştur
+app = MiniFlask()
+
+@app.route("/")
+def anasayfa():
+    return "Anasayfaya hoş geldiniz!"
+
+@app.route("/hakkimizda")
+def hakkimizda():
+    return "Hakkımızda sayfası"
+
+@app.route("/iletisim")
+def iletisim():
+    return "İletişim: info@example.com"
+
+# REST API örneği
+class API:
+    def __init__(self):
+        self.data = {}
+        self.id_counter = 1
+    
+    def get_all(self):
+        return list(self.data.values())
+    
+    def get_by_id(self, id):
+        return self.data.get(id, {"error": "Not found"})
+    
+    def create(self, item):
+        id = self.id_counter
+        self.data[id] = {"id": id, **item}
+        self.id_counter += 1
+        return self.data[id]
+    
+    def update(self, id, item):
+        if id in self.data:
+            self.data[id].update(item)
+            return self.data[id]
+        return {"error": "Not found"}
+    
+    def delete(self, id):
+        if id in self.data:
+            del self.data[id]
+            return {"message": "Deleted"}
+        return {"error": "Not found"}</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: Blog API'si</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor9">class BlogAPI:
+    def __init__(self):
+        self.posts = {}
+        self.post_id = 1
+    
+    def create_post(self, title, content, author):
+        post = {
+            "id": self.post_id,
+            "title": title,
+            "content": content,
+            "author": author,
+            "comments": []
+        }
+        self.posts[self.post_id] = post
+        self.post_id += 1
+        return post
+    
+    def get_post(self, post_id):
+        return self.posts.get(post_id, {"error": "Post not found"})
+    
+    def get_all_posts(self):
+        return list(self.posts.values())
+    
+    def add_comment(self, post_id, comment, author):
+        if post_id in self.posts:
+            self.posts[post_id]["comments"].append({
+                "author": author,
+                "comment": comment
+            })
+            return {"message": "Comment added"}
+        return {"error": "Post not found"}
+    
+    def delete_post(self, post_id):
+        if post_id in self.posts:
+            del self.posts[post_id]
+            return {"message": "Post deleted"}
+        return {"error": "Post not found"}
+
+# API Test
+blog = BlogAPI()
+
+# Post oluştur
+print("=== POST OLUŞTUR ===")
+post1 = blog.create_post(
+    "Python Öğreniyorum",
+    "Python harika bir dil!",
+    "Ahmet"
+)
+print(f"Post oluşturuldu: {post1['title']}")
+
+post2 = blog.create_post(
+    "Web Geliştirme",
+    "Flask ile web uygulaması yapıyorum",
+    "Ayşe"
+)
+print(f"Post oluşturuldu: {post2['title']}")
+
+# Yorum ekle
+print("\n=== YORUM EKLE ===")
+blog.add_comment(1, "Çok güzel yazı!", "Mehmet")
+blog.add_comment(1, "Teşekkürler!", "Zeynep")
+
+# Tüm postları listele
+print("\n=== TÜM POSTLAR ===")
+for post in blog.get_all_posts():
+    print(f"\nID: {post['id']}")
+    print(f"Başlık: {post['title']}")
+    print(f"Yazar: {post['author']}")
+    print(f"Yorum Sayısı: {len(post['comments'])}")
+    if post['comments']:
+        print("Yorumlar:")
+        for comment in post['comments']:
+            print(f"  - {comment['author']}: {comment['comment']}")</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor9', 'output9')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor9', 'output9')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output9">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- GUI -->
+            <div id="gui" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">10</div>
+                        <div class="lesson-title">
+                            <h2>GUI Programlama (Tkinter Benzeri)</h2>
+                            <span class="subtitle">Grafik kullanıcı arayüzü tasarımı</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <div class="code-example">
+<pre># GUI Framework Simülasyonu
+class Widget:
+    def __init__(self, text=""):
+        self.text = text
+        self.x = 0
+        self.y = 0
+    
+    def render(self):
+        return f"[{self.__class__.__name__}] {self.text}"
+
+class Button(Widget):
+    def __init__(self, text, command=None):
+        super().__init__(text)
+        self.command = command
+    
+    def click(self):
+        if self.command:
+            return self.command()
+        return "Button clicked"
+
+class Label(Widget):
+    pass
+
+class Entry(Widget):
+    def __init__(self):
+        super().__init__()
+        self.value = ""
+    
+    def set_value(self, value):
+        self.value = value
+    
+    def get_value(self):
+        return self.value
+
+class Window:
+    def __init__(self, title):
+        self.title = title
+        self.widgets = []
+    
+    def add_widget(self, widget):
+        self.widgets.append(widget)
+    
+    def show(self):
+        print(f"\n{'='*50}")
+        print(f"  {self.title}")
+        print('='*50)
+        for widget in self.widgets:
+            print(widget.render())
+        print('='*50)</pre>
+                        </div>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Pratik: TODO Uygulaması GUI</h3>
+                            <span class="difficulty-badge hard">Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor10"># TODO Listesi GUI Simülasyonu
+
+class TodoApp:
+    def __init__(self):
+        self.tasks = []
+        self.task_id = 1
+    
+    def add_task(self, task_text):
+        task = {
+            "id": self.task_id,
+            "text": task_text,
+            "completed": False
+        }
+        self.tasks.append(task)
+        self.task_id += 1
+        return f"Görev eklendi: {task_text}"
+    
+    def complete_task(self, task_id):
+        for task in self.tasks:
+            if task["id"] == task_id:
+                task["completed"] = True
+                return f"Görev tamamlandı: {task['text']}"
+        return "Görev bulunamadı"
+    
+    def delete_task(self, task_id):
+        for i, task in enumerate(self.tasks):
+            if task["id"] == task_id:
+                deleted = self.tasks.pop(i)
+                return f"Görev silindi: {deleted['text']}"
+        return "Görev bulunamadı"
+    
+    def show_tasks(self):
+        print("\n" + "="*60)
+        print("             TODO LİSTESİ")
+        print("="*60)
+        
+        if not self.tasks:
+            print("  Henüz görev yok!")
+        else:
+            pending = [t for t in self.tasks if not t["completed"]]
+            completed = [t for t in self.tasks if t["completed"]]
+            
+            if pending:
+                print("\n📌 BEKLEYEN GÖREVLER:")
+                for task in pending:
+                    print(f"  [{task['id']}] ☐ {task['text']}")
+            
+            if completed:
+                print("\n✅ TAMAMLANAN GÖREVLER:")
+                for task in completed:
+                    print(f"  [{task['id']}] ☑ {task['text']}")
+        
+        print("="*60)
+        print(f"Toplam: {len(self.tasks)} görev | ")
+        print(f"Tamamlanan: {sum(1 for t in self.tasks if t['completed'])}")
+        print("="*60)
+
+# Uygulama Test
+app = TodoApp()
+
+# Görevler ekle
+print(app.add_task("Python öğren"))
+print(app.add_task("Proje yap"))
+print(app.add_task("Egzersiz çöz"))
+print(app.add_task("Kod review yap"))
+
+# Görevleri göster
+app.show_tasks()
+
+# Bazı görevleri tamamla
+print("\n" + app.complete_task(1))
+print(app.complete_task(3))
+
+# Güncel listeyi göster
+app.show_tasks()
+
+# Görev sil
+print("\n" + app.delete_task(2))
+
+# Final liste
+app.show_tasks()</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor10', 'output10')">▶ Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor10', 'output10')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output10">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PROJELER -->
+            <div id="projects" class="content-section">
+                <div class="lesson-card">
+                    <div class="lesson-header">
+                        <div class="lesson-number">💼</div>
+                        <div class="lesson-title">
+                            <h2>Kapsamlı Proje: Kütüphane Yönetim Sistemi</h2>
+                            <span class="subtitle">Tüm öğrendiğinizi bir arada kullanın</span>
+                        </div>
+                    </div>
+
+                    <div class="content-block">
+                        <h3>Proje Özellikleri</h3>
+                        <p>Bu projede şunları uygulayacaksınız:</p>
+                        <ul>
+                            <li>✅ OOP (Sınıflar ve kalıtım)</li>
+                            <li>✅ Hata yönetimi</li>
+                            <li>✅ Dosya işlemleri (JSON)</li>
+                            <li>✅ Veri yapıları (dict, list)</li>
+                            <li>✅ İleri Python özellikleri</li>
+                        </ul>
+                    </div>
+
+                    <div class="interactive-editor">
+                        <div class="editor-header">
+                            <h3>🎯 Kapsamlı Proje: Kütüphane Sistemi</h3>
+                            <span class="difficulty-badge hard">Çok Zor</span>
+                        </div>
+                        <textarea class="code-input" id="editor-project" style="min-height: 400px;">import json
+from datetime import datetime, timedelta
+
+class Kitap:
+    def __init__(self, isbn, baslik, yazar, yil):
+        self.isbn = isbn
+        self.baslik = baslik
+        self.yazar = yazar
+        self.yil = yil
+        self.musait = True
+        self.odunc_alan = None
+        self.iade_tarihi = None
+    
+    def __str__(self):
+        durum = "Müsait" if self.musait else f"Ödünçte ({self.odunc_alan})"
+        return f"[{self.isbn}] {self.baslik} - {self.yazar} ({self.yil}) - {durum}"
+
+class Uye:
+    def __init__(self, uye_no, ad, soyad, email):
+        self.uye_no = uye_no
+        self.ad = ad
+        self.soyad = soyad
+        self.email = email
+        self.odunc_kitaplar = []
+    
+    def tam_ad(self):
+        return f"{self.ad} {self.soyad}"
+    
+    def __str__(self):
+        return f"[{self.uye_no}] {self.tam_ad()} - {self.email}"
+
+class Kutuphane:
+    def __init__(self, ad):
+        self.ad = ad
+        self.kitaplar = {}
+        self.uyeler = {}
+        self.islemler = []
+    
+    def kitap_ekle(self, kitap):
+        if kitap.isbn in self.kitaplar:
+            return f"HATA: {kitap.isbn} numaralı kitap zaten mevcut"
+        self.kitaplar[kitap.isbn] = kitap
+        self._islem_kaydet(f"Kitap eklendi: {kitap.baslik}")
+        return f"✓ Kitap eklendi: {kitap.baslik}"
+    
+    def uye_ekle(self, uye):
+        if uye.uye_no in self.uyeler:
+            return f"HATA: {uye.uye_no} numaralı üye zaten mevcut"
+        self.uyeler[uye.uye_no] = uye
+        self._islem_kaydet(f"Üye eklendi: {uye.tam_ad()}")
+        return f"✓ Üye eklendi: {uye.tam_ad()}"
+    
+    def kitap_odunc_ver(self, isbn, uye_no, gun=14):
+        if isbn not in self.kitaplar:
+            return "HATA: Kitap bulunamadı"
+        if uye_no not in self.uyeler:
+            return "HATA: Üye bulunamadı"
+        
+        kitap = self.kitaplar[isbn]
+        uye = self.uyeler[uye_no]
+        
+        if not kitap.musait:
+            return f"HATA: Kitap şu anda {kitap.odunc_alan} tarafından ödünç alınmış"
+        
+        if len(uye.odunc_kitaplar) >= 3:
+            return "HATA: Üye en fazla 3 kitap ödünç alabilir"
+        
+        kitap.musait = False
+        kitap.odunc_alan = uye.tam_ad()
+        kitap.iade_tarihi = f"{gun} gün sonra"
+        uye.odunc_kitaplar.append(isbn)
+        
+        self._islem_kaydet(f"{uye.tam_ad()} -> {kitap.baslik} ödünç aldı")
+        return f"✓ {kitap.baslik} kitabı {uye.tam_ad()} tarafından ödünç alındı"
+    
+    def kitap_iade_al(self, isbn):
+        if isbn not in self.kitaplar:
+            return "HATA: Kitap bulunamadı"
+        
+        kitap = self.kitaplar[isbn]
+        if kitap.musait:
+            return "HATA: Bu kitap zaten müsait"
+        
+        # Üyeden kitabı kaldır
+        for uye in self.uyeler.values():
+            if isbn in uye.odunc_kitaplar:
+                uye.odunc_kitaplar.remove(isbn)
+                break
+        
+        odunc_alan = kitap.odunc_alan
+        kitap.musait = True
+        kitap.odunc_alan = None
+        kitap.iade_tarihi = None
+        
+        self._islem_kaydet(f"{odunc_alan} -> {kitap.baslik} iade etti")
+        return f"✓ {kitap.baslik} kitabı iade edildi"
+    
+    def kitap_ara(self, arama_terimi):
+        sonuclar = []
+        for kitap in self.kitaplar.values():
+            if (arama_terimi.lower() in kitap.baslik.lower() or
+                arama_terimi.lower() in kitap.yazar.lower()):
+                sonuclar.append(kitap)
+        return sonuclar
+    
+    def tum_kitaplar(self):
+        print(f"\n{'='*70}")
+        print(f"  {self.ad} - TÜM KİTAPLAR")
+        print('='*70)
+        
+        if not self.kitaplar:
+            print("  Henüz kitap yok!")
+        else:
+            musait = [k for k in self.kitaplar.values() if k.musait]
+            oduncte = [k for k in self.kitaplar.values() if not k.musait]
+            
+            if musait:
+                print("\n📚 MÜSAİT KİTAPLAR:")
+                for kitap in musait:
+                    print(f"  {kitap}")
+            
+            if oduncte:
+                print("\n📖 ÖDÜNÇTE OLAN KİTAPLAR:")
+                for kitap in oduncte:
+                    print(f"  {kitap}")
+                    print(f"     İade: {kitap.iade_tarihi}")
+        
+        print('='*70)
+    
+    def tum_uyeler(self):
+        print(f"\n{'='*70}")
+        print(f"  {self.ad} - TÜM ÜYELER")
+        print('='*70)
+        
+        if not self.uyeler:
+            print("  Henüz üye yok!")
+        else:
+            for uye in self.uyeler.values():
+                print(f"\n  {uye}")
+                if uye.odunc_kitaplar:
+                    print(f"  Ödünç Kitaplar ({len(uye.odunc_kitaplar)}):")
+                    for isbn in uye.odunc_kitaplar:
+                        kitap = self.kitaplar[isbn]
+                        print(f"    - {kitap.baslik}")
+        
+        print('='*70)
+    
+    def _islem_kaydet(self, islem):
+        self.islemler.append(f"{islem}")
+    
+    def islem_gecmisi(self):
+        print(f"\n{'='*70}")
+        print(f"  İŞLEM GEÇMİŞİ")
+        print('='*70)
+        for i, islem in enumerate(self.islemler[-10:], 1):
+            print(f"  {i}. {islem}")
+        print('='*70)
+
+# ===== UYGULAMA TEST EDİLİYOR =====
+
+print("KÜTÜPHANE YÖNETİM SİSTEMİ")
+print("="*70)
+
+# Kütüphane oluştur
+kutuphane = Kutuphane("Merkez Kütüphanesi")
+
+# Kitaplar ekle
+print("\n📚 KİTAPLAR EKLENİYOR...")
+print(kutuphane.kitap_ekle(Kitap("978-1", "Python Programming", "John Smith", 2020)))
+print(kutuphane.kitap_ekle(Kitap("978-2", "Web Development", "Jane Doe", 2021)))
+print(kutuphane.kitap_ekle(Kitap("978-3", "Data Science", "Bob Johnson", 2022)))
+print(kutuphane.kitap_ekle(Kitap("978-4", "Machine Learning", "Alice Brown", 2023)))
+
+# Üyeler ekle
+print("\n👥 ÜYELER EKLENİYOR...")
+print(kutuphane.uye_ekle(Uye("U001", "Ahmet", "Yılmaz", "ahmet@mail.com")))
+print(kutuphane.uye_ekle(Uye("U002", "Ayşe", "Demir", "ayse@mail.com")))
+print(kutuphane.uye_ekle(Uye("U003", "Mehmet", "Kaya", "mehmet@mail.com")))
+
+# Kitap ödünç verme
+print("\n📖 ÖDÜNÇ İŞLEMLERİ...")
+print(kutuphane.kitap_odunc_ver("978-1", "U001"))
+print(kutuphane.kitap_odunc_ver("978-2", "U001"))
+print(kutuphane.kitap_odunc_ver("978-3", "U002"))
+
+# Tüm kitapları listele
+kutuphane.tum_kitaplar()
+
+# Tüm üyeleri listele
+kutuphane.tum_uyeler()
+
+# Kitap iade
+print("\n📥 İADE İŞLEMİ...")
+print(kutuphane.kitap_iade_al("978-1"))
+
+# Güncel durum
+kutuphane.tum_kitaplar()
+
+# İşlem geçmişi
+kutuphane.islem_gecmisi()
+
+print("\n" + "="*70)
+print("  KÜTÜPHANE SİSTEMİ TEST TAMAMLANDI!")
+print("="*70)</textarea>
+                        <div class="button-group">
+                            <button onclick="runCode('editor-project', 'output-project')">▶ Projeyi Çalıştır</button>
+                            <button class="secondary" onclick="clearOutput('editor-project', 'output-project')">🗑 Temizle</button>
+                        </div>
+                        <div class="output-panel" id="output-project" style="min-height: 400px;">
+                            <pre>Çıktı burada görünecek...</pre>
+                        </div>
+                    </div>
+
+                    <div class="hint-box">
+                        <h4>💡 Proje Geliştirme Fikirleri</h4>
+                        <p><strong>Bu projeyi geliştirebilirsiniz:</strong></p>
+                        <ul>
+                            <li>Gecikmiş iade kontrolü ve ceza sistemi ekleyin</li>
+                            <li>Kitap rezervasyon sistemi yapın</li>
+                            <li>İstatistik raporları oluşturun (en çok ödünç alınan kitaplar, vb.)</li>
+                            <li>JSON ile veri kaydetme/yükleme ekleyin</li>
+                            <li>Web arayüzü ekleyin</li>
+                            <li>Veritabanı entegrasyonu yapın</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div class="status-indicator">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-text">Python yükleniyor...</span>
+    </div>
+
+    <script>
+        let pyodide = null;
+        let pyodideReady = false;
+
+        // Pyodide'ı yükle
+        async function loadPyodideInstance() {
+            try {
+                document.getElementById('status-text').textContent = 'Python yükleniyor...';
+                pyodide = await loadPyodide();
+                
+                // Python stdout'u ayarla
+                await pyodide.runPythonAsync(`
+                    import sys
+                    from io import StringIO
+                `);
+                
+                pyodideReady = true;
+                document.getElementById('status-dot').classList.add('ready');
+                document.getElementById('status-text').textContent = 'Python hazır ✓';
+                
+                console.log('Pyodide başarıyla yüklendi!');
+            } catch (error) {
+                console.error('Pyodide yükleme hatası:', error);
+                document.getElementById('status-text').textContent = 'Hata! Sayfayı yenileyin';
+            }
+        }
+
+        // Python kodu çalıştır
+        async function runCode(editorId, outputId) {
+            const editor = document.getElementById(editorId);
+            const output = document.getElementById(outputId);
+            
+            if (!editor || !output) {
+                console.error('Editor veya output bulunamadı');
+                return;
+            }
+            
+            const code = editor.value;
+            
+            if (!pyodideReady) {
+                output.innerHTML = '<pre style="color: #f59e0b;">⏳ Python henüz hazır değil, lütfen bekleyin...</pre>';
+                return;
+            }
+            
+            output.innerHTML = '<pre style="color: #60a5fa;">⏳ Kod çalıştırılıyor...</pre>';
+            
+            try {
+                // Stdout'u yakala
+                await pyodide.runPythonAsync(`
+                    sys.stdout = StringIO()
+                    sys.stderr = StringIO()
+                `);
+                
+                // Kullanıcı kodunu çalıştır
+                await pyodide.runPythonAsync(code);
+                
+                // Çıktıyı al
+                const stdout = await pyodide.runPythonAsync('sys.stdout.getvalue()');
+                const stderr = await pyodide.runPythonAsync('sys.stderr.getvalue()');
+                
+                if (stderr) {
+                    output.innerHTML = `<pre style="color: #ef4444;">❌ Hata:\n${stderr}</pre>`;
+                } else if (stdout) {
+                    output.innerHTML = `<pre class="output-success">✅ Çıktı:\n${stdout}</pre>`;
+                } else {
+                    output.innerHTML = '<pre class="output-success">✅ Kod başarıyla çalıştı (çıktı yok)</pre>';
+                }
+            } catch (error) {
+                output.innerHTML = `<pre style="color: #ef4444;">❌ Hata:\n${error.message}</pre>`;
+            }
+        }
+
+        // Çıktıyı temizle
+        function clearOutput(editorId, outputId) {
+            const output = document.getElementById(outputId);
+            if (output) {
+                output.innerHTML = '<pre>Çıktı burada görünecek...</pre>';
+            }
+        }
+
+        // Bölüm göster
+        function showSection(sectionId) {
+            // Tüm bölümleri gizle
+            const sections = document.querySelectorAll('.content-section');
+            sections.forEach(section => section.classList.remove('active'));
+            
+            // Seçili bölümü göster
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.classList.add('active');
+            }
+            
+            // Nav item'ları güncelle
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        // Sayfa yüklendiğinde Pyodide'ı başlat
+        window.addEventListener('load', () => {
+            loadPyodideInstance();
+        });
+    </script>
+</body>
+</html>
