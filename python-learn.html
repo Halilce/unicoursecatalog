@@ -420,7 +420,7 @@
                         <h3>Değişkenler ve String İşlemleri</h3>
                         <div class="code-example">
 <pre># Değişken tanımlama
-isim = "Ahmet"
+isim = "Halil Arslan"
 yas = 25
 boy = 1.75
 
@@ -537,7 +537,7 @@ for num in range(2, 51):
                             <span class="difficulty-badge easy">Kolay</span>
                         </div>
                         <p class="editor-desc">Değişkenler ve string formatlama ile kişisel bilgi kartı.</p>
-                        <textarea class="code-input" id="e1">ad, soyad, yas, sehir = "Ahmet", "Yılmaz", 25, "İstanbul"
+                        <textarea class="code-input" id="e1">ad, soyad, yas, sehir = "Halil", "Arslan", 25, "Yalova"
 
 print("="*40)
 print("KİŞİSEL BİLGİ KARTI")
@@ -767,7 +767,7 @@ print(f"Sıralı: {kopya}")</pre>
                         <div class="code-example">
 <pre># Dictionary işlemleri
 ogrenci = {
-    "ad": "Ahmet",
+    "ad": "Halil",
     "yas": 20,
     "bolum": "Bilgisayar Müh.",
     "notlar": [85, 90, 78]
@@ -778,7 +778,7 @@ print(f"Ad: {ogrenci['ad']}")
 print(f"Ortalama: {sum(ogrenci['notlar']) / len(ogrenci['notlar'])}")
 
 # Yeni ekleme
-ogrenci["email"] = "ahmet@mail.com"
+ogrenci["email"] = "Halil@mail.com"
 
 # Döngü ile gezinme
 for anahtar, deger in ogrenci.items():
@@ -812,9 +812,9 @@ print(f"İlk renk: {renkler[0]}")</pre>
                         </div>
                         <textarea class="code-input" id="editor2"># Öğrenci not sistemi
 ogrenciler = {
-    "Ahmet": [85, 92, 78, 90],
+    "Halil": [85, 92, 78, 90],
     "Ayşe": [95, 88, 91, 87],
-    "Mehmet": [75, 80, 70, 85],
+    "Muhammed": [75, 80, 70, 85],
     "Zeynep": [90, 95, 92, 88]
 }
 
@@ -876,9 +876,9 @@ print(f"\nGüncel liste: {alisveris}")</textarea>
                             <span class="difficulty-badge medium">Orta</span>
                         </div>
                         <textarea class="code-input" id="e8">ogrenciler = {
-    "Ahmet": {"notlar": [85, 90, 78], "devamsizlik": 2},
+    "Halil": {"notlar": [85, 90, 78], "devamsizlik": 2},
     "Ayşe": {"notlar": [92, 88, 95], "devamsizlik": 0},
-    "Mehmet": {"notlar": [75, 80, 70], "devamsizlik": 5}
+    "Muhammed": {"notlar": [75, 80, 70], "devamsizlik": 5}
 }
 
 print("ÖĞRENCİ RAPORU")
@@ -943,9 +943,9 @@ for kelime, sayi in sirali[:10]:
                             <span class="difficulty-badge expert">Uzman</span>
                         </div>
                         <textarea class="code-input" id="e10">calisanlar = {
-    "C001": {"ad": "Ahmet", "dep": "Yazılım", "maas": 15000, "proje": ["Web", "Mobile"]},
+    "C001": {"ad": "Halil", "dep": "Yazılım", "maas": 15000, "proje": ["Web", "Mobile"]},
     "C002": {"ad": "Ayşe", "dep": "Yazılım", "maas": 18000, "proje": ["Web"]},
-    "C003": {"ad": "Mehmet", "dep": "Pazarlama", "maas": 12000, "proje": ["Dijital"]},
+    "C003": {"ad": "Muhammed", "dep": "Pazarlama", "maas": 12000, "proje": ["Dijital"]},
     "C004": {"ad": "Zeynep", "dep": "Yazılım", "maas": 20000, "proje": ["Mobile", "AI"]}
 }
 
@@ -1026,9 +1026,9 @@ for kod, u in envanter.items():
                             <span class="difficulty-badge interactive">Etkileşimli</span>
                         </div>
                         <textarea class="code-input" id="e12">rehber = {
-    "Ahmet": "0532-111-2233",
+    "Halil": "0532-111-2233",
     "Ayşe": "0533-444-5566",
-    "Mehmet": "0534-777-8899"
+    "Muhammed": "0534-777-8899"
 }
 
 islem = "ara"  # input("İşlem (ekle/ara/sil): ")
@@ -1233,7 +1233,7 @@ sonuc = istatistik(85, 92, 78, 90, 88)
 for k, v in sonuc.items():
     print(f"{k}: {v}")
 
-profil(ad="Ahmet", yas=25, sehir="İstanbul", meslek="Yazılımcı")</textarea>
+profil(ad="Halil", yas=25, sehir="Yalova", meslek="Yazılımcı")</textarea>
                         <div class="button-group">
                             <button onclick="runCode('editor10', 'output10')">▶ Çalıştır</button>
                             <button class="secondary" onclick="clearOutput('editor10', 'output10')">🗑 Temizle</button>
@@ -1411,8 +1411,8 @@ print(tesla.sarj_et(20))</pre>
 kutuphane = Kutuphane("Merkez")
 print(kutuphane.kitap_ekle("Suç ve Ceza", 3))
 print(kutuphane.kitap_ekle("Sefiller", 2))
-print(kutuphane.kitap_odunc_ver("Suç ve Ceza", "Ahmet"))
-print(kutuphane.kitap_odunc_ver("Sefiller", "Mehmet"))
+print(kutuphane.kitap_odunc_ver("Suç ve Ceza", "Halil"))
+print(kutuphane.kitap_odunc_ver("Sefiller", "Muhammed"))
 print(kutuphane.stok_goster())
 kutuphane.odunc_ozet()
 
@@ -1503,7 +1503,7 @@ araba2.surum_yap(200)</textarea>
         print('='*40)
 
 # Test
-hesap = BankaHesapi("Ahmet Yılmaz", 1000)
+hesap = BankaHesapi("Halil Arslan", 1000)
 print(hesap.para_yatir(500))
 print(hesap.para_cek(200))
 print(hesap.para_yatir(1000))
@@ -1562,9 +1562,9 @@ class Mudur(Calisan):
 
 # Test - Polymorphism
 calisanlar = [
-    Yazilimci("Ahmet", 15000, ["Python", "JavaScript"]),
+    Yazilimci("Halil", 15000, ["Python", "JavaScript"]),
     Yazilimci("Ayşe", 18000, ["Java", "C++"]),
-    Mudur("Mehmet", 25000, "Yazılım"),
+    Mudur("Muhammed", 25000, "Yazılım"),
     Calisan("Zeynep", 10000)
 ]
 
@@ -1722,9 +1722,9 @@ class DosyaSistemi:
 import json
 
 veri = {
-    "isim": "Ahmet",
+    "isim": "Halil",
     "yas": 25,
-    "sehir": "İstanbul",
+    "sehir": "Yalova",
     "hobiler": ["kitap", "müzik", "spor"]
 }
 
@@ -1766,9 +1766,9 @@ csv = CSVIsleyici()
 csv.veri_ekle(
     ["İsim", "Yaş", "Şehir"],
     [
-        ["Ahmet", 25, "İstanbul"],
+        ["Halil", 25, "Yalova"],
         ["Ayşe", 30, "Ankara"],
-        ["Mehmet", 25, "İzmir"]
+        ["Muhammed", 25, "İstanbul"]
     ]
 )
 csv.goster()</pre>
@@ -1821,9 +1821,9 @@ class TelefonRehberi:
 
 # Test
 rehber = TelefonRehberi()
-rehber.kisi_ekle("Ahmet Yılmaz", "0532-111-2233", "ahmet@mail.com")
+rehber.kisi_ekle("Halil Arslan", "0532-111-2233", "Halil@mail.com")
 rehber.kisi_ekle("Ayşe Demir", "0533-444-5566")
-rehber.kisi_ekle("Mehmet Kaya", "0534-777-8899", "mehmet@mail.com")
+rehber.kisi_ekle("Muhammed Emin", "0534-777-8899", "Muhammed@mail.com")
 
 rehber.tum_kisiler()
 
@@ -1851,10 +1851,10 @@ print(json_veri)</textarea>
 
 # Veri oluştur
 kisi = {
-    "ad": "Ahmet",
-    "soyad": "Yılmaz",
+    "ad": "Halil",
+    "soyad": "Arslan",
     "yas": 25,
-    "sehir": "İstanbul",
+    "sehir": "Yalova",
     "hobiler": ["kitap okuma", "yüzme", "kod yazma"]
 }
 
@@ -1930,11 +1930,11 @@ csv = CSVYoneticisi()
 csv.veri_yukle(
     ["Ad", "Soyad", "Yaş", "Not", "Şehir"],
     [
-        ["Ahmet", "Yılmaz", 20, 85, "İstanbul"],
+        ["Halil", "Arslan", 20, 85, "Yalova"],
         ["Ayşe", "Demir", 21, 92, "Ankara"],
-        ["Mehmet", "Kaya", 22, 78, "İzmir"],
-        ["Zeynep", "Şahin", 20, 88, "İstanbul"],
-        ["Can", "Öztürk", 21, 95, "Ankara"]
+        ["Muhammed", "Emin", 22, 78, "İstanbul"],
+        ["Zeynep", "Şahin", 20, 88, "Yalova"],
+        ["Mehmet", "Öztürk", 21, 95, "Ankara"]
     ]
 )
 
@@ -2025,9 +2025,9 @@ db = VeriTabani()
 print(db.tablo_olustur('kullanicilar', ['id', 'ad', 'email', 'yas']))
 
 # Veri ekle
-db.ekle('kullanicilar', {'id': 1, 'ad': 'Ahmet', 'email': 'ahmet@mail.com', 'yas': 25})
+db.ekle('kullanicilar', {'id': 1, 'ad': 'Halil', 'email': 'Halil@mail.com', 'yas': 25})
 db.ekle('kullanicilar', {'id': 2, 'ad': 'Ayşe', 'email': 'ayse@mail.com', 'yas': 30})
-db.ekle('kullanicilar', {'id': 3, 'ad': 'Mehmet', 'email': 'mehmet@mail.com', 'yas': 28})
+db.ekle('kullanicilar', {'id': 3, 'ad': 'Muhammed', 'email': 'Muhammed@mail.com', 'yas': 28})
 
 # Sorgula
 print("\nTÜM KULLANICILAR:")
@@ -2376,7 +2376,7 @@ class Hesap:
         return f"✓ {miktar} TL yatırıldı. Yeni bakiye: {self.bakiye} TL"
 
 # Test
-hesap = Hesap("Ahmet Yılmaz", 1000)
+hesap = Hesap("Halil Arslan", 1000)
 
 islemler = [
     ('cek', 500),
@@ -2489,7 +2489,7 @@ liste = [1, 2, 3]
 print(f"\nListe[1] = {liste_erisim(liste, 1)}")
 print(f"Liste[10] = {liste_erisim(liste, 10)}")
 
-sozluk = {'ad': 'Ahmet', 'yas': 25}
+sozluk = {'ad': 'Halil', 'yas': 25}
 print(f"\nSözlük['ad'] = {sozluk_erisim(sozluk, 'ad')}")
 print(f"Sözlük['email'] = {sozluk_erisim(sozluk, 'email')}")
 
@@ -3126,7 +3126,7 @@ Kisi = SinifFabrikasi.sinif_olustur(
     ['ad', 'yas', 'sehir']
 )
 
-kisi1 = Kisi(ad="Ahmet", yas=25, sehir="İstanbul")
+kisi1 = Kisi(ad="Halil", yas=25, sehir="Yalova")
 kisi2 = Kisi(ad="Ayşe", yas=30, sehir="Ankara")
 
 print(kisi1)
@@ -3460,7 +3460,7 @@ print("=== POST OLUŞTUR ===")
 post1 = blog.create_post(
     "Python Öğreniyorum",
     "Python harika bir dil!",
-    "Ahmet"
+    "Halil"
 )
 print(f"Post oluşturuldu: {post1['title']}")
 
@@ -3473,7 +3473,7 @@ print(f"Post oluşturuldu: {post2['title']}")
 
 # Yorum ekle
 print("\n=== YORUM EKLE ===")
-blog.add_comment(1, "Çok güzel yazı!", "Mehmet")
+blog.add_comment(1, "Çok güzel yazı!", "Muhammed")
 blog.add_comment(1, "Teşekkürler!", "Zeynep")
 
 # Tüm postları listele
@@ -3863,9 +3863,9 @@ print(kutuphane.kitap_ekle(Kitap("978-4", "Machine Learning", "Alice Brown", 202
 
 # Üyeler ekle
 print("\n👥 ÜYELER EKLENİYOR...")
-print(kutuphane.uye_ekle(Uye("U001", "Ahmet", "Yılmaz", "ahmet@mail.com")))
+print(kutuphane.uye_ekle(Uye("U001", "Halil", "Arslan", "Halil@mail.com")))
 print(kutuphane.uye_ekle(Uye("U002", "Ayşe", "Demir", "ayse@mail.com")))
-print(kutuphane.uye_ekle(Uye("U003", "Mehmet", "Kaya", "mehmet@mail.com")))
+print(kutuphane.uye_ekle(Uye("U003", "Muhammed", "Emin", "Muhammed@mail.com")))
 
 # Kitap ödünç verme
 print("\n📖 ÖDÜNÇ İŞLEMLERİ...")
