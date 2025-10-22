@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Veri Tipleri - Kapsamlı Rehber</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            border-radius: 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 30px rgba(17, 153, 142, 0.3);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #f0f0f0;
+            font-size: 1.2em;
+        }
+
+        .data-type-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(56, 239, 125, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .data-type-card:hover {
+            transform: translateY(-5px);
+            border-color: #38ef7d;
+            box-shadow: 0 10px 30px rgba(56, 239, 125, 0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(56, 239, 125, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.8em;
+            color: #38ef7d;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .type-badge {
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.5em;
+            font-weight: bold;
+        }
+
+        .description {
+            color: #b0b0b0;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .code-container {
+            background: #1a1a1a;
+            border-left: 4px solid #38ef7d;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+
+        .code-header {
+            color: #38ef7d;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+        }
+
+        pre {
+            margin: 0;
+            color: #e0e0e0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .keyword {
+            color: #ff79c6;
+        }
+
+        .string {
+            color: #50fa7b;
+        }
+
+        .number {
+            color: #bd93f9;
+        }
+
+        .comment {
+            color: #6272a4;
+            font-style: italic;
+        }
+
+        .function {
+            color: #8be9fd;
+        }
+
+        .output {
+            background: rgba(56, 239, 125, 0.1);
+            border-left: 4px solid #38ef7d;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 10px;
+            color: #38ef7d;
+            font-family: 'Courier New', monospace;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .feature-tag {
+            background: rgba(56, 239, 125, 0.2);
+            padding: 8px 15px;
+            border-radius: 8px;
+            text-align: center;
+            color: #38ef7d;
+            font-size: 0.9em;
+            border: 1px solid rgba(56, 239, 125, 0.3);
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px;
+            margin-top: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            color: #b0b0b0;
+        }
+
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #11998e, #38ef7d);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(56, 239, 125, 0.3);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .scroll-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(56, 239, 125, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .card-title {
+                font-size: 1.4em;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🐍 Python Veri Tipleri</h1>
+            <p class="subtitle">20 Farklı Örnekle Kapsamlı Rehber</p>
+        </header>
+
+        <!-- 1. Integer (int) -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Integer (int)
+                    <span class="type-badge">TAM SAYI</span>
+                </div>
+            </div>
+            <p class="description">Tam sayıları temsil eder. Pozitif, negatif veya sıfır olabilir. Python'da integer
+                boyutu sınırsızdır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Integer örnekleri</span>
+<span class="keyword">pozitif_sayi</span> = <span class="number">42</span>
+<span class="keyword">negatif_sayi</span> = <span class="number">-15</span>
+<span class="keyword">buyuk_sayi</span> = <span class="number">999999999999999999</span>
+<span class="function">print</span>(<span class="function">type</span>(pozitif_sayi))
+<span class="function">print</span>(<span class="string">f"Toplam: {pozitif_sayi + negatif_sayi}"</span>)</pre>
+                <div class="output">▶ &lt;class 'int'&gt;<br>▶ Toplam: 27</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Sınırsız boyut</div>
+                <div class="feature-tag">✓ Matematiksel işlemler</div>
+                <div class="feature-tag">✓ Değiştirilemez</div>
+            </div>
+        </div>
+
+        <!-- 2. Float -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Float
+                    <span class="type-badge">ONDALIKLI SAYI</span>
+                </div>
+            </div>
+            <p class="description">Ondalıklı (kesirli) sayıları temsil eder. Bilimsel gösterimle de yazılabilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Float örnekleri</span>
+<span class="keyword">pi</span> = <span class="number">3.14159</span>
+<span class="keyword">bilimsel</span> = <span class="number">2.5e-3</span>  <span class="comment"># 0.0025</span>
+<span class="keyword">negatif</span> = <span class="number">-7.89</span>
+<span class="function">print</span>(<span class="string">f"Pi × 2 = {pi * 2}"</span>)
+<span class="function">print</span>(<span class="string">f"Bilimsel gösterim: {bilimsel}"</span>)</pre>
+                <div class="output">▶ Pi × 2 = 6.28318<br>▶ Bilimsel gösterim: 0.0025</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Ondalık hassasiyet</div>
+                <div class="feature-tag">✓ Bilimsel gösterim</div>
+                <div class="feature-tag">✓ IEEE 754 standardı</div>
+            </div>
+        </div>
+
+        <!-- 3. String (str) -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    String (str)
+                    <span class="type-badge">METİN</span>
+                </div>
+            </div>
+            <p class="description">Metin verilerini temsil eder. Tek, çift veya üçlü tırnak ile tanımlanır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># String örnekleri</span>
+<span class="keyword">isim</span> = <span class="string">"Python"</span>
+<span class="keyword">mesaj</span> = <span class="string">'Merhaba Dünya!'</span>
+<span class="keyword">cok_satirli</span> = <span class="string">"""Bu bir
+çok satırlı
+string örneğidir"""</span>
+<span class="function">print</span>(isim.<span class="function">upper</span>())
+<span class="function">print</span>(<span class="string">f"Uzunluk: {len(mesaj)}"</span>)</pre>
+                <div class="output">▶ PYTHON<br>▶ Uzunluk: 14</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Unicode desteği</div>
+                <div class="feature-tag">✓ Birçok metod</div>
+                <div class="feature-tag">✓ Değiştirilemez</div>
+            </div>
+        </div>
+
+        <!-- 4. Boolean (bool) -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Boolean (bool)
+                    <span class="type-badge">MANTIKSAL</span>
+                </div>
+            </div>
+            <p class="description">Mantıksal değerleri temsil eder. Sadece True veya False değerini alabilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Boolean örnekleri</span>
+<span class="keyword">aktif</span> = <span class="number">True</span>
+<span class="keyword">tamamlandi</span> = <span class="number">False</span>
+<span class="keyword">karsilastirma</span> = <span class="number">5</span> > <span class="number">3</span>  <span class="comment"># True</span>
+<span class="function">print</span>(<span class="string">f"Aktif mi? {aktif}"</span>)
+<span class="function">print</span>(<span class="string">f"5 > 3: {karsilastirma}"</span>)</pre>
+                <div class="output">▶ Aktif mi? True<br>▶ 5 > 3: True</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ True/False</div>
+                <div class="feature-tag">✓ Mantıksal işlemler</div>
+                <div class="feature-tag">✓ Koşul ifadeleri</div>
+            </div>
+        </div>
+
+        <!-- 5. List -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    List (Listeler)
+                    <span class="type-badge">SIRALANMIŞ</span>
+                </div>
+            </div>
+            <p class="description">Sıralı, değiştirilebilir ve farklı veri tiplerini içerebilen koleksiyonlardır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># List örnekleri</span>
+<span class="keyword">meyveler</span> = [<span class="string">"elma"</span>, <span class="string">"armut"</span>, <span class="string">"muz"</span>]
+<span class="keyword">karisik</span> = [<span class="number">1</span>, <span class="string">"iki"</span>, <span class="number">3.0</span>, <span class="number">True</span>]
+meyveler.<span class="function">append</span>(<span class="string">"çilek"</span>)
+<span class="function">print</span>(<span class="string">f"Meyveler: {meyveler}"</span>)
+<span class="function">print</span>(<span class="string">f"İlk meyve: {meyveler[0]}"</span>)</pre>
+                <div class="output">▶ Meyveler: ['elma', 'armut', 'muz', 'çilek']<br>▶ İlk meyve: elma</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Değiştirilebilir</div>
+                <div class="feature-tag">✓ Sıralı</div>
+                <div class="feature-tag">✓ İndeksleme</div>
+            </div>
+        </div>
+
+        <!-- 6. Tuple -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Tuple
+                    <span class="type-badge">DEĞİŞMEZ LİSTE</span>
+                </div>
+            </div>
+            <p class="description">Sıralı ancak değiştirilemez koleksiyonlardır. Parantez ile tanımlanır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Tuple örnekleri</span>
+<span class="keyword">koordinat</span> = (<span class="number">10</span>, <span class="number">20</span>)
+<span class="keyword">renkler</span> = (<span class="string">"kırmızı"</span>, <span class="string">"yeşil"</span>, <span class="string">"mavi"</span>)
+<span class="keyword">x</span>, <span class="keyword">y</span> = koordinat  <span class="comment"># Tuple unpacking</span>
+<span class="function">print</span>(<span class="string">f"X: {x}, Y: {y}"</span>)
+<span class="function">print</span>(<span class="string">f"Renk sayısı: {len(renkler)}"</span>)</pre>
+                <div class="output">▶ X: 10, Y: 20<br>▶ Renk sayısı: 3</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Değiştirilemez</div>
+                <div class="feature-tag">✓ Daha hızlı</div>
+                <div class="feature-tag">✓ Tuple unpacking</div>
+            </div>
+        </div>
+
+        <!-- 7. Dictionary (dict) -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Dictionary (dict)
+                    <span class="type-badge">ANAHTAR-DEĞER</span>
+                </div>
+            </div>
+            <p class="description">Anahtar-değer çiftlerini saklayan sırasız ve değiştirilebilir koleksiyonlardır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Dictionary örnekleri</span>
+<span class="keyword">kisi</span> = {
+    <span class="string">"ad"</span>: <span class="string">"Ahmet"</span>,
+    <span class="string">"yas"</span>: <span class="number">25</span>,
+    <span class="string">"sehir"</span>: <span class="string">"İstanbul"</span>
+}
+<span class="function">print</span>(<span class="string">f"Ad: {kisi['ad']}"</span>)
+<span class="function">print</span>(<span class="string">f"Anahtarlar: {list(kisi.keys())}"</span>)</pre>
+                <div class="output">▶ Ad: Ahmet<br>▶ Anahtarlar: ['ad', 'yas', 'sehir']</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Hızlı erişim</div>
+                <div class="feature-tag">✓ Anahtar-değer</div>
+                <div class="feature-tag">✓ Değiştirilebilir</div>
+            </div>
+        </div>
+
+        <!-- 8. Set -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Set (Kümeler)
+                    <span class="type-badge">BENZERSİZ</span>
+                </div>
+            </div>
+            <p class="description">Sırasız ve benzersiz elemanlardan oluşan koleksiyonlardır. Matematiksel küme
+                işlemleri yapılabilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Set örnekleri</span>
+<span class="keyword">sayilar</span> = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>, <span class="number">4</span>}  <span class="comment"># Tekrar eden 3 silinir</span>
+<span class="keyword">set1</span> = {<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>}
+<span class="keyword">set2</span> = {<span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>}
+<span class="function">print</span>(<span class="string">f"Sayılar: {sayilar}"</span>)
+<span class="function">print</span>(<span class="string">f"Birleşim: {set1 | set2}"</span>)</pre>
+                <div class="output">▶ Sayılar: {1, 2, 3, 4}<br>▶ Birleşim: {1, 2, 3, 4, 5}</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Benzersiz elemanlar</div>
+                <div class="feature-tag">✓ Küme işlemleri</div>
+                <div class="feature-tag">✓ Hızlı üyelik testi</div>
+            </div>
+        </div>
+
+        <!-- 9. NoneType -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    NoneType
+                    <span class="type-badge">BOŞ DEĞER</span>
+                </div>
+            </div>
+            <p class="description">Hiçbir değerin olmadığını veya boş bir değeri temsil eder. None tek bir None
+                nesnesidir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># None örnekleri</span>
+<span class="keyword">sonuc</span> = <span class="number">None</span>
+<span class="keyword">def</span> <span class="function">fonksiyon</span>():
+    <span class="keyword">pass</span>  <span class="comment"># Hiçbir şey döndürmez (None döner)</span>
+
+<span class="keyword">deger</span> = <span class="function">fonksiyon</span>()
+<span class="function">print</span>(<span class="string">f"Sonuç: {sonuc}"</span>)
+<span class="function">print</span>(<span class="string">f"Fonksiyon dönüşü: {deger}"</span>)</pre>
+                <div class="output">▶ Sonuç: None<br>▶ Fonksiyon dönüşü: None</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Boş değer</div>
+                <div class="feature-tag">✓ Tekil nesne</div>
+                <div class="feature-tag">✓ Varsayılan dönüş</div>
+            </div>
+        </div>
+
+        <!-- 10. Complex -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Complex (Karmaşık Sayılar)
+                    <span class="type-badge">KARMAŞIK</span>
+                </div>
+            </div>
+            <p class="description">Gerçek ve sanal kısımlardan oluşan karmaşık sayıları temsil eder. a + bj formatında
+                yazılır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Complex örnekleri</span>
+<span class="keyword">z1</span> = <span class="number">3 + 4j</span>
+<span class="keyword">z2</span> = <span class="function">complex</span>(<span class="number">2</span>, <span class="number">-5</span>)  <span class="comment"># 2-5j</span>
+<span class="function">print</span>(<span class="string">f"z1: {z1}"</span>)
+<span class="function">print</span>(<span class="string">f"Gerçek kısım: {z1.real}"</span>)
+<span class="function">print</span>(<span class="string">f"Sanal kısım: {z1.imag}"</span>)</pre>
+                <div class="output">▶ z1: (3+4j)<br>▶ Gerçek kısım: 3.0<br>▶ Sanal kısım: 4.0</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Gerçek + Sanal</div>
+                <div class="feature-tag">✓ Matematiksel işlemler</div>
+                <div class="feature-tag">✓ j gösterimi</div>
+            </div>
+        </div>
+
+        <!-- 11. Bytes -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Bytes
+                    <span class="type-badge">BYTE DİZİSİ</span>
+                </div>
+            </div>
+            <p class="description">Değiştirilemez byte dizileridir. İkili veri (binary data) ile çalışmak için
+                kullanılır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Bytes örnekleri</span>
+<span class="keyword">b1</span> = <span class="string">b"Merhaba"</span>
+<span class="keyword">b2</span> = <span class="string">"Python"</span>.<span class="function">encode</span>(<span class="string">'utf-8'</span>)
+<span class="keyword">b3</span> = <span class="function">bytes</span>([<span class="number">65</span>, <span class="number">66</span>, <span class="number">67</span>])  <span class="comment"># ABC</span>
+<span class="function">print</span>(<span class="string">f"b1: {b1}"</span>)
+<span class="function">print</span>(<span class="string">f"b3: {b3}"</span>)</pre>
+                <div class="output">▶ b1: b'Merhaba'<br>▶ b3: b'ABC'</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ İkili veri</div>
+                <div class="feature-tag">✓ Değiştirilemez</div>
+                <div class="feature-tag">✓ Kodlama desteği</div>
+            </div>
+        </div>
+
+        <!-- 12. Bytearray -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Bytearray
+                    <span class="type-badge">DEĞİŞEBİLİR BYTE</span>
+                </div>
+            </div>
+            <p class="description">Bytes'ın değiştirilebilir versiyonudur. Byte dizileri üzerinde değişiklik
+                yapılabilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Bytearray örnekleri</span>
+<span class="keyword">ba</span> = <span class="function">bytearray</span>(<span class="string">b"Hello"</span>)
+ba[<span class="number">0</span>] = <span class="number">74</span>  <span class="comment"># 'J' ASCII kodu</span>
+ba.<span class="function">append</span>(<span class="number">33</span>)  <span class="comment"># '!' ekle</span>
+<span class="function">print</span>(<span class="string">f"Değiştirilmiş: {ba}"</span>)
+<span class="function">print</span>(<span class="string">f"String: {ba.decode()}"</span>)</pre>
+                <div class="output">▶ Değiştirilmiş: bytearray(b'Jello!')<br>▶ String: Jello!</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Değiştirilebilir</div>
+                <div class="feature-tag">✓ Byte manipülasyonu</div>
+                <div class="feature-tag">✓ Performanslı</div>
+            </div>
+        </div>
+
+        <!-- 13. Range -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Range
+                    <span class="type-badge">SAYI ARALIĞI</span>
+                </div>
+            </div>
+            <p class="description">Sayı dizilerini temsil eder. Genellikle döngülerde kullanılır ve bellek
+                tasarrufludur.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Range örnekleri</span>
+<span class="keyword">r1</span> = <span class="function">range</span>(<span class="number">5</span>)  <span class="comment"># 0'dan 4'e kadar</span>
+<span class="keyword">r2</span> = <span class="function">range</span>(<span class="number">2</span>, <span class="number">10</span>, <span class="number">2</span>)  <span class="comment"># 2'den 10'a 2'şer artarak</span>
+<span class="function">print</span>(<span class="string">f"r1 listesi: {list(r1)}"</span>)
+<span class="function">print</span>(<span class="string">f"r2 listesi: {list(r2)}"</span>)</pre>
+                <div class="output">▶ r1 listesi: [0, 1, 2, 3, 4]<br>▶ r2 listesi: [2, 4, 6, 8]</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Bellek tasarruflu</div>
+                <div class="feature-tag">✓ Tembel değerlendirme</div>
+                <div class="feature-tag">✓ Döngüler için ideal</div>
+            </div>
+        </div>
+
+        <!-- 14. Frozenset -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Frozenset
+                    <span class="type-badge">DEĞİŞMEZ KÜME</span>
+                </div>
+            </div>
+            <p class="description">Set'in değiştirilemez versiyonudur. Dictionary anahtarı olarak kullanılabilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Frozenset örnekleri</span>
+<span class="keyword">fs1</span> = <span class="function">frozenset</span>([<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">3</span>])
+<span class="keyword">fs2</span> = <span class="function">frozenset</span>([<span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>])
+<span class="keyword">birlesim</span> = fs1 | fs2
+<span class="function">print</span>(<span class="string">f"fs1: {fs1}"</span>)
+<span class="function">print</span>(<span class="string">f"Birleşim: {birlesim}"</span>)</pre>
+                <div class="output">▶ fs1: frozenset({1, 2, 3})<br>▶ Birleşim: frozenset({1, 2, 3, 4})</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Değiştirilemez</div>
+                <div class="feature-tag">✓ Hashlenebilir</div>
+                <div class="feature-tag">✓ Dict anahtarı</div>
+            </div>
+        </div>
+
+        <!-- 15. List Comprehension -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    List Comprehension
+                    <span class="type-badge">LİSTE OLUŞTURMA</span>
+                </div>
+            </div>
+            <p class="description">Tek satırda liste oluşturmanın elegant bir yoludur. Döngü ve koşul içerebilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># List comprehension örnekleri</span>
+<span class="keyword">kareler</span> = [x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">6</span>)]
+<span class="keyword">cift_sayilar</span> = [x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">10</span>) <span class="keyword">if</span> x % <span class="number">2</span> == <span class="number">0</span>]
+<span class="keyword">matris</span> = [[i*j <span class="keyword">for</span> j <span class="keyword">in</span> <span class="function">range</span>(<span class="number">3</span>)] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="function">range</span>(<span class="number">3</span>)]
+<span class="function">print</span>(<span class="string">f"Kareler: {kareler}"</span>)
+<span class="function">print</span>(<span class="string">f"Çift sayılar: {cift_sayilar}"</span>)</pre>
+                <div class="output">▶ Kareler: [0, 1, 4, 9, 16, 25]<br>▶ Çift sayılar: [0, 2, 4, 6, 8]</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Tek satır</div>
+                <div class="feature-tag">✓ Okunabilir</div>
+                <div class="feature-tag">✓ Performanslı</div>
+            </div>
+        </div>
+
+        <!-- 16. Dictionary Comprehension -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Dictionary Comprehension
+                    <span class="type-badge">SÖZLÜK OLUŞTURMA</span>
+                </div>
+            </div>
+            <p class="description">Tek satırda dictionary oluşturmanın kısa yoludur. Anahtar-değer çiftleri dinamik
+                olarak oluşturulur.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Dictionary comprehension örnekleri</span>
+<span class="keyword">kareler_dict</span> = {x: x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">6</span>)}
+<span class="keyword">ters_dict</span> = {v: k <span class="keyword">for</span> k, v <span class="keyword">in</span> {<span class="string">'a'</span>: <span class="number">1</span>, <span class="string">'b'</span>: <span class="number">2</span>}.<span class="function">items</span>()}
+<span class="keyword">filtreli</span> = {k: v <span class="keyword">for</span> k, v <span class="keyword">in</span> kareler_dict.<span class="function">items</span>() <span class="keyword">if</span> v > <span class="number">10</span>}
+<span class="function">print</span>(<span class="string">f"Kareler: {kareler_dict}"</span>)
+<span class="function">print</span>(<span class="string">f"Filtreli: {filtreli}"</span>)</pre>
+                <div class="output">▶ Kareler: {0: 0, 1: 1, 2: 4, 3: 9, 4: 16, 5: 25}<br>▶ Filtreli: {4: 16, 5: 25}
+                </div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Kompakt sözdizimi</div>
+                <div class="feature-tag">✓ Dinamik oluşturma</div>
+                <div class="feature-tag">✓ Filtreleme</div>
+            </div>
+        </div>
+
+        <!-- 17. Set Comprehension -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Set Comprehension
+                    <span class="type-badge">KÜME OLUŞTURMA</span>
+                </div>
+            </div>
+            <p class="description">Tek satırda set oluşturmanın pratik yoludur. Otomatik olarak tekrarlayan değerleri
+                kaldırır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Set comprehension örnekleri</span>
+<span class="keyword">kare_set</span> = {x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">-3</span>, <span class="number">4</span>)}
+<span class="keyword">harfler</span> = {c.<span class="function">upper</span>() <span class="keyword">for</span> c <span class="keyword">in</span> <span class="string">"python"</span>}
+<span class="keyword">tek_sayilar</span> = {x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">20</span>) <span class="keyword">if</span> x % <span class="number">2</span> != <span class="number">0</span>}
+<span class="function">print</span>(<span class="string">f"Kareler: {kare_set}"</span>)
+<span class="function">print</span>(<span class="string">f"Harfler: {harfler}"</span>)</pre>
+                <div class="output">▶ Kareler: {0, 1, 4, 9}<br>▶ Harfler: {'P', 'Y', 'T', 'H', 'O', 'N'}</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Benzersiz değerler</div>
+                <div class="feature-tag">✓ Kısa sözdizimi</div>
+                <div class="feature-tag">✓ Otomatik filtreleme</div>
+            </div>
+        </div>
+
+        <!-- 18. Generator Expression -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Generator Expression
+                    <span class="type-badge">ÜRETKEN İFADE</span>
+                </div>
+            </div>
+            <p class="description">List comprehension'a benzer ancak tembel değerlendirme yapar. Bellek dostu bir
+                yaklaşımdır.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Generator expression örnekleri</span>
+<span class="keyword">gen</span> = (x**<span class="number">2</span> <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">5</span>))
+<span class="keyword">toplam</span> = <span class="function">sum</span>(x <span class="keyword">for</span> x <span class="keyword">in</span> <span class="function">range</span>(<span class="number">1000</span>))
+<span class="function">print</span>(<span class="string">f"Generator tipi: {type(gen)}"</span>)
+<span class="function">print</span>(<span class="string">f"Liste: {list(gen)}"</span>)
+<span class="function">print</span>(<span class="string">f"Toplam (0-999): {toplam}"</span>)</pre>
+                <div class="output">▶ Generator tipi: &lt;class 'generator'&gt;<br>▶ Liste: [0, 1, 4, 9, 16]<br>▶ Toplam
+                    (0-999): 499500</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Bellek tasarruflu</div>
+                <div class="feature-tag">✓ Tembel değerlendirme</div>
+                <div class="feature-tag">✓ Büyük veriler için ideal</div>
+            </div>
+        </div>
+
+        <!-- 19. Nested Collections -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Nested Collections
+                    <span class="type-badge">İÇ İÇE YAPILAR</span>
+                </div>
+            </div>
+            <p class="description">Liste, dictionary ve diğer veri yapıları iç içe kullanılarak karmaşık veri modelleri
+                oluşturulabilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Nested collections örnekleri</span>
+<span class="keyword">ogrenciler</span> = [
+    {<span class="string">"ad"</span>: <span class="string">"Ali"</span>, <span class="string">"notlar"</span>: [<span class="number">85</span>, <span class="number">90</span>, <span class="number">78</span>]},
+    {<span class="string">"ad"</span>: <span class="string">"Ayşe"</span>, <span class="string">"notlar"</span>: [<span class="number">92</span>, <span class="number">88</span>, <span class="number">95</span>]}
+]
+<span class="keyword">matris</span> = [[<span class="number">1</span>, <span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">6</span>]]
+<span class="function">print</span>(<span class="string">f"{ogrenciler[0]['ad']}'nin ilk notu: {ogrenciler[0]['notlar'][0]}"</span>)
+<span class="function">print</span>(<span class="string">f"Matris 2. satır: {matris[1]}"</span>)</pre>
+                <div class="output">▶ Ali'nin ilk notu: 85<br>▶ Matris 2. satır: [3, 4]</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Karmaşık yapılar</div>
+                <div class="feature-tag">✓ Çok boyutlu veri</div>
+                <div class="feature-tag">✓ Esnek modelleme</div>
+            </div>
+        </div>
+
+        <!-- 20. Type Conversion -->
+        <div class="data-type-card">
+            <div class="card-header">
+                <div class="card-title">
+                    Type Conversion (Tip Dönüşümü)
+                    <span class="type-badge">DÖNÜŞÜM</span>
+                </div>
+            </div>
+            <p class="description">Bir veri tipini başka bir veri tipine dönüştürme işlemleridir. Explicit ve implicit
+                dönüşümler yapılabilir.</p>
+            <div class="code-container">
+                <div class="code-header">Örnek Kod:</div>
+                <pre><span class="comment"># Type conversion örnekleri</span>
+<span class="keyword">sayi_str</span> = <span class="string">"123"</span>
+<span class="keyword">sayi_int</span> = <span class="function">int</span>(sayi_str)
+<span class="keyword">sayi_float</span> = <span class="function">float</span>(sayi_int)
+<span class="keyword">liste</span> = <span class="function">list</span>(<span class="string">"Python"</span>)
+<span class="keyword">set_den_liste</span> = <span class="function">list</span>({<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>})
+<span class="function">print</span>(<span class="string">f"String → Int: {sayi_int}, tip: {type(sayi_int)}"</span>)
+<span class="function">print</span>(<span class="string">f"String → List: {liste}"</span>)</pre>
+                <div class="output">▶ String → Int: 123, tip: &lt;class 'int'&gt;<br>▶ String → List: ['P', 'y', 't',
+                    'h', 'o', 'n']</div>
+            </div>
+            <div class="features">
+                <div class="feature-tag">✓ Esnek dönüşüm</div>
+                <div class="feature-tag">✓ Tip kontrolü</div>
+                <div class="feature-tag">✓ Çok yönlü</div>
+            </div>
+        </div>
+
+        <footer>
+            <h3>🎓 Python Veri Tipleri Özeti</h3>
+            <p>Bu rehber Python'daki temel veri tiplerini ve 20 farklı kullanım örneğini kapsamaktadır.</p>
+            <p style="margin-top: 15px; color: #38ef7d;">Daha fazla bilgi için Python resmi dokümantasyonunu ziyaret
+                edebilirsiniz.</p>
+            <p style="margin-top: 20px; font-size: 0.9em;">© 2025 Python Veri Tipleri Rehberi</p>
+        </footer>
+    </div>
+
+    <div class="scroll-top" id="scrollTop">↑</div>
+
+    <script>
+        // Scroll to top butonu
+        const scrollTopBtn = document.getElementById('scrollTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                scrollTopBtn.classList.add('visible');
+            } else {
+                scrollTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Kartlara hover efekti
+        document.querySelectorAll('.data-type-card').forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            card.addEventListener('mouseleave', function () {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+
+</html>

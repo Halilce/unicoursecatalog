@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Temel Veri Tipleri - 15 Örnek</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #134e5e 100%);
+            color: #e8e8e8;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            padding: 50px 20px;
+            background: linear-gradient(135deg, #0ba360 0%, #3cba92 100%);
+            border-radius: 25px;
+            margin-bottom: 50px;
+            box-shadow: 0 15px 40px rgba(11, 163, 96, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        h1 {
+            font-size: 3em;
+            color: #fff;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .subtitle {
+            color: #f5f5f5;
+            font-size: 1.3em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .type-badge-header {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin: 10px 5px;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .example-card {
+            background: linear-gradient(145deg, rgba(30, 60, 114, 0.6), rgba(19, 78, 94, 0.6));
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(60, 186, 146, 0.3);
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .example-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(60, 186, 146, 0.1), transparent);
+            transition: left 0.5s;
+        }
+
+        .example-card:hover::before {
+            left: 100%;
+        }
+
+        .example-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: #3cba92;
+            box-shadow: 0 15px 40px rgba(60, 186, 146, 0.3);
+        }
+
+        .example-number {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: linear-gradient(135deg, #0ba360, #3cba92);
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2em;
+            box-shadow: 0 4px 10px rgba(11, 163, 96, 0.4);
+        }
+
+        .example-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid rgba(60, 186, 146, 0.3);
+        }
+
+        .type-icon {
+            font-size: 2em;
+        }
+
+        .example-title {
+            font-size: 1.5em;
+            color: #3cba92;
+            font-weight: 600;
+        }
+
+        .type-label {
+            background: linear-gradient(135deg, #0ba360, #3cba92);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .example-description {
+            color: #b8b8b8;
+            margin-bottom: 18px;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+
+        .code-block {
+            background: #0d1117;
+            border-left: 5px solid #3cba92;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            overflow-x: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .code-title {
+            color: #3cba92;
+            font-weight: bold;
+            margin-bottom: 12px;
+            font-size: 0.95em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        pre {
+            margin: 0;
+            color: #e8e8e8;
+            font-family: 'Courier New', Consolas, monospace;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .keyword {
+            color: #ff6b9d;
+            font-weight: bold;
+        }
+
+        .string {
+            color: #4ade80;
+        }
+
+        .number {
+            color: #c084fc;
+        }
+
+        .comment {
+            color: #64748b;
+            font-style: italic;
+        }
+
+        .function {
+            color: #60a5fa;
+        }
+
+        .operator {
+            color: #fbbf24;
+        }
+
+        .boolean {
+            color: #fb923c;
+            font-weight: bold;
+        }
+
+        .output-block {
+            background: linear-gradient(135deg, rgba(11, 163, 96, 0.15), rgba(60, 186, 146, 0.15));
+            border-left: 5px solid #3cba92;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 12px;
+            color: #4ade80;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+        }
+
+        .output-icon {
+            display: inline-block;
+            color: #3cba92;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .info-box {
+            background: rgba(60, 186, 146, 0.1);
+            border: 1px solid rgba(60, 186, 146, 0.3);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-top: 15px;
+            font-size: 0.9em;
+            color: #d1d1d1;
+        }
+
+        .info-icon {
+            color: #3cba92;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .footer-title {
+            font-size: 1.8em;
+            color: #3cba92;
+            margin-bottom: 15px;
+        }
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .summary-card {
+            background: linear-gradient(135deg, rgba(11, 163, 96, 0.2), rgba(60, 186, 146, 0.2));
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid rgba(60, 186, 146, 0.3);
+        }
+
+        .summary-card h3 {
+            color: #3cba92;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .scroll-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #0ba360, #3cba92);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(11, 163, 96, 0.4);
+            transition: all 0.3s ease;
+            opacity: 0;
+            visibility: hidden;
+            font-size: 1.5em;
+            z-index: 1000;
+        }
+
+        .scroll-btn.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .scroll-btn:hover {
+            transform: translateY(-8px) scale(1.1);
+            box-shadow: 0 10px 30px rgba(11, 163, 96, 0.6);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .example-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .example-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Python Temel Veri Tipleri</h1>
+            <p class="subtitle">Integer, String ve Boolean ile 15 Pratik Örnek</p>
+            <div style="margin-top: 20px;">
+                <span class="type-badge-header">🔢 INTEGER</span>
+                <span class="type-badge-header">📝 STRING</span>
+                <span class="type-badge-header">✓ BOOLEAN</span>
+            </div>
+        </header>
+
+        <div class="example-grid">
+            <!-- Örnek 1: Sayı İşlemleri -->
+            <div class="example-card">
+                <div class="example-number">1</div>
+                <div class="example-header">
+                    <span class="type-icon">🔢</span>
+                    <div>
+                        <div class="example-title">Temel Matematiksel İşlemler</div>
+                        <span class="type-label">Integer</span>
+                    </div>
+                </div>
+                <p class="example-description">Integer veri tipi ile toplama, çıkarma, çarpma ve bölme işlemleri</p>
+                <div class="code-block">
+                    <div class="code-title">💻 Kod:</div>
+                    <pre><span class="keyword">a</span> = <span class="number">15</span>
+<span class="keyword">b</span> = <span class="number">4</span>
+
+<span class="keyword">toplam</span> = a + b
+<span class="keyword">carpim</span> = a * b
+<span class="keyword">bolum</span> = a / b
+<span class="keyword">mod</span> = a % b
+
+<span class="function">print</span>(<span class="string">f"Toplam: {toplam}, Çarpım: {carpim}"</span>)
+<span class="function">print</span>(<span class="string">f"Bölüm: {bolum}, Mod: {mod}"</span>)</pre>
+                    <div class="output-block">
+                        <span class="output-icon">▶</span>Toplam: 19, Çarpım: 60<br>
+                        <span class="output-icon">▶</span>Bölüm: 3.75, Mod: 3
+                    </div>
+                </div>
+                <div class="info-box">
+                    <span class="info-icon">💡</span>Integer ile yapılan bölme işlemi (/) float sonuç verir. Tam sayı
+                    bölme için // kullanılır.
+                </div>
+            </div>
+
+            <!-- Örnek 2: String Birleştirme -->
+            <div class="example-card">
+                <div class="example-number">2</div>
+                <div class="example-header">
+                    <span class="type-icon">📝</span>
+                    <div>
+                        <div class="example-title">String Birleştirme ve Tekrar</div>
+                        <span class="type-label">String</span>
+                    </div>
+                </div>
+                <p class="example-description">String'leri birleştirme ve tekrarlama işlemleri</p>
+                <div class="code-block">
+                    <div class="code-title">💻 Kod:</div>
+                    <pre><span class="keyword">ad</span> = <span class="string">"Ahmet"</span>
+<span class="keyword">soyad</span> = <span class="string">"Yılmaz"</span>
+
+<span class="keyword">tam_ad</span> = ad + <span class="string">" "</span> + soyad
+<span class="keyword">tekrar</span> = <span class="string">"Python "</span> * <span class="number">3</span>
+
+<span class="function">print</span>(tam_ad)
+<span class="function">print</span>(tekrar)</pre>
+                    <div class="output-block">
+                        <span class="output-icon">▶</span>Ahmet Yılmaz<br>
+                        <span class="output-icon">▶</span>Python Python Python
+                    </div>
+                </div>
+                <div class="info-box">
+                    <span class="info-icon">💡</span>String'ler + operatörü ile birleştirilir, * operatörü ile
+                    tekrarlanır.
+                </div>
+            </div>
+
+            <!-- Örnek 3: Boolean Karşılaştırma -->
+            <div class="example-card">
+                <div class="example-number">3</div>
+                <div class="example-header">
+                    <span class="type-icon">✓</span>
+                    <div>
+                        <div class="example-title">Karşılaştırma Operatörleri</div>
+                        <span class="type-label">Boolean</span>
+                    </div>
+                </div>
+                <p class="example-description">Sayıları karşılaştırarak boolean değer elde etme</p>
+                <div class="code-block">
+                    <div class="code-title">💻 Kod:</div>
+                    <pre><span class="keyword">yas</span> = <span class="number">18</span>
+<span class="keyword">min_yas</span> = <span class="number">18</span>
+
+<span class="keyword">yetiskin</span> = yas <span class="operator">&gt;=</span> min_yas
+<span class="keyword">ehliyet_alabilir</span> = yas <span class="operator">&gt;=</span> <span class="number">18</span>
+<span class="keyword">okul_cagi</span> = yas <span class="operator">&lt;</span> <span class="number">18</span>
+
+<span class="function">print</span>(<span class="string">f"Yetişkin mi? {yetiskin}"</span>)
+<span class="function">print</span>(<span class="string">f"Ehliyet alabilir mi? {ehliyet_alabilir}"</span>)
+<span class="function">print</span>(<span class="string">f"Okul çağı mı? {okul_cagi}"</span>)</pre>
+                    <div class="output-block">
+                        <span class="output-icon">▶</span>Yetişkin mi? <span class="boolean">True</span><br>
+                        <span class="output-icon">▶</span>Ehliyet alabilir mi? <span class="boolean">True</span><br>
+                        <span class="output-icon">▶</span>Okul çağı mı? <span class="boolean">False</span>
+                    </div>
+                </div>
+                <div class="info-box">
+                    <span class="info-icon">💡</span>Karşılaştırma operatörleri (>, <,>=, <=,==, !=) boolean değer
+                            döndürür. </div>
+                </div>
+
+                <!-- Örnek 4: String İndeksleme -->
+                <div class="example-card">
+                    <div class="example-number">4</div>
+                    <div class="example-header">
+                        <span class="type-icon">📝</span>
+                        <div>
+                            <div class="example-title">String İndeksleme ve Dilimleme</div>
+                            <span class="type-label">String</span>
+                        </div>
+                    </div>
+                    <p class="example-description">String karakterlerine erişim ve dilimleme</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">metin</span> = <span class="string">"Python Programlama"</span>
+
+<span class="keyword">ilk_harf</span> = metin[<span class="number">0</span>]
+<span class="keyword">son_harf</span> = metin[<span class="number">-1</span>]
+<span class="keyword">ilk_kelime</span> = metin[<span class="number">0</span>:<span class="number">6</span>]
+<span class="keyword">son_kelime</span> = metin[<span class="number">7</span>:]
+
+<span class="function">print</span>(<span class="string">f"İlk harf: {ilk_harf}"</span>)
+<span class="function">print</span>(<span class="string">f"Son harf: {son_harf}"</span>)
+<span class="function">print</span>(<span class="string">f"İlk kelime: {ilk_kelime}"</span>)
+<span class="function">print</span>(<span class="string">f"Son kelime: {son_kelime}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>İlk harf: P<br>
+                            <span class="output-icon">▶</span>Son harf: a<br>
+                            <span class="output-icon">▶</span>İlk kelime: Python<br>
+                            <span class="output-icon">▶</span>Son kelime: Programlama
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>String indeksleri 0'dan başlar. Negatif indeks sondan başlar
+                        (-1 son karakter).
+                    </div>
+                </div>
+
+                <!-- Örnek 5: Integer Üs Alma -->
+                <div class="example-card">
+                    <div class="example-number">5</div>
+                    <div class="example-header">
+                        <span class="type-icon">🔢</span>
+                        <div>
+                            <div class="example-title">Üs Alma ve Kök İşlemleri</div>
+                            <span class="type-label">Integer</span>
+                        </div>
+                    </div>
+                    <p class="example-description">Sayıların üssünü alma ve kökünü bulma işlemleri</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">taban</span> = <span class="number">2</span>
+<span class="keyword">us</span> = <span class="number">10</span>
+
+<span class="keyword">sonuc</span> = taban ** us
+<span class="keyword">kare</span> = <span class="number">16</span> ** <span class="number">2</span>
+<span class="keyword">kup</span> = <span class="number">5</span> ** <span class="number">3</span>
+<span class="keyword">karekök</span> = <span class="number">64</span> ** <span class="number">0.5</span>
+
+<span class="function">print</span>(<span class="string">f"2^10 = {sonuc}"</span>)
+<span class="function">print</span>(<span class="string">f"16² = {kare}"</span>)
+<span class="function">print</span>(<span class="string">f"5³ = {kup}"</span>)
+<span class="function">print</span>(<span class="string">f"√64 = {karekök}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>2^10 = 1024<br>
+                            <span class="output-icon">▶</span>16² = 256<br>
+                            <span class="output-icon">▶</span>5³ = 125<br>
+                            <span class="output-icon">▶</span>√64 = 8.0
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>** operatörü üs alma için kullanılır. Karekök için 0.5 üssü
+                        kullanılabilir.
+                    </div>
+                </div>
+
+                <!-- Örnek 6: Boolean Mantıksal İşlemler -->
+                <div class="example-card">
+                    <div class="example-number">6</div>
+                    <div class="example-header">
+                        <span class="type-icon">✓</span>
+                        <div>
+                            <div class="example-title">Mantıksal Operatörler</div>
+                            <span class="type-label">Boolean</span>
+                        </div>
+                    </div>
+                    <p class="example-description">AND, OR, NOT operatörleri ile boolean işlemler</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">sicak</span> = <span class="boolean">True</span>
+<span class="keyword">yagmurlu</span> = <span class="boolean">False</span>
+
+<span class="keyword">guzel_hava</span> = sicak <span class="operator">and not</span> yagmurlu
+<span class="keyword">dis_cikma</span> = sicak <span class="operator">or not</span> yagmurlu
+<span class="keyword">semsiye_gerek</span> = <span class="operator">not</span> yagmurlu
+
+<span class="function">print</span>(<span class="string">f"Güzel hava mı? {guzel_hava}"</span>)
+<span class="function">print</span>(<span class="string">f"Dışarı çıkılır mı? {dis_cikma}"</span>)
+<span class="function">print</span>(<span class="string">f"Şemsiye gerek var mı? {semsiye_gerek}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>Güzel hava mı? <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>Dışarı çıkılır mı? <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>Şemsiye gerek var mı? <span class="boolean">True</span>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>and: Her ikisi de True olmalı, or: En az biri True olmalı, not:
+                        Tersi alır.
+                    </div>
+                </div>
+
+                <!-- Örnek 7: String Metodları -->
+                <div class="example-card">
+                    <div class="example-number">7</div>
+                    <div class="example-header">
+                        <span class="type-icon">📝</span>
+                        <div>
+                            <div class="example-title">String Metodları ve Dönüşümler</div>
+                            <span class="type-label">String</span>
+                        </div>
+                    </div>
+                    <p class="example-description">Yaygın kullanılan string metodları</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">metin</span> = <span class="string">"   python programlama   "</span>
+
+<span class="keyword">buyuk_harf</span> = metin.<span class="function">upper</span>()
+<span class="keyword">kucuk_harf</span> = metin.<span class="function">lower</span>()
+<span class="keyword">baslik</span> = metin.<span class="function">title</span>()
+<span class="keyword">temiz</span> = metin.<span class="function">strip</span>()
+
+<span class="function">print</span>(<span class="string">f"Büyük: {buyuk_harf}"</span>)
+<span class="function">print</span>(<span class="string">f"Küçük: {kucuk_harf}"</span>)
+<span class="function">print</span>(<span class="string">f"Başlık: {baslik}"</span>)
+<span class="function">print</span>(<span class="string">f"Temiz: '{temiz}'"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>Büyük: PYTHON PROGRAMLAMA <br>
+                            <span class="output-icon">▶</span>Küçük: python programlama <br>
+                            <span class="output-icon">▶</span>Başlık: Python Programlama <br>
+                            <span class="output-icon">▶</span>Temiz: 'python programlama'
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>strip() başındaki ve sonundaki boşlukları kaldırır, upper()
+                        büyük harfe çevirir.
+                    </div>
+                </div>
+
+                <!-- Örnek 8: Integer Tam Sayı Bölme -->
+                <div class="example-card">
+                    <div class="example-number">8</div>
+                    <div class="example-header">
+                        <span class="type-icon">🔢</span>
+                        <div>
+                            <div class="example-title">Tam Sayı Bölme ve Mod</div>
+                            <span class="type-label">Integer</span>
+                        </div>
+                    </div>
+                    <p class="example-description">Tam sayı bölme (//) ve kalan (%) işlemleri</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">toplam_elma</span> = <span class="number">23</span>
+<span class="keyword">kisi_sayisi</span> = <span class="number">5</span>
+
+<span class="keyword">kisi_basi</span> = toplam_elma <span class="operator">//</span> kisi_sayisi
+<span class="keyword">kalan_elma</span> = toplam_elma <span class="operator">%</span> kisi_sayisi
+
+<span class="function">print</span>(<span class="string">f"Her kişiye {kisi_basi} elma düşer"</span>)
+<span class="function">print</span>(<span class="string">f"Geriye {kalan_elma} elma kalır"</span>)
+<span class="function">print</span>(<span class="string">f"Doğrulama: {kisi_basi * kisi_sayisi + kalan_elma}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>Her kişiye 4 elma düşer<br>
+                            <span class="output-icon">▶</span>Geriye 3 elma kalır<br>
+                            <span class="output-icon">▶</span>Doğrulama: 23
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>// tam sayı bölme yapar (aşağı yuvarlar), % kalan bulur (mod).
+                    </div>
+                </div>
+
+                <!-- Örnek 9: String Bulma ve Sayma -->
+                <div class="example-card">
+                    <div class="example-number">9</div>
+                    <div class="example-header">
+                        <span class="type-icon">📝</span>
+                        <div>
+                            <div class="example-title">String'de Arama ve Sayma</div>
+                            <span class="type-label">String</span>
+                        </div>
+                    </div>
+                    <p class="example-description">String içinde arama yapma ve karakter sayma</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">cumle</span> = <span class="string">"Python ile programlama öğrenmek çok eğlenceli"</span>
+
+<span class="keyword">uzunluk</span> = <span class="function">len</span>(cumle)
+<span class="keyword">python_var</span> = <span class="string">"Python"</span> <span class="operator">in</span> cumle
+<span class="keyword">a_sayisi</span> = cumle.<span class="function">count</span>(<span class="string">"a"</span>)
+<span class="keyword">python_index</span> = cumle.<span class="function">find</span>(<span class="string">"Python"</span>)
+
+<span class="function">print</span>(<span class="string">f"Uzunluk: {uzunluk} karakter"</span>)
+<span class="function">print</span>(<span class="string">f"Python var mı? {python_var}"</span>)
+<span class="function">print</span>(<span class="string">f"'a' sayısı: {a_sayisi}"</span>)
+<span class="function">print</span>(<span class="string">f"Python başlangıç indeksi: {python_index}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>Uzunluk: 46 karakter<br>
+                            <span class="output-icon">▶</span>Python var mı? <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>'a' sayısı: 5<br>
+                            <span class="output-icon">▶</span>Python başlangıç indeksi: 0
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>in operatörü ile varlık kontrolü, count() ile sayma, find() ile
+                        indeks bulunur.
+                    </div>
+                </div>
+
+                <!-- Örnek 10: Boolean Dönüşümler -->
+                <div class="example-card">
+                    <div class="example-number">10</div>
+                    <div class="example-header">
+                        <span class="type-icon">✓</span>
+                        <div>
+                            <div class="example-title">Boolean Tip Dönüşümleri</div>
+                            <span class="type-label">Boolean</span>
+                        </div>
+                    </div>
+                    <p class="example-description">Farklı veri tiplerinin boolean değerleri</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="comment"># Boş değerler False döner</span>
+<span class="function">print</span>(<span class="string">f"bool(0) = {bool(0)}"</span>)
+<span class="function">print</span>(<span class="string">f"bool('') = {bool('')}"</span>)
+<span class="function">print</span>(<span class="string">f"bool([]) = {bool([])}"</span>)
+
+<span class="comment"># Dolu değerler True döner</span>
+<span class="function">print</span>(<span class="string">f"bool(1) = {bool(1)}"</span>)
+<span class="function">print</span>(<span class="string">f"bool('Python') = {bool('Python')}"</span>)
+<span class="function">print</span>(<span class="string">f"bool([1, 2]) = {bool([1, 2])}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>bool(0) = <span class="boolean">False</span><br>
+                            <span class="output-icon">▶</span>bool('') = <span class="boolean">False</span><br>
+                            <span class="output-icon">▶</span>bool([]) = <span class="boolean">False</span><br>
+                            <span class="output-icon">▶</span>bool(1) = <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>bool('Python') = <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>bool([1, 2]) = <span class="boolean">True</span>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>0, boş string "", boş liste [] False kabul edilir. Diğer
+                        değerler True'dur.
+                    </div>
+                </div>
+
+                <!-- Örnek 11: Integer Mutlak Değer ve İşaret -->
+                <div class="example-card">
+                    <div class="example-number">11</div>
+                    <div class="example-header">
+                        <span class="type-icon">🔢</span>
+                        <div>
+                            <div class="example-title">Mutlak Değer ve Pozitif/Negatif</div>
+                            <span class="type-label">Integer</span>
+                        </div>
+                    </div>
+                    <p class="example-description">Sayıların mutlak değeri ve işaret kontrolü</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">sayi1</span> = <span class="number">-42</span>
+<span class="keyword">sayi2</span> = <span class="number">15</span>
+
+<span class="keyword">mutlak1</span> = <span class="function">abs</span>(sayi1)
+<span class="keyword">mutlak2</span> = <span class="function">abs</span>(sayi2)
+
+<span class="keyword">pozitif_mi1</span> = sayi1 <span class="operator">&gt;</span> <span class="number">0</span>
+<span class="keyword">pozitif_mi2</span> = sayi2 <span class="operator">&gt;</span> <span class="number">0</span>
+
+<span class="function">print</span>(<span class="string">f"|-42| = {mutlak1}"</span>)
+<span class="function">print</span>(<span class="string">f"|15| = {mutlak2}"</span>)
+<span class="function">print</span>(<span class="string">f"-42 pozitif mi? {pozitif_mi1}"</span>)
+<span class="function">print</span>(<span class="string">f"15 pozitif mi? {pozitif_mi2}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>|-42| = 42<br>
+                            <span class="output-icon">▶</span>|15| = 15<br>
+                            <span class="output-icon">▶</span>-42 pozitif mi? <span class="boolean">False</span><br>
+                            <span class="output-icon">▶</span>15 pozitif mi? <span class="boolean">True</span>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>abs() fonksiyonu sayının mutlak değerini (pozitif halini)
+                        döndürür.
+                    </div>
+                </div>
+
+                <!-- Örnek 12: String Değiştirme ve Bölme -->
+                <div class="example-card">
+                    <div class="example-number">12</div>
+                    <div class="example-header">
+                        <span class="type-icon">📝</span>
+                        <div>
+                            <div class="example-title">String Replace ve Split</div>
+                            <span class="type-label">String</span>
+                        </div>
+                    </div>
+                    <p class="example-description">String içinde değiştirme ve bölme işlemleri</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">metin</span> = <span class="string">"Merhaba Dünya, Python Dünya"</span>
+<span class="keyword">liste_metin</span> = <span class="string">"elma,armut,muz,çilek"</span>
+
+<span class="keyword">degistirilmis</span> = metin.<span class="function">replace</span>(<span class="string">"Dünya"</span>, <span class="string">"World"</span>)
+<span class="keyword">kelimeler</span> = metin.<span class="function">split</span>(<span class="string">" "</span>)
+<span class="keyword">meyveler</span> = liste_metin.<span class="function">split</span>(<span class="string">","</span>)
+
+<span class="function">print</span>(<span class="string">f"Değiştirilmiş: {degistirilmis}"</span>)
+<span class="function">print</span>(<span class="string">f"Kelimeler: {kelimeler}"</span>)
+<span class="function">print</span>(<span class="string">f"Meyveler: {meyveler}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>Değiştirilmiş: Merhaba World, Python World<br>
+                            <span class="output-icon">▶</span>Kelimeler: ['Merhaba', 'Dünya,', 'Python', 'Dünya']<br>
+                            <span class="output-icon">▶</span>Meyveler: ['elma', 'armut', 'muz', 'çilek']
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>replace() değiştirir, split() ayırıcıya göre listeye böler.
+                    </div>
+                </div>
+
+                <!-- Örnek 13: Integer Min-Max -->
+                <div class="example-card">
+                    <div class="example-number">13</div>
+                    <div class="example-header">
+                        <span class="type-icon">🔢</span>
+                        <div>
+                            <div class="example-title">Minimum ve Maximum Bulma</div>
+                            <span class="type-label">Integer</span>
+                        </div>
+                    </div>
+                    <p class="example-description">Sayılar arasından en küçük ve en büyüğü bulma</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">a</span> = <span class="number">45</span>
+<span class="keyword">b</span> = <span class="number">23</span>
+<span class="keyword">c</span> = <span class="number">67</span>
+
+<span class="keyword">en_kucuk</span> = <span class="function">min</span>(a, b, c)
+<span class="keyword">en_buyuk</span> = <span class="function">max</span>(a, b, c)
+<span class="keyword">toplam</span> = a + b + c
+<span class="keyword">ortalama</span> = toplam <span class="operator">//</span> <span class="number">3</span>
+
+<span class="function">print</span>(<span class="string">f"En küçük: {en_kucuk}"</span>)
+<span class="function">print</span>(<span class="string">f"En büyük: {en_buyuk}"</span>)
+<span class="function">print</span>(<span class="string">f"Toplam: {toplam}"</span>)
+<span class="function">print</span>(<span class="string">f"Ortalama: {ortalama}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>En küçük: 23<br>
+                            <span class="output-icon">▶</span>En büyük: 67<br>
+                            <span class="output-icon">▶</span>Toplam: 135<br>
+                            <span class="output-icon">▶</span>Ortalama: 45
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>min() en küçük, max() en büyük değeri döndürür. Çoklu argüman
+                        alabilirler.
+                    </div>
+                </div>
+
+                <!-- Örnek 14: String Kontrol Metodları -->
+                <div class="example-card">
+                    <div class="example-number">14</div>
+                    <div class="example-header">
+                        <span class="type-icon">📝</span>
+                        <div>
+                            <div class="example-title">String Tip Kontrol Metodları</div>
+                            <span class="type-label">String</span>
+                        </div>
+                    </div>
+                    <p class="example-description">String içeriğini kontrol eden metodlar</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="keyword">sayi_str</span> = <span class="string">"12345"</span>
+<span class="keyword">harf_str</span> = <span class="string">"Python"</span>
+<span class="keyword">buyuk_str</span> = <span class="string">"PYTHON"</span>
+
+<span class="function">print</span>(<span class="string">f"'12345' sayı mı? {sayi_str.isdigit()}"</span>)
+<span class="function">print</span>(<span class="string">f"'Python' harf mi? {harf_str.isalpha()}"</span>)
+<span class="function">print</span>(<span class="string">f"'PYTHON' büyük mü? {buyuk_str.isupper()}"</span>)
+<span class="function">print</span>(<span class="string">f"'python' küçük mü? {harf_str.lower().islower()}"</span>)
+<span class="function">print</span>(<span class="string">f"'Python' başlıyor mu 'Py'? {harf_str.startswith('Py')}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>'12345' sayı mı? <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>'Python' harf mi? <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>'PYTHON' büyük mü? <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>'python' küçük mü? <span class="boolean">True</span><br>
+                            <span class="output-icon">▶</span>'Python' başlıyor mu 'Py'? <span
+                                class="boolean">True</span>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>isdigit(), isalpha(), isupper(), islower(), startswith()
+                        kontrol metodlarıdır.
+                    </div>
+                </div>
+
+                <!-- Örnek 15: Karışık Örnek -->
+                <div class="example-card">
+                    <div class="example-number">15</div>
+                    <div class="example-header">
+                        <span class="type-icon">🎯</span>
+                        <div>
+                            <div class="example-title">Karma Pratik Uygulama</div>
+                            <span class="type-label">Int + Str + Bool</span>
+                        </div>
+                    </div>
+                    <p class="example-description">Üç veri tipini birlikte kullanan gerçek dünya örneği</p>
+                    <div class="code-block">
+                        <div class="code-title">💻 Kod:</div>
+                        <pre><span class="comment"># E-ticaret sepet kontrolü</span>
+<span class="keyword">urun_adi</span> = <span class="string">"Laptop"</span>
+<span class="keyword">fiyat</span> = <span class="number">15000</span>
+<span class="keyword">adet</span> = <span class="number">2</span>
+<span class="keyword">stokta_var</span> = <span class="boolean">True</span>
+<span class="keyword">indirim_kodu</span> = <span class="string">"YENI2025"</span>
+
+<span class="keyword">toplam</span> = fiyat * adet
+<span class="keyword">indirim</span> = toplam <span class="operator">*</span> <span class="number">10</span> <span class="operator">//</span> <span class="number">100</span>  <span class="comment"># %10 indirim</span>
+<span class="keyword">odenecek</span> = toplam - indirim
+<span class="keyword">siparis_verilebilir</span> = stokta_var <span class="operator">and</span> adet <span class="operator">&gt;</span> <span class="number">0</span>
+
+<span class="function">print</span>(<span class="string">f"Ürün: {urun_adi.upper()}"</span>)
+<span class="function">print</span>(<span class="string">f"Toplam: {toplam} TL"</span>)
+<span class="function">print</span>(<span class="string">f"İndirim ({indirim_kodu}): -{indirim} TL"</span>)
+<span class="function">print</span>(<span class="string">f"Ödenecek: {odenecek} TL"</span>)
+<span class="function">print</span>(<span class="string">f"Sipariş verilebilir mi? {siparis_verilebilir}"</span>)</pre>
+                        <div class="output-block">
+                            <span class="output-icon">▶</span>Ürün: LAPTOP<br>
+                            <span class="output-icon">▶</span>Toplam: 30000 TL<br>
+                            <span class="output-icon">▶</span>İndirim (YENI2025): -3000 TL<br>
+                            <span class="output-icon">▶</span>Ödenecek: 27000 TL<br>
+                            <span class="output-icon">▶</span>Sipariş verilebilir mi? <span class="boolean">True</span>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <span class="info-icon">💡</span>Gerçek uygulamalarda int, str ve bool tipleri birlikte
+                        kullanılır.
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <h2 class="footer-title">📚 Temel Veri Tipleri Özeti</h2>
+
+                <div class="summary-grid">
+                    <div class="summary-card">
+                        <h3>🔢 Integer (int)</h3>
+                        <p>Tam sayılar için kullanılır. Matematiksel işlemler, sayma, indeksleme gibi işlemlerde tercih
+                            edilir.</p>
+                        <p style="margin-top: 10px; color: #3cba92;"><strong>Operatörler:</strong> +, -, *, /, //, %, **
+                        </p>
+                    </div>
+
+                    <div class="summary-card">
+                        <h3>📝 String (str)</h3>
+                        <p>Metinsel veriler için kullanılır. İndekslenebilir, dilimlenebilir ve birçok metoda sahiptir.
+                        </p>
+                        <p style="margin-top: 10px; color: #3cba92;"><strong>Metodlar:</strong> upper(), lower(),
+                            strip(), split(), replace()</p>
+                    </div>
+
+                    <div class="summary-card">
+                        <h3>✓ Boolean (bool)</h3>
+                        <p>Mantıksal değerler için kullanılır. Sadece True veya False değerini alabilir. Koşul
+                            ifadelerinde kullanılır.</p>
+                        <p style="margin-top: 10px; color: #3cba92;"><strong>Operatörler:</strong> and, or, not, ==, !=,
+                            <,>, <=,>=</p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 1.1em;">Bu 15 örnek, Python'un temel veri tiplerini kapsamlı bir
+                    şekilde göstermektedir.</p>
+                <p style="margin-top: 10px; color: #888;">© 2025 - Python Temel Veri Tipleri Rehberi</p>
+            </footer>
+        </div>
+
+        <div class="scroll-btn" id="scrollBtn">↑</div>
+
+        <script>
+            // Scroll to top butonu kontrolü
+            const scrollBtn = document.getElementById('scrollBtn');
+
+            window.addEventListener('scroll', () => {
+                if (window.pageYOffset > 400) {
+                    scrollBtn.classList.add('visible');
+                } else {
+                    scrollBtn.classList.remove('visible');
+                }
+            });
+
+            scrollBtn.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Kartlara animasyon efekti
+            const cards = document.querySelectorAll('.example-card');
+
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        </script>
+</body>
+
+</html>
