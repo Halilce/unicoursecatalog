@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="tr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,7 +24,7 @@
 
         .navbar {
             background: linear-gradient(90deg, var(--primary-green) 0%, var(--secondary-green) 100%);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .navbar-brand {
@@ -164,7 +165,7 @@
         #pdfCanvas {
             max-width: 100%;
             height: auto;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
         .pdf-controls {
@@ -241,13 +242,14 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand" href="#" style="white-space: normal; display: inline-block; max-width: 100%;"> 
-                <i class="fas fa-leaf"></i> 
-                Çınarcık MYO Bilgisayar Teknolojileri Bölümü 
+            <a class="navbar-brand" href="#" style="white-space: normal; display: inline-block; max-width: 100%;">
+                <i class="fas fa-leaf"></i>
+                Çınarcık MYO Bilgisayar Teknolojileri Bölümü
             </a>
         </div>
     </nav>
@@ -264,7 +266,8 @@
                 <div class="d-flex align-items-center justify-content-center h-100">
                     <div class="carousel-caption">
                         <h1><i class="fas fa-book"></i> Hoş Geldiniz</h1>
-                        <p>Ders kataloğu sisteminde haftalık derslerin sunumlarına ve kaynak dosyalarına erişebilirsiniz</p>
+                        <p>Ders kataloğu sisteminde haftalık derslerin sunumlarına ve kaynak dosyalarına erişebilirsiniz
+                        </p>
                     </div>
                 </div>
             </div>
@@ -345,11 +348,31 @@
                                 <br><small class="text-muted">Temel Kavramlar</small>
                             </div>
                             <a href="https://www.btkakademi.gov.tr/portal/catalog?categoryId=955" target="_blank">
-                              <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/service/v1/public/51/assets/logo.png?ts=1738148275127" alt="BTK Akademi" class="file-icon-btk">
+                                <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/service/v1/public/51/assets/logo.png?ts=1738148275127"
+                                    alt="BTK Akademi" class="file-icon-btk">
                             </a>
-                            <i class="fas fa-download file-icon pdf-icon" onclick="window.location.href='https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Bilgi Teknolojilerine Giriş - 1.Hafta.pdf'"></i>
-                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Bilgi Teknolojilerine Giriş - 1.Hafta.pdf', 'BT Giriş - 1.Hafta')"></i>
-                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://github.com/Halilce/unicoursecatalog/blob/main/public/uploads/KBU - Bilgi Teknolojilerine Giriş - 1.Hafta.pdf')"></i>
+                            <i class="fas fa-download file-icon pdf-icon"
+                                onclick="window.location.href='https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Bilgi Teknolojilerine Giriş - 1.Hafta.pdf'"></i>
+                            <i class="fas fa-file-pdf file-icon pdf-icon"
+                                onclick="openPDF('https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Bilgi Teknolojilerine Giriş - 1.Hafta.pdf', 'BT Giriş - 1.Hafta')"></i>
+                            <i class="fab fa-git-alt file-icon git-icon"
+                                onclick="openGit('https://github.com/Halilce/unicoursecatalog/blob/main/public/uploads/KBU - Bilgi Teknolojilerine Giriş - 1.Hafta.pdf')"></i>
+                        </li>
+                        <li class="list-group-item d-flex align-items-center">
+                            <div class="flex-grow-1">
+                                <strong>BT Giriş - 2.Hafta</strong>
+                                <br><small class="text-muted">Donanım</small>
+                            </div>
+                            <a href="https://www.btkakademi.gov.tr/portal/catalog?categoryId=955" target="_blank">
+                                <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/service/v1/public/51/assets/logo.png?ts=1738148275127"
+                                    alt="BTK Akademi" class="file-icon-btk">
+                            </a>
+                            <i class="fas fa-download file-icon pdf-icon"
+                                onclick="window.location.href='https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/BT/2-Donanim.pdf'"></i>
+                            <i class="fas fa-file-pdf file-icon pdf-icon"
+                                onclick="openPDF('https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/BT/2-Donanim.pdf', 'BT 2.Hafta')"></i>
+                            <i class="fab fa-git-alt file-icon git-icon"
+                                onclick="openGit('https://github.com/Halilce/unicoursecatalog/blob/main/public/uploads/BT/2-Donanim.pdf')"></i>
                         </li>
                     </ul>
                 </div>
@@ -375,21 +398,29 @@
                                 <strong>Python</strong>
                                 <br><small class="text-muted">Çalışma Kaynağı</small>
                             </div>
-                            <a href="projects/python-learn.html"><i class='bx  bx-folder-code pdf-icon' style="font-size: 32px !important;"></i></a>
-                            <a href="projects/python_temel_veri_tipleri.html"><i class='bx  bx-code pdf-icon' style="font-size: 32px !important; margin-left: 5px;"></i> </a>
-                            <a href="projects/python_veri_tipleri.html"><i class='bx  bx-note-book pdf-icon' style="font-size: 32px !important; margin-left: 5px;"></i> </a>
+                            <a href="projects/python-learn.html"><i class='bx  bx-folder-code pdf-icon'
+                                    style="font-size: 32px !important;"></i></a>
+                            <a href="projects/python_temel_veri_tipleri.html"><i class='bx  bx-code pdf-icon'
+                                    style="font-size: 32px !important; margin-left: 5px;"></i> </a>
+                            <a href="projects/python_veri_tipleri.html"><i class='bx  bx-note-book pdf-icon'
+                                    style="font-size: 32px !important; margin-left: 5px;"></i> </a>
                         </li>
                         <li class="list-group-item d-flex align-items-center">
                             <div class="flex-grow-1">
                                 <strong>PT - 1.Hafta</strong>
                                 <br><small class="text-muted">Temel Kavramlar</small>
                             </div>
-                            <a href="https://www.btkakademi.gov.tr/portal/catalog?categoryId=951,956,950" target="_blank">
-                              <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/service/v1/public/51/assets/logo.png?ts=1738148275127" alt="BTK Akademi" class="file-icon-btk">
+                            <a href="https://www.btkakademi.gov.tr/portal/catalog?categoryId=951,956,950"
+                                target="_blank">
+                                <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/service/v1/public/51/assets/logo.png?ts=1738148275127"
+                                    alt="BTK Akademi" class="file-icon-btk">
                             </a>
-                            <i class="fas fa-download file-icon pdf-icon" onclick="window.location.href='https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Programlamanın Temelleri - 1.Hafta.pdf'"></i>
-                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Programlamanın Temelleri - 1.Hafta.pdf', 'PT - 1.Hafta')"></i>
-                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://github.com/Halilce/unicoursecatalog/blob/main/public/uploads/KBU - Programlamanın Temelleri - 1.Hafta.pdf')"></i>
+                            <i class="fas fa-download file-icon pdf-icon"
+                                onclick="window.location.href='https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Programlamanın Temelleri - 1.Hafta.pdf'"></i>
+                            <i class="fas fa-file-pdf file-icon pdf-icon"
+                                onclick="openPDF('https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Programlamanın Temelleri - 1.Hafta.pdf', 'PT - 1.Hafta')"></i>
+                            <i class="fab fa-git-alt file-icon git-icon"
+                                onclick="openGit('https://github.com/Halilce/unicoursecatalog/blob/main/public/uploads/KBU - Programlamanın Temelleri - 1.Hafta.pdf')"></i>
                         </li>
                     </ul>
                 </div>
@@ -416,11 +447,15 @@
                                 <br><small class="text-muted">Temel Kavramlar</small>
                             </div>
                             <a href="https://www.btkakademi.gov.tr/portal/catalog?categoryId=1003" target="_blank">
-                              <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/service/v1/public/51/assets/logo.png?ts=1738148275127" alt="BTK Akademi" class="file-icon-btk">
+                                <img src="https://assets-btkakademi-gov-tr.akamaized.net/api/service/v1/public/51/assets/logo.png?ts=1738148275127"
+                                    alt="BTK Akademi" class="file-icon-btk">
                             </a>
-                            <i class="fas fa-download file-icon pdf-icon" onclick="window.location.href='https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Siber Güvenlik ve Bilgi Güvenliği - 1.Hafta.pdf'"></i>
-                            <i class="fas fa-file-pdf file-icon pdf-icon" onclick="openPDF('https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Siber Güvenlik ve Bilgi Güvenliği - 1.Hafta.pdf', 'SGBG - 1.Hafta')"></i>
-                            <i class="fab fa-git-alt file-icon git-icon" onclick="openGit('https://github.com/Halilce/unicoursecatalog/blob/main/public/uploads/KBU - Siber Güvenlik ve Bilgi Güvenliği - 1.Hafta.pdf')"></i>
+                            <i class="fas fa-download file-icon pdf-icon"
+                                onclick="window.location.href='https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Siber Güvenlik ve Bilgi Güvenliği - 1.Hafta.pdf'"></i>
+                            <i class="fas fa-file-pdf file-icon pdf-icon"
+                                onclick="openPDF('https://raw.githubusercontent.com/Halilce/unicoursecatalog/main/public/uploads/KBU - Siber Güvenlik ve Bilgi Güvenliği - 1.Hafta.pdf', 'SGBG - 1.Hafta')"></i>
+                            <i class="fab fa-git-alt file-icon git-icon"
+                                onclick="openGit('https://github.com/Halilce/unicoursecatalog/blob/main/public/uploads/KBU - Siber Güvenlik ve Bilgi Güvenliği - 1.Hafta.pdf')"></i>
                         </li>
                     </ul>
                 </div>
@@ -510,13 +545,13 @@
         function openPDF(pdfUrl, title = 'PDF Görüntüleyici') {
             currentPdfUrl = pdfUrl;
             document.getElementById('pdfViewerTitle').innerHTML = '<i class="fas fa-file-pdf"></i> ' + title;
-            
+
             const errorContainer = document.getElementById('pdfErrorContainer');
             errorContainer.style.display = 'none';
-            
+
             // Canvas'ı göster
             document.getElementById('pdfCanvas').style.display = 'block';
-            
+
             // PDF'i yükle
             loadPDF(pdfUrl);
             pdfModal.show();
@@ -524,13 +559,13 @@
 
         function loadPDF(url) {
             const loadingTask = pdfjsLib.getDocument(url);
-            loadingTask.promise.then(function(pdf) {
+            loadingTask.promise.then(function (pdf) {
                 pdfDoc = pdf;
                 document.getElementById('pageCount').textContent = pdf.numPages;
-                
+
                 // İlk sayfayı render et
                 renderPage(pageNum);
-            }).catch(function(error) {
+            }).catch(function (error) {
                 console.error('PDF yükleme hatası:', error);
                 document.getElementById('pdfCanvas').style.display = 'none';
                 document.getElementById('pdfErrorContainer').style.display = 'flex';
@@ -539,23 +574,23 @@
 
         function renderPage(num) {
             pageRendering = true;
-            
-            pdfDoc.getPage(num).then(function(page) {
+
+            pdfDoc.getPage(num).then(function (page) {
                 const canvas = document.getElementById('pdfCanvas');
                 const ctx = canvas.getContext('2d');
-                const viewport = page.getViewport({scale: scale});
-                
+                const viewport = page.getViewport({ scale: scale });
+
                 canvas.height = viewport.height;
                 canvas.width = viewport.width;
-                
+
                 const renderContext = {
                     canvasContext: ctx,
                     viewport: viewport
                 };
-                
+
                 const renderTask = page.render(renderContext);
-                
-                renderTask.promise.then(function() {
+
+                renderTask.promise.then(function () {
                     pageRendering = false;
                     if (pageNumPending !== null) {
                         renderPage(pageNumPending);
@@ -563,7 +598,7 @@
                     }
                 });
             });
-            
+
             document.getElementById('pageNum').textContent = num;
         }
 
@@ -622,7 +657,7 @@
         function toggleFullscreen() {
             const modalDialog = document.querySelector('.pdf-viewer-modal .modal-dialog');
             const btn = document.getElementById('fullscreenBtn');
-            
+
             if (!document.fullscreenElement) {
                 // Tam ekrana geç
                 const elem = document.documentElement; // Tüm sayfayı tam ekran yap
@@ -648,7 +683,7 @@
         function goToPage() {
             const pageInput = document.getElementById('pageInput');
             const pageNumber = parseInt(pageInput.value);
-            
+
             if (pageNumber >= 1 && pageNumber <= pdfDoc.numPages) {
                 pageNum = pageNumber;
                 queueRenderPage(pageNum);
@@ -671,25 +706,25 @@
         document.getElementById('zoomReset').addEventListener('click', onZoomReset);
         document.getElementById('goToPageBtn').addEventListener('click', goToPage);
         document.getElementById('fullscreenBtn').addEventListener('click', toggleFullscreen);
-        
-        document.getElementById('pageInput').addEventListener('keypress', function(e) {
+
+        document.getElementById('pageInput').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 goToPage();
             }
         });
 
-        document.getElementById('openInNewTabBtn').addEventListener('click', function() {
+        document.getElementById('openInNewTabBtn').addEventListener('click', function () {
             window.open(currentPdfUrl, '_blank');
             pdfModal.hide();
         });
 
         // Modal kapandığında sıfırla
-        document.getElementById('pdfViewerModal').addEventListener('hidden.bs.modal', function() {
+        document.getElementById('pdfViewerModal').addEventListener('hidden.bs.modal', function () {
             pdfDoc = null;
             pageNum = 1;
             scale = 1.5;
             document.getElementById('pageInput').value = '';
-            
+
             // Tam ekran modundaysa çık
             if (document.fullscreenElement) {
                 document.exitFullscreen();
@@ -697,7 +732,7 @@
         });
 
         // Tam ekran değişikliklerini dinle
-        document.addEventListener('fullscreenchange', function() {
+        document.addEventListener('fullscreenchange', function () {
             const btn = document.getElementById('fullscreenBtn');
             if (btn) {
                 if (!document.fullscreenElement) {
@@ -707,9 +742,9 @@
                 }
             }
         });
-        
+
         // Safari için
-        document.addEventListener('webkitfullscreenchange', function() {
+        document.addEventListener('webkitfullscreenchange', function () {
             const btn = document.getElementById('fullscreenBtn');
             if (btn) {
                 if (!document.webkitFullscreenElement) {
@@ -721,4 +756,5 @@
         });
     </script>
 </body>
+
 </html>
