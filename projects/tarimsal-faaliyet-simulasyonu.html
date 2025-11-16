@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tarımsal Faaliyet Simülasyonu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 50%, #A0522D 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c1810;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 248, 240, 0.98);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #6B4423 0%, #8B5A3C 100%);
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #CD853F;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: #D2B48C;
+            border-bottom: 3px solid #8B4513;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            border: none;
+            background: #D2B48C;
+            color: #6B4423;
+            font-size: 1.1em;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border-right: 1px solid #A0522D;
+        }
+
+        .nav-tab:hover {
+            background: #C19A6B;
+        }
+
+        .nav-tab.active {
+            background: #8B4513;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 25px;
+            border-radius: 15px;
+            border-left: 5px solid #8B4513;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.1);
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-title {
+            color: #6B4423;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #D2691E;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #6B4423;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #D2B48C;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #FFF8DC;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #8B4513;
+            box-shadow: 0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-right: 10px;
+            margin-top: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            color: white;
+            box-shadow: 0 5px 15px rgba(139, 69, 19, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #D2691E 0%, #CD853F 100%);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(210, 105, 30, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #228B22 0%, #32CD32 100%);
+            color: white;
+        }
+
+        .btn-code {
+            background: linear-gradient(135deg, #4B0082 0%, #8A2BE2 100%);
+            color: white;
+        }
+
+        .error-message {
+            background: #FFE4E1;
+            color: #DC143C;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #DC143C;
+            display: none;
+        }
+
+        .info-box {
+            background: linear-gradient(135deg, #FFF8DC 0%, #FAEBD7 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #DAA520;
+        }
+
+        .info-box h3 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #6B4423;
+            line-height: 1.6;
+        }
+
+        .mahsul-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .mahsul-card {
+            background: linear-gradient(135deg, #FFF8DC 0%, #F5DEB3 100%);
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .mahsul-card:hover {
+            transform: translateY(-5px);
+            border-color: #8B4513;
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.2);
+        }
+
+        .mahsul-card.selected {
+            border-color: #8B4513;
+            background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%);
+            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
+        }
+
+        .mahsul-card h3 {
+            color: #6B4423;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .mahsul-card .icon {
+            font-size: 3em;
+            margin-bottom: 10px;
+        }
+
+        .mahsul-card .info {
+            font-size: 0.9em;
+            color: #8B4513;
+            margin-top: 10px;
+        }
+
+        .simulation-output {
+            background: #1e1e1e;
+            color: #00ff00;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            max-height: 500px;
+            overflow-y: auto;
+            margin-top: 20px;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+
+        .simulation-output::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .simulation-output::-webkit-scrollbar-track {
+            background: #333;
+            border-radius: 10px;
+        }
+
+        .simulation-output::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 10px;
+        }
+
+        .code-block {
+            background: #2d2d2d;
+            color: #f8f8f2;
+            padding: 25px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95em;
+            line-height: 1.6;
+            overflow-x: auto;
+            margin: 20px 0;
+            border: 2px solid #8B4513;
+            position: relative;
+        }
+
+        .code-block::-webkit-scrollbar {
+            height: 10px;
+        }
+
+        .code-block::-webkit-scrollbar-track {
+            background: #1e1e1e;
+            border-radius: 10px;
+        }
+
+        .code-block::-webkit-scrollbar-thumb {
+            background: #8B4513;
+            border-radius: 10px;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 15px;
+            background: #8B4513;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.85em;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn:hover {
+            background: #A0522D;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 30px;
+            background: #D2B48C;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B4513 0%, #CD853F 50%, #DAA520 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #FFF8DC 0%, #F5DEB3 100%);
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #D2691E;
+        }
+
+        .stat-card .value {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #8B4513;
+            margin: 10px 0;
+        }
+
+        .stat-card .label {
+            color: #6B4423;
+            font-size: 0.9em;
+        }
+
+        .weather-widget {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: linear-gradient(135deg, #87CEEB 0%, #4682B4 100%);
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            margin: 15px 0;
+        }
+
+        .weather-icon {
+            font-size: 2.5em;
+        }
+
+        .weather-info {
+            flex: 1;
+        }
+
+        .history-item {
+            background: linear-gradient(135deg, #FFF8DC 0%, #FAEBD7 100%);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 5px solid #8B4513;
+        }
+
+        .history-item h4 {
+            color: #6B4423;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .badge-success {
+            background: #90EE90;
+            color: #228B22;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal-content h2 {
+            color: #8B4513;
+            margin-bottom: 20px;
+        }
+
+        .spinner {
+            border: 5px solid #D2B48C;
+            border-top: 5px solid #8B4513;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .python-syntax .keyword {
+            color: #ff79c6;
+            font-weight: bold;
+        }
+
+        .python-syntax .function {
+            color: #50fa7b;
+        }
+
+        .python-syntax .string {
+            color: #f1fa8c;
+        }
+
+        .python-syntax .comment {
+            color: #6272a4;
+            font-style: italic;
+        }
+
+        .python-syntax .number {
+            color: #bd93f9;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .mahsul-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-tabs {
+                flex-direction: column;
+            }
+
+            .nav-tab {
+                border-right: none;
+                border-bottom: 1px solid #A0522D;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌾 Tarımsal Faaliyet Simülasyonu</h1>
+            <p>Versiyon 2.0 - Python & Web Uygulaması</p>
+        </div>
+
+        <div class="nav-tabs">
+            <button class="nav-tab active" onclick="switchTab('tab-simulation')">
+                🚜 Simülasyon
+            </button>
+            <button class="nav-tab" onclick="switchTab('tab-python')">
+                🐍 Python Kodu
+            </button>
+        </div>
+
+        <!-- SİMÜLASYON SEKMESİ -->
+        <div id="tab-simulation" class="tab-content active">
+            <div class="content">
+                <!-- Kullanıcı Bilgisi Bölümü -->
+                <div id="section-user" class="section active">
+                    <h2 class="section-title">
+                        <span>👤</span>
+                        Kullanıcı Bilgileri
+                    </h2>
+                    <div class="error-message" id="error-user"></div>
+                    <div class="form-group">
+                        <label for="userName">Adınız Soyadınız:</label>
+                        <input type="text" id="userName" placeholder="Örn: Halil ARSLAN" required>
+                    </div>
+                    <button class="btn btn-primary" onclick="validateUser()">Devam Et →</button>
+                </div>
+
+                <!-- Tarla Bilgileri Bölümü -->
+                <div id="section-field" class="section">
+                    <h2 class="section-title">
+                        <span>📏</span>
+                        Tarla Bilgileri
+                    </h2>
+                    <div class="error-message" id="error-field"></div>
+                    <div class="info-box">
+                        <h3>📋 Bilgi</h3>
+                        <p>Tarlanızın ölçülerini metre cinsinden giriniz. Sistem otomatik olarak dekar ve hektar hesaplaması yapacaktır.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldLength">Tarla Uzunluğu (metre):</label>
+                        <input type="number" id="fieldLength" placeholder="Örn: 100" min="1" step="0.1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fieldWidth">Tarla Genişliği (metre):</label>
+                        <input type="number" id="fieldWidth" placeholder="Örn: 50" min="1" step="0.1" required>
+                    </div>
+                    <div id="fieldCalculations" style="display: none;">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="label">Alan (m²)</div>
+                                <div class="value" id="areaM2">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="label">Alan (Dekar)</div>
+                                <div class="value" id="areaDekar">0</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="label">Alan (Hektar)</div>
+                                <div class="value" id="areaHektar">0</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="goToSection('section-user')">← Geri</button>
+                    <button class="btn btn-primary" onclick="calculateField()">Hesapla</button>
+                    <button class="btn btn-primary" id="btnFieldNext" style="display: none;" onclick="goToSection('section-crop')">Devam Et →</button>
+                </div>
+
+                <!-- Mahsul Seçimi Bölümü -->
+                <div id="section-crop" class="section">
+                    <h2 class="section-title">
+                        <span>🌱</span>
+                        Mahsul Seçimi
+                    </h2>
+                    <div class="error-message" id="error-crop"></div>
+                    <div class="info-box">
+                        <h3>📋 Bilgi</h3>
+                        <p>Yetiştirmek istediğiniz mahsulü seçiniz. Her mahsulün farklı hasat süresi ve verim oranları bulunmaktadır.</p>
+                    </div>
+                    <div class="mahsul-grid">
+                        <div class="mahsul-card" onclick="selectCrop(1)">
+                            <div class="icon">🌾</div>
+                            <h3>Buğday</h3>
+                            <div class="info">
+                                <p>Hasat: 120 gün</p>
+                                <p>Verim: 450 kg/dekar</p>
+                            </div>
+                        </div>
+                        <div class="mahsul-card" onclick="selectCrop(2)">
+                            <div class="icon">🌽</div>
+                            <h3>Mısır</h3>
+                            <div class="info">
+                                <p>Hasat: 90 gün</p>
+                                <p>Verim: 600 kg/dekar</p>
+                            </div>
+                        </div>
+                        <div class="mahsul-card" onclick="selectCrop(3)">
+                            <div class="icon">🍅</div>
+                            <h3>Domates</h3>
+                            <div class="info">
+                                <p>Hasat: 75 gün</p>
+                                <p>Verim: 800 kg/dekar</p>
+                            </div>
+                        </div>
+                        <div class="mahsul-card" onclick="selectCrop(4)">
+                            <div class="icon">🥔</div>
+                            <h3>Patates</h3>
+                            <div class="info">
+                                <p>Hasat: 100 gün</p>
+                                <p>Verim: 550 kg/dekar</p>
+                            </div>
+                        </div>
+                        <div class="mahsul-card" onclick="selectCrop(5)">
+                            <div class="icon">🌾</div>
+                            <h3>Arpa</h3>
+                            <div class="info">
+                                <p>Hasat: 110 gün</p>
+                                <p>Verim: 400 kg/dekar</p>
+                            </div>
+                        </div>
+                        <div class="mahsul-card" onclick="selectCrop(6)">
+                            <div class="icon">☁️</div>
+                            <h3>Pamuk</h3>
+                            <div class="info">
+                                <p>Hasat: 150 gün</p>
+                                <p>Verim: 350 kg/dekar</p>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="goToSection('section-field')">← Geri</button>
+                    <button class="btn btn-primary" id="btnCropNext" style="display: none;" onclick="goToSection('section-speed')">Devam Et →</button>
+                </div>
+
+                <!-- Simülasyon Hızı Bölümü -->
+                <div id="section-speed" class="section">
+                    <h2 class="section-title">
+                        <span>⚡</span>
+                        Simülasyon Hızı
+                    </h2>
+                    <div class="error-message" id="error-speed"></div>
+                    <div class="info-box">
+                        <h3>📋 Bilgi</h3>
+                        <p>Simülasyonun ne kadar detaylı çalışmasını istediğinizi seçiniz.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="simSpeed">Simülasyon Hızı:</label>
+                        <select id="simSpeed" required>
+                            <option value="">Seçiniz...</option>
+                            <option value="1">Detaylı (Her gün ayrı gösterilir)</option>
+                            <option value="2">Hızlı (Sadece önemli günler)</option>
+                            <option value="3">Özet (Sadece haftalık özetler)</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-secondary" onclick="goToSection('section-crop')">← Geri</button>
+                    <button class="btn btn-primary" onclick="goToSection('section-summary')">Devam Et →</button>
+                </div>
+
+                <!-- Özet ve Onay Bölümü -->
+                <div id="section-summary" class="section">
+                    <h2 class="section-title">
+                        <span>📊</span>
+                        Simülasyon Özeti
+                    </h2>
+                    <div class="info-box">
+                        <h3>✅ Bilgileriniz Onaylanıyor</h3>
+                        <div id="summaryContent"></div>
+                    </div>
+                    <button class="btn btn-secondary" onclick="goToSection('section-speed')">← Geri</button>
+                    <button class="btn btn-success" onclick="startSimulation()">Simülasyonu Başlat 🚀</button>
+                </div>
+
+                <!-- Simülasyon Bölümü -->
+                <div id="section-simulation" class="section">
+                    <h2 class="section-title">
+                        <span>🚜</span>
+                        Simülasyon Çalışıyor
+                    </h2>
+                    
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressBar">0%</div>
+                    </div>
+
+                    <div class="weather-widget" id="currentWeather" style="display: none;">
+                        <div class="weather-icon" id="weatherIcon">☀️</div>
+                        <div class="weather-info">
+                            <div id="weatherDesc">Güneşli</div>
+                            <div id="weatherDay">Gün: 1</div>
+                        </div>
+                        <div class="weather-info">
+                            <div id="weatherEffect">Verimlilik: %100</div>
+                        </div>
+                    </div>
+
+                    <div class="simulation-output" id="simulationOutput"></div>
+
+                    <div id="harvestResult" style="display: none;">
+                        <div class="info-box" style="background: linear-gradient(135deg, #90EE90 0%, #98FB98 100%); border-color: #228B22;">
+                            <h3>🎉 HASAT BAŞARILI!</h3>
+                            <div id="harvestDetails"></div>
+                        </div>
+                        <button class="btn btn-primary" onclick="goToSection('section-stats')">İstatistikleri Gör →</button>
+                        <button class="btn btn-success" onclick="resetSimulation()">Yeni Simülasyon Başlat 🔄</button>
+                    </div>
+                </div>
+
+                <!-- İstatistikler Bölümü -->
+                <div id="section-stats" class="section">
+                    <h2 class="section-title">
+                        <span>📈</span>
+                        Genel İstatistikler
+                    </h2>
+                    <div id="statsContent"></div>
+                    <button class="btn btn-success" onclick="resetSimulation()">Yeni Simülasyon Başlat 🔄</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- PYTHON KODU SEKMESİ -->
+        <div id="tab-python" class="tab-content">
+            <div class="content">
+                <div class="section active">
+                    <h2 class="section-title">
+                        <span>🐍</span>
+                        Python Kaynak Kodu
+                    </h2>
+                    
+                    <div class="info-box">
+                        <h3>📝 Açıklama</h3>
+                        <p>Bu web uygulaması, aşağıdaki Python kodunun tam JavaScript çevirisidir. Tüm Python yapıları (if-elif-else, for, while, try-except, def, input validasyonları, tip dönüşümleri) web versiyonunda da mevcuttur.</p>
+                        <p><strong>Python Özellikleri:</strong> Type conversion (int, float, string), Boolean değerler, Döngüler (for, while), Koşullar (if-elif-else), Fonksiyonlar (def), Hata yakalama (try-except), Input validasyonları</p>
+                    </div>
+
+                    <button class="btn btn-code" onclick="copyPythonCode()">📋 Kodu Kopyala</button>
+                    <button class="btn btn-primary" onclick="downloadPythonCode()">💾 Python Dosyası İndir</button>
+
+                    <div class="code-block" id="pythonCode"><button class="copy-btn" onclick="copyPythonCode()">Kopyala</button><pre class="python-syntax"># Gelişmiş Tarımsal Faaliyet Simülasyonu
+# Tüm Python yapıları içeren kapsamlı uygulama
+
+import sys
+from datetime import datetime
+
+def banner_goster():
+    """Uygulama başlangıç banner'ını gösterir"""
+    print("=" * 80)
+    print(" " * 20 + "TARIMSAL FAALİYET SİMÜLASYONU")
+    print(" " * 25 + "Versiyon 2.0 - 2025")
+    print("=" * 80)
+    print()
+
+def sayisal_giris_al(mesaj, tip="float", min_deger=None, max_deger=None):
+    """
+    Kullanıcıdan sayısal veri alır ve doğrulama yapar
+    Hatalı giriş durumunda tekrar ister
+    """
+    while True:
+        try:
+            girdi = input(mesaj).strip()
+            
+            if tip == "int":
+                deger = int(girdi)
+            elif tip == "float":
+                deger = float(girdi)
+            else:
+                deger = float(girdi)
+            
+            # Değer aralığı kontrolü
+            if min_deger is not None and deger < min_deger:
+                print(f"❌ HATA: Değer en az {min_deger} olmalıdır!")
+                continue
+            
+            if max_deger is not None and deger > max_deger:
+                print(f"❌ HATA: Değer en fazla {max_deger} olmalıdır!")
+                continue
+            
+            return deger
+            
+        except ValueError:
+            if tip == "int":
+                print(f"❌ HATA: Lütfen geçerli bir tam sayı giriniz!")
+            else:
+                print(f"❌ HATA: Lütfen geçerli bir sayı giriniz!")
+        except Exception as e:
+            print(f"❌ Beklenmeyen hata: {e}")
+
+def evet_hayir_al(mesaj):
+    """Boolean döndüren evet/hayır sorusu"""
+    while True:
+        try:
+            cevap = input(mesaj).strip().upper()
+            
+            if cevap in ["E", "EVET", "Y", "YES"]:
+                return True
+            elif cevap in ["H", "HAYIR", "N", "NO"]:
+                return False
+            else:
+                print("❌ HATA: Lütfen 'E' (Evet) veya 'H' (Hayır) giriniz!")
+        except Exception as e:
+            print(f"❌ Beklenmeyen hata: {e}")
+
+def alan_hesapla(uzunluk, genislik):
+    """Tarla alanını hesaplar (m²)"""
+    return float(uzunluk) * float(genislik)
+
+def hektar_donustur(metrekare):
+    """Metrekareyi hektara çevirir"""
+    return metrekare / 10000.0
+
+def mahsul_secimi_menu():
+    """Mahsul seçim menüsünü gösterir ve seçim alır"""
+    mahsuller = {
+        1: {"ad": "Buğday", "hasat_gun": 120, "verim": 450},
+        2: {"ad": "Mısır", "hasat_gun": 90, "verim": 600},
+        3: {"ad": "Domates", "hasat_gun": 75, "verim": 800},
+        4: {"ad": "Patates", "hasat_gun": 100, "verim": 550},
+        5: {"ad": "Arpa", "hasat_gun": 110, "verim": 400},
+        6: {"ad": "Pamuk", "hasat_gun": 150, "verim": 350}
+    }
+    
+    while True:
+        try:
+            print("\n" + "─" * 60)
+            print("MAHSUL SEÇİM MENÜSÜ")
+            print("─" * 60)
+            
+            for anahtar, bilgi in mahsuller.items():
+                print(f"{anahtar}. {bilgi['ad']:<15} | Hasat Süresi: {bilgi['hasat_gun']} gün | "
+                      f"Verim: {bilgi['verim']} kg/dekar")
+            
+            print("─" * 60)
+            
+            secim = sayisal_giris_al("Mahsul numarasını seçiniz (1-6): ", "int", 1, 6)
+            
+            return mahsuller[secim]
+            
+        except KeyError:
+            print("❌ HATA: Geçersiz seçim!")
+        except Exception as e:
+            print(f"❌ Beklenmeyen hata: {e}")
+
+def bakim_turu_belirle(gun):
+    """
+    Switch-case benzeri yapı: Belirli günlerde yapılacak bakım işlemlerini döndürür
+    Python 3.10+ match-case kullanımı
+    """
+    # Klasik if-elif-else yapısı (tüm Python sürümleri için)
+    if gun == 1:
+        return "🌱 Ekim işlemi ve tohum atımı"
+    elif gun == 5:
+        return "🔬 Toprak analizi ve pH ölçümü"
+    elif gun == 10:
+        return "💧 İlk sulama işlemi"
+    elif gun == 15:
+        return "🌿 Filizlenme kontrolü"
+    elif gun == 20:
+        return "🧪 Mineral gübre uygulaması"
+    elif gun == 30:
+        return "🦗 Zararlı ve haşere kontrolü"
+    elif gun == 40:
+        return "💦 Yoğun sulama dönemi başlangıcı"
+    elif gun == 50:
+        return "🌾 Bitki boyu ölçümü ve değerlendirme"
+    elif gun == 60:
+        return "🧬 Organik gübre takviyesi"
+    elif gun == 70:
+        return "🔍 Hastalık ve mantar kontrolü"
+    elif gun == 80:
+        return "💨 Havalandırma ve toprak gevşetme"
+    elif gun == 90:
+        return "🌡️ İklim uyum değerlendirmesi"
+    elif gun == 100:
+        return "📊 Hasat öncesi verim tahmini"
+    elif gun == 110:
+        return "🚜 Hasat ekipmanları hazırlığı"
+    elif gun % 7 == 0:  # Her 7 günde bir
+        return "📋 Haftalık genel kontrol ve raporlama"
+    else:
+        return None
+
+def hasat_kontrolu(mahsul_bilgi, gun):
+    """Hasat zamanı gelip gelmediğini kontrol eder - Boolean döndürür"""
+    return gun >= mahsul_bilgi["hasat_gun"]
+
+def verim_hesapla(alan_dekar, mahsul_bilgi, verimlilik_katsayisi):
+    """Toplam verimi hesaplar"""
+    return alan_dekar * mahsul_bilgi["verim"] * verimlilik_katsayisi
+
+def hava_durumu_simulasyon(gun):
+    """
+    Hava durumu simülasyonu yapar
+    String değerler döndürür
+    """
+    # Gün sayısına göre basit hava durumu simulasyonu
+    hava_kodu = gun % 5
+    
+    if hava_kodu == 0:
+        return "☀️ Güneşli", 1.0
+    elif hava_kodu == 1:
+        return "⛅ Parçalı Bulutlu", 0.95
+    elif hava_kodu == 2:
+        return "☁️ Bulutlu", 0.9
+    elif hava_kodu == 3:
+        return "🌧️ Yağmurlu", 0.85
+    else:
+        return "⛈️ Fırtınalı", 0.75
+
+def tarla_bilgileri_al():
+    """Tarla bilgilerini kullanıcıdan alır"""
+    print("\n" + "=" * 60)
+    print("TARLA BİLGİLERİ GİRİŞİ")
+    print("=" * 60)
+    
+    while True:
+        try:
+            uzunluk = sayisal_giris_al("Tarlanın uzunluğunu metre cinsinden giriniz: ", 
+                                       "float", min_deger=1.0)
+            genislik = sayisal_giris_al("Tarlanın genişliğini metre cinsinden giriniz: ", 
+                                        "float", min_deger=1.0)
+            
+            alan_m2 = alan_hesapla(uzunluk, genislik)
+            alan_dekar = alan_m2 / 1000.0  # 1 dekar = 1000 m²
+            alan_hektar = hektar_donustur(alan_m2)
+            
+            print(f"\n📏 Tarla Ölçüleri:")
+            print(f"   • Alan: {alan_m2:.2f} m²")
+            print(f"   • Alan: {alan_dekar:.2f} dekar")
+            print(f"   • Alan: {alan_hektar:.4f} hektar")
+            
+            onay = evet_hayir_al("\nBu bilgiler doğru mu? (E/H): ")
+            
+            if onay:
+                return uzunluk, genislik, alan_m2, alan_dekar, alan_hektar
+            else:
+                print("\n🔄 Bilgiler yeniden alınıyor...\n")
+                
+        except Exception as e:
+            print(f"❌ Hata oluştu: {e}")
+
+def simulasyon_hizi_sec():
+    """Simülasyon hızını seçer"""
+    print("\n" + "─" * 60)
+    print("SİMÜLASYON HIZI SEÇİMİ")
+    print("─" * 60)
+    print("1. Detaylı (Her gün ayrı gösterilir)")
+    print("2. Hızlı (Sadece önemli günler gösterilir)")
+    print("3. Özet (Sadece haftalık özetler)")
+    print("─" * 60)
+    
+    secim = sayisal_giris_al("Seçiminiz (1-3): ", "int", 1, 3)
+    
+    return secim
+
+def gunluk_simulasyon(mahsul_bilgi, alan_dekar, sim_hizi):
+    """
+    Günlük simülasyon döngüsü
+    For döngüsü ve tüm kontrol yapıları burada kullanılır
+    """
+    hasat_gunu = mahsul_bilgi["hasat_gun"]
+    toplam_verimlilik = 0.0
+    gun_sayaci = 0
+    hasat_yapildi = False
+    haftalik_rapor = []
+    
+    print(f"\n{'=' * 80}")
+    print(f"🌾 {mahsul_bilgi['ad'].upper()} İÇİN SİMÜLASYON BAŞLIYOR")
+    print(f"{'=' * 80}\n")
+    
+    # Ana simülasyon döngüsü - FOR kullanımı
+    for gun in range(1, hasat_gunu + 21):  # Hasat sonrası 20 gün daha
+        gun_sayaci += 1
+        
+        # Hava durumu simülasyonu
+        hava, verimlilik_etkisi = hava_durumu_simulasyon(gun)
+        toplam_verimlilik += verimlilik_etkisi
+        
+        # Bakım işlemi kontrolü
+        bakim = bakim_turu_belirle(gun)
+        
+        # Simülasyon hızına göre gösterim - IF-ELIF-ELSE kullanımı
+        goster = False
+        
+        if sim_hizi == 1:  # Detaylı mod
+            goster = True
+        elif sim_hizi == 2:  # Hızlı mod
+            if bakim or gun % 10 == 0:
+                goster = True
+        elif sim_hizi == 3:  # Özet mod
+            if gun % 7 == 0:
+                goster = True
+        
+        if goster:
+            print(f"📅 Gün {gun:3d} | {hava:<20} | Verimlilik: {verimlilik_etkisi:.2f}")
+            
+            if bakim:
+                print(f"         └─➤ {bakim}")
+        
+        # Haftalık rapor toplama
+        if gun % 7 == 0:
+            ort_verimlilik = toplam_verimlilik / 7
+            haftalik_rapor.append({
+                "hafta": gun // 7,
+                "verimlilik": ort_verimlilik
+            })
+            
+            if sim_hizi == 3:
+                print(f"   📊 Hafta {gun // 7} Özeti - Ortalama Verimlilik: {ort_verimlilik:.2f}")
+            
+            toplam_verimlilik = 0.0
+        
+        # Hasat kontrolü - Boolean kullanımı
+        hasat_zamani_geldi = hasat_kontrolu(mahsul_bilgi, gun)
+        
+        if hasat_zamani_geldi and not hasat_yapildi:
+            print(f"\n{'🎉' * 40}")
+            print(f"🌾 GÜN {gun}: HASAT ZAMANI GELDİ!")
+            print(f"{'🎉' * 40}\n")
+            
+            # Verim hesaplama
+            ortalama_verimlilik = sum(h["verimlilik"] for h in haftalik_rapor) / len(haftalik_rapor)
+            toplam_urun = verim_hesapla(alan_dekar, mahsul_bilgi, ortalama_verimlilik)
+            
+            print(f"📊 HASAT RAPORU:")
+            print(f"   • Mahsul: {mahsul_bilgi['ad']}")
+            print(f"   • Hasat Günü: {gun}")
+            print(f"   • Tarla Alanı: {alan_dekar:.2f} dekar")
+            print(f"   • Ortalama Verimlilik Katsayısı: {ortalama_verimlilik:.2f}")
+            print(f"   • Toplam Ürün: {toplam_urun:.2f} kg")
+            print(f"   • Ton Cinsinden: {toplam_urun / 1000:.2f} ton")
+            
+            hasat_yapildi = True
+            
+            # Hasat sonrası 5 gün daha devam edip bitir
+            devam_et = evet_hayir_al("\nHasat sonrası 20 günlük takibe devam edilsin mi? (E/H): ")
+            
+            if not devam_et:
+                break
+    
+    print(f"\n{'=' * 80}")
+    print(f"✅ {mahsul_bilgi['ad'].upper()} SİMÜLASYONU TAMAMLANDI")
+    print(f"{'=' * 80}\n")
+    
+    return hasat_yapildi
+
+def istatistik_goster(tamamlanan_simulasyonlar):
+    """Genel istatistikleri gösterir"""
+    if not tamamlanan_simulasyonlar:
+        print("\n⚠️ Henüz tamamlanmış simülasyon bulunmuyor.")
+        return
+    
+    print(f"\n{'=' * 80}")
+    print("📊 GENEL İSTATİSTİKLER")
+    print(f"{'=' * 80}")
+    
+    toplam_sim = len(tamamlanan_simulasyonlar)
+    print(f"✓ Toplam Tamamlanan Simülasyon: {toplam_sim}")
+    
+    for idx, sim in enumerate(tamamlanan_simulasyonlar, 1):
+        print(f"\n{idx}. Simülasyon:")
+        print(f"   • Mahsul: {sim['mahsul']}")
+        print(f"   • Alan: {sim['alan']:.2f} dekar")
+        print(f"   • Durum: {'✅ Hasat Yapıldı' if sim['hasat'] else '❌ Hasat Yapılmadı'}")
+    
+    print(f"\n{'=' * 80}\n")
+
+def main():
+    """Ana program fonksiyonu"""
+    banner_goster()
+    
+    # Kullanıcı bilgisi al
+    print("Hoş geldiniz! Lütfen önce kendinizi tanıtın.\n")
+    
+    while True:
+        try:
+            kullanici_adi = input("Adınız: ").strip()
+            
+            if len(kullanici_adi) < 2:
+                print("❌ HATA: Ad en az 2 karakter olmalıdır!")
+                continue
+            
+            if not kullanici_adi.replace(" ", "").isalpha():
+                print("❌ HATA: Ad sadece harflerden oluşmalıdır!")
+                continue
+            
+            break
+            
+        except Exception as e:
+            print(f"❌ Hata: {e}")
+    
+    print(f"\nMerhaba {kullanici_adi}! 👋\n")
+    
+    # Simülasyon geçmişi
+    tamamlanan_simulasyonlar = []
+    
+    # Ana döngü - WHILE kullanımı
+    while True:
+        try:
+            print("\n" + "🌾" * 40)
+            print("\nYeni bir simülasyon başlatılıyor...\n")
+            
+            # Tarla bilgilerini al
+            uzunluk, genislik, alan_m2, alan_dekar, alan_hektar = tarla_bilgileri_al()
+            
+            # Mahsul seç
+            mahsul_bilgi = mahsul_secimi_menu()
+            
+            # Simülasyon hızı seç
+            sim_hizi = simulasyon_hizi_sec()
+            
+            # Onay al
+            print(f"\n📋 SİMÜLASYON ÖZETİ:")
+            print(f"   • Çiftçi: {kullanici_adi}")
+            print(f"   • Mahsul: {mahsul_bilgi['ad']}")
+            print(f"   • Alan: {alan_dekar:.2f} dekar")
+            print(f"   • Tahmini Hasat Süresi: {mahsul_bilgi['hasat_gun']} gün")
+            
+            basla = evet_hayir_al("\nSimülasyonu başlatmak istiyor musunuz? (E/H): ")
+            
+            if not basla:
+                print("❌ Simülasyon iptal edildi.")
+                continue
+            
+            # Simülasyonu çalıştır
+            hasat_durumu = gunluk_simulasyon(mahsul_bilgi, alan_dekar, sim_hizi)
+            
+            # Simülasyon geçmişine ekle
+            tamamlanan_simulasyonlar.append({
+                "mahsul": mahsul_bilgi["ad"],
+                "alan": alan_dekar,
+                "hasat": hasat_durumu
+            })
+            
+            # İstatistikleri göster
+            istatistik_goster(tamamlanan_simulasyonlar)
+            
+            # Devam kontrolü
+            devam = evet_hayir_al("Yeni bir simülasyon başlatmak ister misiniz? (E/H): ")
+            
+            if not devam:
+                print(f"\n{'🌾' * 40}")
+                print(f"\n👋 Hoşça kalın {kullanici_adi}!")
+                print(f"Toplam {len(tamamlanan_simulasyonlar)} simülasyon tamamladınız.")
+                print("\n" + "🌾" * 40 + "\n")
+                break
+                
+        except KeyboardInterrupt:
+            print("\n\n⚠️ Program kullanıcı tarafından durduruldu.")
+            cikis = evet_hayir_al("Çıkmak istediğinize emin misiniz? (E/H): ")
+            if cikis:
+                print("Çıkılıyor...")
+                sys.exit(0)
+        except Exception as e:
+            print(f"\n❌ Beklenmeyen bir hata oluştu: {e}")
+            devam = evet_hayir_al("Programa devam etmek ister misiniz? (E/H): ")
+            if not devam:
+                break
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as e:
+        print(f"\n❌ Kritik hata: {e}")
+        print("Program sonlandırılıyor...")
+        sys.exit(1)</pre></div>
+
+                    <div class="info-box" style="margin-top: 30px;">
+                        <h3>🎯 Python Kodunun İçerdiği Yapılar</h3>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; margin-top: 15px;">
+                            <div>
+                                <h4 style="color: #8B4513; margin-bottom: 8px;">✅ Veri Tipleri:</h4>
+                                <ul style="color: #6B4423; line-height: 1.8;">
+                                    <li>int() - Tam sayı dönüşümü</li>
+                                    <li>float() - Ondalıklı sayı</li>
+                                    <li>str() - String dönüşümü</li>
+                                    <li>bool() - Boolean değerler</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 style="color: #8B4513; margin-bottom: 8px;">✅ Kontrol Yapıları:</h4>
+                                <ul style="color: #6B4423; line-height: 1.8;">
+                                    <li>if-elif-else</li>
+                                    <li>for döngüsü</li>
+                                    <li>while döngüsü</li>
+                                    <li>try-except-finally</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 style="color: #8B4513; margin-bottom: 8px;">✅ Fonksiyonlar:</h4>
+                                <ul style="color: #6B4423; line-height: 1.8;">
+                                    <li>def ile tanımlama</li>
+                                    <li>Parametreli fonksiyonlar</li>
+                                    <li>Return değerleri</li>
+                                    <li>Docstring kullanımı</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 style="color: #8B4513; margin-bottom: 8px;">✅ Input İşlemleri:</h4>
+                                <ul style="color: #6B4423; line-height: 1.8;">
+                                    <li>input() ile veri alma</li>
+                                    <li>Tip kontrolü ve validasyon</li>
+                                    <li>Hata durumunda tekrar</li>
+                                    <li>Min/max değer kontrolü</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Yükleniyor Modal -->
+    <div class="modal" id="loadingModal">
+        <div class="modal-content">
+            <div class="spinner"></div>
+            <h2>Simülasyon Hazırlanıyor...</h2>
+            <p>Lütfen bekleyiniz</p>
+        </div>
+    </div>
+
+    <script>
+        // Global değişkenler
+        let userData = {
+            name: '',
+            fieldLength: 0,
+            fieldWidth: 0,
+            areaM2: 0,
+            areaDekar: 0,
+            areaHektar: 0,
+            selectedCrop: null,
+            simSpeed: 1,
+            simulationHistory: []
+        };
+
+        const crops = {
+            1: { ad: "Buğday", hasat_gun: 120, verim: 450, icon: "🌾" },
+            2: { ad: "Mısır", hasat_gun: 90, verim: 600, icon: "🌽" },
+            3: { ad: "Domates", hasat_gun: 75, verim: 800, icon: "🍅" },
+            4: { ad: "Patates", hasat_gun: 100, verim: 550, icon: "🥔" },
+            5: { ad: "Arpa", hasat_gun: 110, verim: 400, icon: "🌾" },
+            6: { ad: "Pamuk", hasat_gun: 150, verim: 350, icon: "☁️" }
+        };
+
+        // Sekme değiştirme
+        function switchTab(tabId) {
+            // Tüm sekmeleri gizle
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Tüm butonların active sınıfını kaldır
+            document.querySelectorAll('.nav-tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Seçili sekmeyi göster
+            document.getElementById(tabId).classList.add('active');
+            
+            // Seçili butonu işaretle
+            event.target.classList.add('active');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Python kodunu kopyala
+        function copyPythonCode() {
+            const code = document.getElementById('pythonCode').querySelector('pre').textContent;
+            navigator.clipboard.writeText(code).then(() => {
+                alert('✅ Python kodu panoya kopyalandı!');
+            }).catch(err => {
+                alert('❌ Kopyalama hatası: ' + err);
+            });
+        }
+
+        // Python kodunu indir
+        function downloadPythonCode() {
+            const code = document.getElementById('pythonCode').querySelector('pre').textContent;
+            const blob = new Blob([code], { type: 'text/plain' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tarimsal_simulasyon.py';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        }
+
+        // Kullanıcı doğrulama
+        function validateUser() {
+            const userName = document.getElementById('userName').value.trim();
+            const errorDiv = document.getElementById('error-user');
+
+            if (userName.length < 2) {
+                showError(errorDiv, '❌ Ad en az 2 karakter olmalıdır!');
+                return;
+            }
+
+            if (!/^[a-zA-ZğüşıöçĞÜŞİÖÇ\s]+$/.test(userName)) {
+                showError(errorDiv, '❌ Ad sadece harflerden oluşmalıdır!');
+                return;
+            }
+
+            userData.name = userName;
+            hideError(errorDiv);
+            goToSection('section-field');
+        }
+
+        // Tarla hesaplama
+        function calculateField() {
+            const length = parseFloat(document.getElementById('fieldLength').value);
+            const width = parseFloat(document.getElementById('fieldWidth').value);
+            const errorDiv = document.getElementById('error-field');
+
+            if (!length || length < 1) {
+                showError(errorDiv, '❌ Uzunluk en az 1 metre olmalıdır!');
+                return;
+            }
+
+            if (!width || width < 1) {
+                showError(errorDiv, '❌ Genişlik en az 1 metre olmalıdır!');
+                return;
+            }
+
+            userData.fieldLength = length;
+            userData.fieldWidth = width;
+            userData.areaM2 = length * width;
+            userData.areaDekar = userData.areaM2 / 1000;
+            userData.areaHektar = userData.areaM2 / 10000;
+
+            document.getElementById('areaM2').textContent = userData.areaM2.toFixed(2);
+            document.getElementById('areaDekar').textContent = userData.areaDekar.toFixed(2);
+            document.getElementById('areaHektar').textContent = userData.areaHektar.toFixed(4);
+
+            document.getElementById('fieldCalculations').style.display = 'block';
+            document.getElementById('btnFieldNext').style.display = 'inline-block';
+            hideError(errorDiv);
+        }
+
+        // Mahsul seçimi
+        function selectCrop(cropId) {
+            document.querySelectorAll('.mahsul-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            event.currentTarget.classList.add('selected');
+            userData.selectedCrop = cropId;
+            document.getElementById('btnCropNext').style.display = 'inline-block';
+            hideError(document.getElementById('error-crop'));
+        }
+
+        // Bölüm geçişleri
+        function goToSection(sectionId) {
+            if (sectionId === 'section-crop' && !userData.areaDekar) {
+                showError(document.getElementById('error-field'), '❌ Önce tarla hesaplaması yapınız!');
+                return;
+            }
+
+            if (sectionId === 'section-speed' && !userData.selectedCrop) {
+                showError(document.getElementById('error-crop'), '❌ Lütfen bir mahsul seçiniz!');
+                return;
+            }
+
+            if (sectionId === 'section-summary') {
+                const speed = document.getElementById('simSpeed').value;
+                if (!speed) {
+                    showError(document.getElementById('error-speed'), '❌ Lütfen simülasyon hızını seçiniz!');
+                    return;
+                }
+                userData.simSpeed = parseInt(speed);
+                showSummary();
+            }
+
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+
+            document.getElementById(sectionId).classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Özet gösterimi
+        function showSummary() {
+            const crop = crops[userData.selectedCrop];
+            const speedText = {
+                1: 'Detaylı (Her gün)',
+                2: 'Hızlı (Önemli günler)',
+                3: 'Özet (Haftalık)'
+            };
+
+            const summaryHTML = `
+                <p><strong>👤 Çiftçi:</strong> ${userData.name}</p>
+                <p><strong>${crop.icon} Mahsul:</strong> ${crop.ad}</p>
+                <p><strong>📏 Alan:</strong> ${userData.areaDekar.toFixed(2)} dekar (${userData.areaM2.toFixed(2)} m²)</p>
+                <p><strong>⏱️ Tahmini Hasat:</strong> ${crop.hasat_gun} gün</p>
+                <p><strong>⚡ Hız:</strong> ${speedText[userData.simSpeed]}</p>
+                <p><strong>📊 Tahmini Verim:</strong> ${(userData.areaDekar * crop.verim).toFixed(2)} kg</p>
+            `;
+
+            document.getElementById('summaryContent').innerHTML = summaryHTML;
+        }
+
+        // Simülasyonu başlat
+        async function startSimulation() {
+            goToSection('section-simulation');
+            document.getElementById('loadingModal').classList.add('active');
+
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            document.getElementById('loadingModal').classList.remove('active');
+
+            runSimulation();
+        }
+
+        // Ana simülasyon fonksiyonu
+        async function runSimulation() {
+            const crop = crops[userData.selectedCrop];
+            const output = document.getElementById('simulationOutput');
+            const progressBar = document.getElementById('progressBar');
+            const weatherWidget = document.getElementById('currentWeather');
+            
+            output.innerHTML = '';
+            weatherWidget.style.display = 'flex';
+
+            let totalVerimlilik = 0;
+            let gunSayaci = 0;
+            let haftalikRapor = [];
+
+            appendOutput('═══════════════════════════════════════════════════════════════\n');
+            appendOutput(`🌾 ${crop.ad.toUpperCase()} İÇİN SİMÜLASYON BAŞLIYOR\n`);
+            appendOutput('═══════════════════════════════════════════════════════════════\n\n');
+
+            const maxGun = crop.hasat_gun + 20;
+
+            for (let gun = 1; gun <= maxGun; gun++) {
+                gunSayaci++;
+                
+                const progress = (gun / maxGun) * 100;
+                progressBar.style.width = progress + '%';
+                progressBar.textContent = Math.round(progress) + '%';
+
+                const [hava, havaDurumu, verimlilik] = getWeather(gun);
+                totalVerimlilik += verimlilik;
+
+                updateWeatherWidget(hava, havaDurumu, gun, verimlilik);
+
+                const bakim = getBakim(gun);
+
+                let goster = false;
+                if (userData.simSpeed === 1) {
+                    goster = true;
+                } else if (userData.simSpeed === 2) {
+                    if (bakim || gun % 10 === 0) goster = true;
+                } else if (userData.simSpeed === 3) {
+                    if (gun % 7 === 0) goster = true;
+                }
+
+                if (goster) {
+                    appendOutput(`📅 Gün ${gun.toString().padStart(3)} | ${havaDurumu.padEnd(20)} | Verimlilik: ${verimlilik.toFixed(2)}\n`);
+                    
+                    if (bakim) {
+                        appendOutput(`         └─➤ ${bakim}\n`);
+                    }
+                }
+
+                if (gun % 7 === 0) {
+                    const ortVerimlilik = totalVerimlilik / 7;
+                    haftalikRapor.push({
+                        hafta: Math.floor(gun / 7),
+                        verimlilik: ortVerimlilik
+                    });
+
+                    if (userData.simSpeed === 3) {
+                        appendOutput(`   📊 Hafta ${Math.floor(gun / 7)} Özeti - Ortalama Verimlilik: ${ortVerimlilik.toFixed(2)}\n`);
+                    }
+
+                    totalVerimlilik = 0;
+                }
+
+                if (gun >= crop.hasat_gun && gun === crop.hasat_gun) {
+                    appendOutput('\n' + '🎉'.repeat(40) + '\n');
+                    appendOutput(`🌾 GÜN ${gun}: HASAT ZAMANI GELDİ!\n`);
+                    appendOutput('🎉'.repeat(40) + '\n\n');
+
+                    const ortVerimlilik = haftalikRapor.reduce((sum, h) => sum + h.verimlilik, 0) / haftalikRapor.length;
+                    const toplamUrun = userData.areaDekar * crop.verim * ortVerimlilik;
+
+                    appendOutput('📊 HASAT RAPORU:\n');
+                    appendOutput(`   • Mahsul: ${crop.ad}\n`);
+                    appendOutput(`   • Hasat Günü: ${gun}\n`);
+                    appendOutput(`   • Tarla Alanı: ${userData.areaDekar.toFixed(2)} dekar\n`);
+                    appendOutput(`   • Ortalama Verimlilik Katsayısı: ${ortVerimlilik.toFixed(2)}\n`);
+                    appendOutput(`   • Toplam Ürün: ${toplamUrun.toFixed(2)} kg\n`);
+                    appendOutput(`   • Ton Cinsinden: ${(toplamUrun / 1000).toFixed(2)} ton\n\n`);
+
+                    showHarvestResult(crop, gun, toplamUrun, ortVerimlilik);
+
+                    userData.simulationHistory.push({
+                        mahsul: crop.ad,
+                        alan: userData.areaDekar,
+                        hasat: true,
+                        urun: toplamUrun,
+                        gun: gun,
+                        tarih: new Date().toLocaleString('tr-TR')
+                    });
+
+                    break;
+                }
+
+                if (userData.simSpeed === 1) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                } else if (userData.simSpeed === 2) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                } else {
+                    await new Promise(resolve => setTimeout(resolve, 20));
+                }
+            }
+
+            appendOutput('\n═══════════════════════════════════════════════════════════════\n');
+            appendOutput(`✅ ${crop.ad.toUpperCase()} SİMÜLASYONU TAMAMLANDI\n`);
+            appendOutput('═══════════════════════════════════════════════════════════════\n');
+        }
+
+        function getWeather(gun) {
+            const havalar = [
+                ['☀️', '☀️ Güneşli', 1.0],
+                ['⛅', '⛅ Parçalı Bulutlu', 0.95],
+                ['☁️', '☁️ Bulutlu', 0.9],
+                ['🌧️', '🌧️ Yağmurlu', 0.85],
+                ['⛈️', '⛈️ Fırtınalı', 0.75]
+            ];
+            return havalar[gun % 5];
+        }
+
+        function updateWeatherWidget(icon, desc, gun, verimlilik) {
+            document.getElementById('weatherIcon').textContent = icon;
+            document.getElementById('weatherDesc').textContent = desc;
+            document.getElementById('weatherDay').textContent = `Gün: ${gun}`;
+            document.getElementById('weatherEffect').textContent = `Verimlilik: ${(verimlilik * 100).toFixed(0)}%`;
+        }
+
+        function getBakim(gun) {
+            const bakimlar = {
+                1: "🌱 Ekim işlemi ve tohum atımı",
+                5: "🔬 Toprak analizi ve pH ölçümü",
+                10: "💧 İlk sulama işlemi",
+                15: "🌿 Filizlenme kontrolü",
+                20: "🧪 Mineral gübre uygulaması",
+                30: "🦗 Zararlı ve haşere kontrolü",
+                40: "💦 Yoğun sulama dönemi başlangıcı",
+                50: "🌾 Bitki boyu ölçümü ve değerlendirme",
+                60: "🧬 Organik gübre takviyesi",
+                70: "🔍 Hastalık ve mantar kontrolü",
+                80: "💨 Havalandırma ve toprak gevşetme",
+                90: "🌡️ İklim uyum değerlendirmesi",
+                100: "📊 Hasat öncesi verim tahmini",
+                110: "🚜 Hasat ekipmanları hazırlığı"
+            };
+
+            if (bakimlar[gun]) return bakimlar[gun];
+            if (gun % 7 === 0) return "📋 Haftalık genel kontrol ve raporlama";
+            return null;
+        }
+
+        function showHarvestResult(crop, gun, toplamUrun, verimlilik) {
+            const detailsHTML = `
+                <p><strong>${crop.icon} Mahsul:</strong> ${crop.ad}</p>
+                <p><strong>📅 Hasat Günü:</strong> ${gun}</p>
+                <p><strong>📏 Tarla:</strong> ${userData.areaDekar.toFixed(2)} dekar</p>
+                <p><strong>⚡ Verimlilik:</strong> ${(verimlilik * 100).toFixed(1)}%</p>
+                <p><strong>🎯 Toplam Ürün:</strong> ${toplamUrun.toFixed(2)} kg (${(toplamUrun / 1000).toFixed(2)} ton)</p>
+                <p><strong>💰 Tahmini Değer:</strong> ${(toplamUrun * 5).toLocaleString('tr-TR')} ₺</p>
+            `;
+
+            document.getElementById('harvestDetails').innerHTML = detailsHTML;
+            document.getElementById('harvestResult').style.display = 'block';
+        }
+
+        function goToStats() {
+            if (userData.simulationHistory.length === 0) {
+                return;
+            }
+
+            let statsHTML = `
+                <div class="info-box">
+                    <h3>📊 Toplam İstatistikler</h3>
+                    <p><strong>Toplam Simülasyon:</strong> ${userData.simulationHistory.length}</p>
+                </div>
+                <h3 style="color: #8B4513; margin: 20px 0;">Simülasyon Geçmişi:</h3>
+            `;
+
+            userData.simulationHistory.forEach((sim, index) => {
+                statsHTML += `
+                    <div class="history-item">
+                        <h4>${index + 1}. ${sim.mahsul} - ${sim.tarih}</h4>
+                        <p><strong>Alan:</strong> ${sim.alan.toFixed(2)} dekar</p>
+                        <p><strong>Ürün:</strong> ${sim.urun.toFixed(2)} kg (${(sim.urun / 1000).toFixed(2)} ton)</p>
+                        <p><strong>Süre:</strong> ${sim.gun} gün</p>
+                        <span class="badge badge-success">✅ Hasat Yapıldı</span>
+                    </div>
+                `;
+            });
+
+            document.getElementById('statsContent').innerHTML = statsHTML;
+            goToSection('section-stats');
+        }
+
+        function resetSimulation() {
+            document.getElementById('userName').value = '';
+            document.getElementById('fieldLength').value = '';
+            document.getElementById('fieldWidth').value = '';
+            document.getElementById('simSpeed').value = '';
+            
+            document.getElementById('fieldCalculations').style.display = 'none';
+            document.getElementById('btnFieldNext').style.display = 'none';
+            document.getElementById('btnCropNext').style.display = 'none';
+            document.getElementById('simulationOutput').innerHTML = '';
+            document.getElementById('harvestResult').style.display = 'none';
+            document.getElementById('currentWeather').style.display = 'none';
+            
+            document.querySelectorAll('.mahsul-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+
+            const name = userData.name;
+            const history = userData.simulationHistory;
+            
+            userData = {
+                name: name,
+                fieldLength: 0,
+                fieldWidth: 0,
+                areaM2: 0,
+                areaDekar: 0,
+                areaHektar: 0,
+                selectedCrop: null,
+                simSpeed: 1,
+                simulationHistory: history
+            };
+
+            document.getElementById('userName').value = name;
+            goToSection('section-field');
+        }
+
+        function appendOutput(text) {
+            const output = document.getElementById('simulationOutput');
+            output.innerHTML += text;
+            output.scrollTop = output.scrollHeight;
+        }
+
+        function showError(element, message) {
+            element.textContent = message;
+            element.style.display = 'block';
+        }
+
+        function hideError(element) {
+            element.style.display = 'none';
+        }
+
+        window.onload = function() {
+            console.log('🌾 Tarımsal Faaliyet Simülasyonu hazır!');
+        };
+    </script>
+</body>
+</html>
